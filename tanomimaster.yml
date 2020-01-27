@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.4
+  version: 0.0.5
   title: REST API for makers
   description: Main file of Maker REST API.
   license:
@@ -167,10 +167,36 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Order'
+                type: object
+                properties:
+                  code:
+                    type: string
+                  desired_delivery_date:
+                    type: string
+                  orders_makers:
+                    type: array
+                    items:
+                      $ref: ''
+                  ordered_at:
+                    type: string
+                    format: date
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  retail_user_id:
+                    type: integer
+                required:
+                  - retail_user_id
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       description: createOrder
+      security:
+        - API Key: []
   '/retail/orders/{order_id}':
     parameters:
       - schema:
@@ -259,6 +285,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      security:
+        - API Key: []
   '/retail/orders/{order_id}/order_products/{order_product_id}':
     parameters:
       - schema:
@@ -307,6 +335,8 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: delete-orders-order_id-products-order_product_id
       description: 仕入納品をキャンセルする
+      security:
+        - API Key: []
     post:
       summary: ''
       operationId: post-orders-order_id-products-order_product_id
@@ -324,6 +354,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       description: 仕入納品を行う
+      security:
+        - API Key: []
   /makers:
     get:
       summary: listMakers
@@ -965,9 +997,65 @@ components:
         - id
         - name
         - code
+    OrderMaker:
+      title: OrderMaker
+      type: object
+      properties:
+        id:
+          type: integer
+        maker_id:
+          type: integer
+        maker_user_id:
+          type: integer
+        maker_sales_office_id:
+          type: integer
+        code:
+          type: string
+        status:
+          type: string
+          enum:
+            - ordered
+            - downloaded
+            - answered
+            - shipped
+            - delivered
+            - canceled
+        estimated_delivery_date:
+          type: string
+        official_estimated_delivery_date:
+          type: string
+          format: date
+        answered_at:
+          type: string
+          format: date-time
+        delivery_date:
+          type: string
+        shipping_postcode:
+          type: string
+        shipping_prefecture_code:
+          type: string
+        shipping_city:
+          type: string
+        shipping_street_address:
+          type: string
+        shipping_building:
+          type: string
+        shipping_office_name:
+          type: string
+        shipping_tel:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - maker_id
   securitySchemes:
     API Key:
       type: http
       scheme: Bearer
       description: API key acquired on retail management page by admin.
-  
+
