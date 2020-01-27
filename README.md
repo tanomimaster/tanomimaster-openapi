@@ -2,6 +2,11 @@
 
 Built with OAS (Open API Specification) 3.0 
 
+## Policy
+
+- Following on gitlab's API policy
+  - https://docs.gitlab.com/ee/api/README.html#gitlab-ci-job-token
+
 
 ## Tools
 
