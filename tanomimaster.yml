@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.5
+  version: 0.0.6
   title: REST API for makers
   description: Main file of Maker REST API.
   license:
@@ -173,21 +173,33 @@ paths:
                     type: string
                   desired_delivery_date:
                     type: string
-                  orders_makers:
-                    type: array
-                    items:
-                      $ref: ''
+                    format: date
                   ordered_at:
                     type: string
                     format: date
-                  products:
+                  retail_user_code:
+                    type: string
+                  makers:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Product'
-                  retail_user_id:
-                    type: integer
+                      type: object
+                      properties:
+                        maker_code:
+                          type: string
+                        products:
+                          type: object
+                          properties:
+                            code:
+                              type: string
+                            number_of_items:
+                              type: integer
+                          required:
+                            - code
+                            - number_of_items
+                      required:
+                        - maker_code
                 required:
-                  - retail_user_id
+                  - retail_user_code
         default:
           description: unexpected error
           content:
@@ -697,6 +709,11 @@ components:
     Product:
       title: Product
       type: object
+      xml:
+        name: Product
+      x-tags:
+        - Products
+      description: A single product.
       properties:
         id:
           type: integer
@@ -731,13 +748,8 @@ components:
           type: integer
       required:
         - id
-        - category_id
         - name
-      xml:
-        name: Product
-      x-tags:
-        - Products
-      description: A single product.
+        - category_id
     Maker:
       title: Maker
       type: object
