@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.6
+  version: 0.0.8
   title: REST API for makers
   description: Main file of Maker REST API.
   license:
@@ -167,39 +167,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  desired_delivery_date:
-                    type: string
-                    format: date
-                  ordered_at:
-                    type: string
-                    format: date
-                  retail_user_code:
-                    type: string
-                  makers:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        maker_code:
-                          type: string
-                        products:
-                          type: object
-                          properties:
-                            code:
-                              type: string
-                            number_of_items:
-                              type: integer
-                          required:
-                            - code
-                            - number_of_items
-                      required:
-                        - maker_code
-                required:
-                  - retail_user_code
+                $ref: '#/components/schemas/Order'
         default:
           description: unexpected error
           content:
@@ -209,6 +177,43 @@ paths:
       description: createOrder
       security:
         - API Key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                makers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      maker_code:
+                        type: string
+                      products:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                          number_of_items:
+                            type: integer
+                        required:
+                          - code
+                          - number_of_items
+                    required:
+                      - maker_code
+                retail_user_code:
+                  type: string
+                ordered_at:
+                  type: string
+                  format: date
+                desired_delivery_date:
+                  type: string
+                  format: date
+              required:
+                - retail_user_code
   '/retail/orders/{order_id}':
     parameters:
       - schema:
@@ -368,6 +373,16 @@ paths:
       description: 仕入納品を行う
       security:
         - API Key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order_staus:
+                  type: string
+                  enum:
+                    - cancelled
   /makers:
     get:
       summary: listMakers
