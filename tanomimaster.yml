@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.8
+  version: 0.0.9
   title: REST API for makers
   description: Main file of Maker REST API.
   license:
@@ -168,6 +168,65 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+              examples:
+                リクエストパラメータ不正:
+                  value:
+                    - code: maker_code
+                      message: メーカーが存在しません
+                    - code: 'products[0].code'
+                      message: 商品コードを指定してください
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                認証失敗:
+                  value:
+                    code: '401'
+                    message: 認証に失敗しました
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                実行権限がない(e.g. メーカーが本APIを実行した場合など):
+                  value:
+                    code: '403'
+                    message: APIを実行する権限がありません
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                注文番号重複エラー:
+                  value:
+                    code: '409'
+                    message: 注文番号190123456789はすでに存在しています
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                サーバーエラー:
+                  value:
+                    code: '<アプリケーションの例外クラス>'
+                    message: 'APIサーバーでエラーが発生しました. <アプリケーションのエラーメッセージ> <発生時刻> <リクエストID>'
         default:
           description: unexpected error
           content:
@@ -193,22 +252,34 @@ paths:
                       maker_code:
                         type: string
                       products:
-                        type: object
-                        properties:
-                          code:
-                            type: string
-                          number_of_items:
-                            type: integer
-                        required:
-                          - code
-                          - number_of_items
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: string
+                            number_of_items:
+                              type: integer
+                            gas_type:
+                              type: string
+                              enum:
+                                - LP
+                                - 12・13A
+                              description: ガス種を選択する商品の場合、必須項目
+                          required:
+                            - code
+                            - number_of_items
+                      branch_number:
+                        type: integer
+                        description: 明細枝番。指定しない場合、タノミマスターで自動発番
                     required:
                       - maker_code
                 retail_user_code:
                   type: string
                 ordered_at:
                   type: string
-                  format: date
+                  format: date-time
+                  description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
                 desired_delivery_date:
                   type: string
                   format: date
@@ -820,6 +891,8 @@ components:
       title: Error
       type: object
       description: A standard error object.
+      x-tags:
+        - Common
       properties:
         code:
           type: string
@@ -827,8 +900,6 @@ components:
           type: string
       required:
         - code
-      x-tags:
-        - Common
     OrderProduct:
       title: OrderProduct
       type: object
@@ -1085,4 +1156,3 @@ components:
       type: http
       scheme: Bearer
       description: API key acquired on retail management page by admin.
-
