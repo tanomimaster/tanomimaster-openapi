@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.8
+  version: 0.0.9
   title: REST API for makers
   description: Main file of Maker REST API.
   license:
@@ -428,6 +428,10 @@ paths:
                   type: string
                   format: date
                   description: 納品日。指定がない場合、リクエストした日付を利用する
+                order_status:
+                  type: string
+                  enum:
+                    - cancelled
   /makers:
     get:
       summary: listMakers
@@ -1130,4 +1134,3 @@ components:
       type: http
       scheme: Bearer
       description: API key acquired on retail management page by admin.
-
