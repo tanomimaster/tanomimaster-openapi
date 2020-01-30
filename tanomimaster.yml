@@ -891,8 +891,6 @@ components:
       title: Error
       type: object
       description: A standard error object.
-      x-tags:
-        - Common
       properties:
         code:
           type: string
@@ -900,6 +898,8 @@ components:
           type: string
       required:
         - code
+      x-tags:
+        - Common
     OrderProduct:
       title: OrderProduct
       type: object
