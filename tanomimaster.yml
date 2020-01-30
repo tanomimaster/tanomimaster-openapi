@@ -344,6 +344,14 @@ paths:
       responses:
         '200':
           description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
         default:
           description: unexpected error
           content:
@@ -364,6 +372,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderProduct'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                'order_id不正, order_product_id不正':
+                  value:
+                    code: order_id
+                    message: 注文が見つかりませんでした
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         default:
           description: unexpected error
           content:
@@ -379,10 +424,10 @@ paths:
             schema:
               type: object
               properties:
-                order_staus:
+                delivery_date:
                   type: string
-                  enum:
-                    - cancelled
+                  format: date
+                  description: 納品日。指定がない場合、リクエストした日付を利用する
   /makers:
     get:
       summary: listMakers
@@ -820,6 +865,8 @@ components:
       title: Error
       type: object
       description: A standard error object.
+      x-tags:
+        - Common
       properties:
         code:
           type: string
@@ -827,8 +874,6 @@ components:
           type: string
       required:
         - code
-      x-tags:
-        - Common
     OrderProduct:
       title: OrderProduct
       type: object
