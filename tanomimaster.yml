@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.8
+  version: 0.0.9
   title: REST API for makers
   description: Main file of Maker REST API.
   license:
@@ -474,6 +474,14 @@ paths:
                     description: product code?
                     items:
                       type: string
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
         default:
           description: unexpected error
           content:
@@ -488,10 +496,15 @@ paths:
             schema:
               type: object
               properties:
-                code:
+                product_code:
                   type: array
                   items:
                     type: string
+                maker_code:
+                  type: string
+              required:
+                - product_code
+                - maker_code
       security:
         - API Key: []
     parameters: []
@@ -1085,4 +1098,3 @@ components:
       type: http
       scheme: Bearer
       description: API key acquired on retail management page by admin.
-
