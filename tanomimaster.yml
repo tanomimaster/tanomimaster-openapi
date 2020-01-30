@@ -846,6 +846,23 @@ paths:
         name: retail_sales_office_id
         in: path
         required: true
+  /retail/retail_users:
+    get:
+      summary: listRetailUsers
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetailUser'
+      operationId: get-retail-retail_users
+      description: list listRetailUser entities
+      security:
+        - API Key: []
 components:
   schemas:
     Product:
