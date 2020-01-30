@@ -258,6 +258,9 @@ paths:
                           properties:
                             code:
                               type: string
+                            branch_number:
+                              type: integer
+                              description: 明細枝番。指定しない場合、タノミマスターで自動発番
                             number_of_items:
                               type: integer
                             gas_type:
@@ -269,9 +272,6 @@ paths:
                           required:
                             - code
                             - number_of_items
-                      branch_number:
-                        type: integer
-                        description: 明細枝番。指定しない場合、タノミマスターで自動発番
                     required:
                       - maker_code
                 retail_user_code:
