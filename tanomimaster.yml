@@ -467,13 +467,16 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  result:
-                    type: array
-                    description: product code?
-                    items:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    maker_code:
                       type: string
+                    product_code:
+                      type: array
+                      items:
+                        type: string
         '400':
           description: Bad Request
         '401':
@@ -494,17 +497,19 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                product_code:
-                  type: array
-                  items:
+              type: array
+              items:
+                type: object
+                properties:
+                  maker_code:
                     type: string
-                maker_code:
-                  type: string
-              required:
-                - product_code
-                - maker_code
+                  product_code:
+                    type: array
+                    items:
+                      type: string
+            examples:
+              example-1: {}
+        description: ''
       security:
         - API Key: []
     parameters: []
@@ -833,6 +838,8 @@ components:
       title: Error
       type: object
       description: A standard error object.
+      x-tags:
+        - Common
       properties:
         code:
           type: string
@@ -840,8 +847,6 @@ components:
           type: string
       required:
         - code
-      x-tags:
-        - Common
     OrderProduct:
       title: OrderProduct
       type: object
