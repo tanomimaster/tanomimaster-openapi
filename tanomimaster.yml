@@ -168,6 +168,63 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+              examples:
+                リクエストパラメータ不正:
+                  value:
+                    code: '400'
+                    messages:
+                      - メーカーが存在しません
+                      - ガス種を入力してください
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                認証失敗:
+                  value:
+                    code: '401'
+                    message: 認証に失敗しました
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                実行権限がない(e.g. メーカーが本APIを実行した場合など):
+                  value:
+                    code: '403'
+                    message: APIを実行する権限がありません
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                注文番号重複エラー:
+                  value:
+                    code: '409'
+                    message: 注文番号190123456789はすでに存在しています
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                サーバーエラー:
+                  value:
+                    code: '500'
+                    message: 'APIサーバーでエラーが発生しました. <アプリケーションのエラーメッセージ> <発生時刻> <リクエストID>'
         default:
           description: unexpected error
           content:
@@ -185,33 +242,50 @@ paths:
               properties:
                 code:
                   type: string
+                  description: ''
                 makers:
                   type: array
+                  minItems: 1
                   items:
                     type: object
                     properties:
                       maker_code:
                         type: string
                       products:
-                        type: object
-                        properties:
-                          code:
-                            type: string
-                          number_of_items:
-                            type: integer
-                        required:
-                          - code
-                          - number_of_items
+                        type: array
+                        minItems: 1
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: string
+                            branch_number:
+                              type: integer
+                              description: 明細枝番。指定しない場合、タノミマスターで自動発番
+                            number_of_items:
+                              type: integer
+                              minimum: 1
+                            gas_type:
+                              type: string
+                              enum:
+                                - LP
+                                - 12・13A
+                              description: ガス種を選択する商品の場合、必須項目
+                          required:
+                            - code
+                            - number_of_items
                     required:
                       - maker_code
                 retail_user_code:
                   type: string
                 ordered_at:
                   type: string
-                  format: date
+                  format: date-time
+                  description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
                 desired_delivery_date:
                   type: string
                   format: date
+                  description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
               required:
                 - retail_user_code
   '/retail/orders/{order_id}':
@@ -847,6 +921,7 @@ components:
           type: string
       required:
         - code
+        - message
     OrderProduct:
       title: OrderProduct
       type: object
@@ -1098,6 +1173,20 @@ components:
       required:
         - id
         - maker_id
+    Errors:
+      title: Errors
+      type: object
+      x-examples: {}
+      properties:
+        code:
+          type: string
+        messages:
+          type: array
+          items:
+            type: string
+      required:
+        - code
+        - messages
   securitySchemes:
     API Key:
       type: http
