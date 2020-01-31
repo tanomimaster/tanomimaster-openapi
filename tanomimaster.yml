@@ -390,52 +390,73 @@ paths:
       description: show OrderProduct entities corresponding to the id
       security:
         - API Key: []
-    delete:
-      summary: cancelOrderProduct
-      tags:
-        - Orders
+    patch:
+      summary: ''
+      operationId: patch-retail-orders-order_id-order_products-order_product_id
       responses:
         '200':
           description: OK
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      operationId: delete-orders-order_id-products-order_product_id
-      description: 仕入納品をキャンセルする
-      security:
-        - API Key: []
-    post:
-      summary: ''
-      operationId: post-orders-order_id-products-order_product_id
-      responses:
-        '201':
-          description: Created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderProduct'
-        default:
-          description: unexpected error
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+              examples:
+                リクエストパラメータ不正:
+                  value:
+                    code: '400'
+                    messages:
+                      - 注文ステータスの値が不正です
+        '401':
+          description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: 仕入納品を行う
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: 仕入納品またはキャンセルを行う
       security:
         - API Key: []
+      parameters: []
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                order_staus:
+                order_status:
                   type: string
                   enum:
                     - cancelled
+            examples:
+              仕入納品する:
+                value: {}
+              キャンセルする:
+                value:
+                  order_status: cancelled
+        description: ''
   /makers:
     get:
       summary: listMakers
@@ -959,7 +980,10 @@ components:
         注文番号重複エラー:
           code: '409'
           message: 注文番号190123456789はすでに存在しています
-        サーバーエラー:
+        注文が見つからない:
+          code: '404'
+          message: 注文が見つかりませんでした
+        サーバエラー:
           code: '500'
           message: 'APIサーバーでエラーが発生しました. <アプリケーションのエラーメッセージ> <発生時刻> <リクエストID>'
     OrderProduct:
@@ -1012,6 +1036,10 @@ components:
         updated_at:
           type: string
           format: date-time
+        cancelled_at:
+          type: string
+          format: date-time
+          description: 仕入納品APIでキャンセルした場合、キャンセル日時を設定
       required:
         - id
         - orders_maker_id
@@ -1227,6 +1255,7 @@ components:
       required:
         - code
         - messages
+      description: バリデーションエラーなど複数エラーメッセージがある場合
   securitySchemes:
     API Key:
       type: http
