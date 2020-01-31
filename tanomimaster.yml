@@ -343,20 +343,6 @@ paths:
       description: list OrderProduct entities
       security:
         - API Key: []
-    post:
-      summary: ''
-      operationId: post-orders-order_id-products
-      responses:
-        '201':
-          description: Created
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      security:
-        - API Key: []
   '/retail/orders/{order_id}/order_products/{order_product_id}':
     parameters:
       - schema:
