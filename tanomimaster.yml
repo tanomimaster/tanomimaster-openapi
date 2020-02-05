@@ -1014,6 +1014,7 @@ components:
             - delivered
         delivery_date:
           type: string
+          nullable: true
           format: date
         number_of_items:
           type: integer
