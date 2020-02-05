@@ -1180,7 +1180,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         maker_id:
           type: integer
         maker_user_id:
