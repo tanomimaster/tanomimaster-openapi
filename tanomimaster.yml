@@ -1025,6 +1025,7 @@ components:
           format: date-time
         cancelled_at:
           type: string
+          nullable: true
           format: date-time
           description: 仕入納品APIでキャンセルした場合、キャンセル日時を設定
       required:
