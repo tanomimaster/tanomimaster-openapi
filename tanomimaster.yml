@@ -996,17 +996,17 @@ components:
         internal_code:
           type: string
         price_amount:
-          type: string
+          type: integer
         price_currency:
           type: string
         maker_price_for_retail_amount:
-          type: string
+          type: integer
         maker_price_for_retail_currency:
           type: string
         subtotal_excluding_tax:
-          type: string
+          type: integer
         estimated_delivery_duration:
-          type: string
+          type: integer
         shipping_status:
           type: string
           enum:
