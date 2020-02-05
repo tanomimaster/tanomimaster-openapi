@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.9
+  version: 0.0.10
   title: REST API for makers
   description: Main file of Maker REST API.
   license:
@@ -434,6 +434,7 @@ paths:
               properties:
                 order_status:
                   type: string
+                  nullable: true
                   enum:
                     - cancelled
             examples:
@@ -977,11 +978,12 @@ components:
       type: object
       x-tags:
         - Orders
+      description: ''
       properties:
         id:
-          type: integer
+          type: string
         orders_maker_id:
-          type: integer
+          type: string
         product_id:
           type: integer
         gas_type_id:
@@ -991,21 +993,21 @@ components:
         code:
           type: string
         branch_number:
-          type: string
+          type: integer
         internal_code:
           type: string
         price_amount:
-          type: string
+          type: integer
         price_currency:
           type: string
         maker_price_for_retail_amount:
-          type: string
+          type: integer
         maker_price_for_retail_currency:
           type: string
         subtotal_excluding_tax:
-          type: string
+          type: integer
         estimated_delivery_duration:
-          type: string
+          type: integer
         shipping_status:
           type: string
           enum:
@@ -1013,6 +1015,7 @@ components:
             - delivered
         delivery_date:
           type: string
+          nullable: true
           format: date
         number_of_items:
           type: integer
@@ -1024,6 +1027,7 @@ components:
           format: date-time
         cancelled_at:
           type: string
+          nullable: true
           format: date-time
           description: 仕入納品APIでキャンセルした場合、キャンセル日時を設定
       required:
@@ -1176,7 +1180,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         maker_id:
           type: integer
         maker_user_id:
