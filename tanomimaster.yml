@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.9
+  version: 0.0.10
   title: REST API for makers
   description: Main file of Maker REST API.
   license:
@@ -979,9 +979,9 @@ components:
         - Orders
       properties:
         id:
-          type: integer
+          type: string
         orders_maker_id:
-          type: integer
+          type: string
         product_id:
           type: integer
         gas_type_id:
@@ -1032,6 +1032,7 @@ components:
         - product_id
         - name
         - code
+      description: ''
     Order:
       title: Order
       type: object
