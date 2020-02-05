@@ -977,6 +977,7 @@ components:
       type: object
       x-tags:
         - Orders
+      description: ''
       properties:
         id:
           type: string
@@ -991,7 +992,7 @@ components:
         code:
           type: string
         branch_number:
-          type: string
+          type: integer
         internal_code:
           type: string
         price_amount:
@@ -1032,7 +1033,6 @@ components:
         - product_id
         - name
         - code
-      description: ''
     Order:
       title: Order
       type: object
