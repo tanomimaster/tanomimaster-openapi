@@ -608,14 +608,14 @@ paths:
               items:
                 type: object
                 properties:
-                  maker_id:
-                    type: integer
+                  maker_code:
+                    type: string
                   product_code:
                     type: array
                     items:
                       type: string
                 required:
-                  - maker_id
+                  - maker_code
                   - product_code
             examples:
               example:
