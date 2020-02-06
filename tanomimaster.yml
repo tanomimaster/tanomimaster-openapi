@@ -545,6 +545,7 @@ paths:
                           maker_price_for_retail_amount:
                             description: 商品が存在する場合、その価格を設定する. 存在しない場合はnull
                             type: integer
+                            nullable: true
                         required:
                           - code
                   required:
