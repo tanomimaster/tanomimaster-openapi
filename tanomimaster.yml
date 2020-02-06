@@ -533,8 +533,8 @@ paths:
                 items:
                   type: object
                   properties:
-                    maker_id:
-                      type: integer
+                    maker_code:
+                      type: string
                     products:
                       type: array
                       items:
@@ -542,17 +542,15 @@ paths:
                         properties:
                           code:
                             type: string
-                          maker_price_for_retail:
+                          maker_price_for_retail_amount:
                             anyOf:
-                              - {}
+                              - type: integer
+                              - type: 'null'
                             description: 商品が存在する場合、その価格を設定する. 存在しない場合はnull
-                            type:
-                              - integer
-                              - 'null'
                         required:
                           - code
                   required:
-                    - maker_id
+                    - maker_code
                     - products
               examples:
                 タノミマスターに存在するproduct_codeのみ返却する:
