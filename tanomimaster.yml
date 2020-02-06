@@ -247,12 +247,12 @@ paths:
                             number_of_items:
                               type: integer
                               minimum: 1
-                            gas_type:
-                              type: string
-                              enum:
-                                - LP
-                                - 12・13A
+                            gas_type_id:
+                              type: integer
                               description: ガス種を選択する商品の場合、必須項目
+                              enum:
+                                - '1'
+                                - '2'
                           required:
                             - code
                             - number_of_items
