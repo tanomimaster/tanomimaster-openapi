@@ -171,6 +171,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+              examples: {}
         '400':
           description: Bad Request
           content:
@@ -289,6 +290,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+              examples: {}
         default:
           description: unexpected error
           content:
@@ -707,7 +709,7 @@ paths:
                     product_code:
                       - 12-10001
                       - 12-10002
-                  - maker_code: paloma
+                  - maker_code: noritz
                     product_code:
                       - '190001'
                       - '190002'
