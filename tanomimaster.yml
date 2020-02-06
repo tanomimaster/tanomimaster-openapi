@@ -543,10 +543,8 @@ paths:
                           code:
                             type: string
                           maker_price_for_retail_amount:
-                            anyOf:
-                              - type: integer
-                              - type: 'null'
                             description: 商品が存在する場合、その価格を設定する. 存在しない場合はnull
+                            type: integer
                         required:
                           - code
                   required:
