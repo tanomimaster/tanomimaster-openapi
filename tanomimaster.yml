@@ -267,11 +267,11 @@ paths:
                   description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
               required:
                 - retail_user_code
-  '/retail/orders/{order_id}':
+  '/retail/orders/{order_code}':
     parameters:
       - schema:
-          type: integer
-        name: order_id
+          type: string
+        name: order_code
         in: path
         required: true
     get:
@@ -294,11 +294,11 @@ paths:
         - API Key: []
       operationId: showOrderById
       description: ''
-  '/retail/orders/{order_id}/order_products':
+  '/retail/orders/{order_code}/order_products':
     parameters:
       - schema:
-          type: integer
-        name: order_id
+          type: string
+        name: order_code
         in: path
         required: true
     get:
@@ -339,15 +339,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      operationId: get-orders-order_id-products
+      operationId: get-orders-order_code-products
       description: list OrderProduct entities
       security:
         - API Key: []
-  '/retail/orders/{order_id}/order_products/{order_product_id}':
+  '/retail/orders/{order_code}/order_products/{order_product_id}':
     parameters:
       - schema:
           type: string
-        name: order_id
+        name: order_code
         in: path
         required: true
       - schema:
@@ -372,13 +372,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      operationId: get-orders-order_id-products-order_product_id
+      operationId: get-orders-order_code-products-order_product_id
       description: show OrderProduct entities corresponding to the id
       security:
         - API Key: []
     patch:
       summary: ''
-      operationId: patch-retail-orders-order_id-order_products-order_product_id
+      operationId: patch-retail-orders-order_code-order_products-order_product_id
       responses:
         '200':
           description: OK
