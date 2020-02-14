@@ -106,6 +106,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - API Key: []
+      description: show product by id
     parameters:
       - schema:
           type: integer
@@ -120,7 +121,8 @@ paths:
     parameters: []
     get:
       summary: list orders
-      tags: []
+      tags:
+        - Orders
       responses:
         '200':
           description: OK
@@ -158,9 +160,9 @@ paths:
       security:
         - API Key: []
       operationId: listOrders
-      description: ''
+      description: list orders
     post:
-      summary: list orders
+      summary: post order
       operationId: createOrder
       responses:
         '201':
@@ -267,6 +269,8 @@ paths:
                   description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
               required:
                 - retail_user_code
+      tags:
+        - Orders
   '/retail/orders/{order_code}':
     parameters:
       - schema:
@@ -276,7 +280,8 @@ paths:
         required: true
     get:
       summary: show an order
-      tags: []
+      tags:
+        - Orders
       responses:
         '200':
           description: OK
@@ -293,7 +298,7 @@ paths:
       security:
         - API Key: []
       operationId: showOrderById
-      description: ''
+      description: show order by Code
   '/retail/orders/{order_code}/order_products':
     parameters:
       - schema:
@@ -343,6 +348,85 @@ paths:
       description: list OrderProduct entities
       security:
         - API Key: []
+    post:
+      summary: postOrderProduct
+      operationId: post-retail-orders-order_code-order_products
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderProduct'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: post order_product
+      tags:
+        - Orders
+      security:
+        - API Key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                maker_code:
+                  type: string
+                code:
+                  type: string
+                number_of_items:
+                  type: integer
+                branch_number:
+                  type: integer
+                shipping_postcode:
+                  type: string
+                shipping_preferecture_code:
+                  type: string
+                shipping_city:
+                  type: string
+                shipping_street_address:
+                  type: string
+                shipping_building:
+                  type: string
+                shipping_office_name:
+                  type: string
+                shipping_tel:
+                  type: string
+                gas_type:
+                  type: string
+              required:
+                - maker_code
+                - code
+                - number_of_items
   '/retail/orders/{order_code}/order_products/{order_product_id}':
     parameters:
       - schema:
@@ -433,10 +517,9 @@ paths:
               type: object
               properties:
                 order_status:
-                  type: string
-                  nullable: true
-                  enum:
-                    - cancelled
+                  oneOf:
+                    - type: string
+                    - type: 'null'
             examples:
               仕入納品する:
                 value: {}
@@ -444,6 +527,8 @@ paths:
                 value:
                   order_status: cancelled
         description: ''
+      tags:
+        - Orders
   /makers:
     get:
       summary: listMakers
@@ -520,8 +605,6 @@ paths:
   /retail/products/check_code:
     post:
       summary: checkProductExistence
-      tags:
-        - Orders
       responses:
         '200':
           description: OK
@@ -544,8 +627,9 @@ paths:
                             type: string
                           maker_price_for_retail_amount:
                             description: 商品が存在する場合、その価格を設定する. 存在しない場合はnull
-                            type: integer
-                            nullable: true
+                            anyOf:
+                              - type: integer
+                              - type: 'null'
                         required:
                           - code
                   required:
@@ -630,6 +714,8 @@ paths:
         description: ''
       security:
         - API Key: []
+      tags:
+        - products
     parameters: []
   /categories:
     get:
@@ -683,6 +769,7 @@ paths:
       security:
         - API Key: []
       operationId: listCategories
+      description: list categories
     parameters: []
   '/categories/{category_id}':
     parameters:
@@ -693,7 +780,8 @@ paths:
         required: true
     get:
       summary: show the category
-      tags: []
+      tags:
+        - Common
       responses:
         '200':
           description: OK
@@ -708,7 +796,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       operationId: get-category-category_id
-      description: ''
+      description: show the category
   '/retail/retail_branches/{retail_branch_id}':
     get:
       summary: showRetailBranch
@@ -858,7 +946,8 @@ paths:
   /retail/retail_users:
     get:
       summary: listRetailUsers
-      tags: []
+      tags:
+        - RetailUsers
       responses:
         '200':
           description: OK
@@ -872,6 +961,109 @@ paths:
       description: list listRetailUser entities
       security:
         - API Key: []
+  /retail/orders/batch:
+    post:
+      summary: Bulk create orders
+      operationId: post-retai-orders-batch
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: '#/components/schemas/Order'
+                    - $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: bulk create orders
+      security:
+        - API Key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              minItems: 1
+              items:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  makers:
+                    type: array
+                    minItems: 1
+                    items:
+                      type: object
+                      properties:
+                        maker_code:
+                          type: string
+                        products:
+                          type: array
+                          description: ''
+                          minItems: 1
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                              branch_number:
+                                type: integer
+                                description: 明細枝番。指定しない場合、タノミマスターで自動発番
+                              number_of_items:
+                                type: integer
+                                minimum: 1
+                              gas_type:
+                                type: string
+                                enum:
+                                  - LP
+                                  - 12・13A
+                                description: ガス種を選択する商品の場合、必須項目
+                            required:
+                              - code
+                              - number_of_items
+                      required:
+                        - maker_code
+                  retail_user_code:
+                    type: string
+                  ordered_at:
+                    type: string
+                    format: date-time
+                    description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
+                  desired_delivery_date:
+                    type: string
+                    description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
+                required:
+                  - retail_user_code
+      tags:
+        - Orders
+    parameters: []
 components:
   schemas:
     Product:
@@ -1013,7 +1205,9 @@ components:
         product_id:
           type: integer
         gas_type_id:
-          type: integer
+          oneOf:
+            - type: integer
+            - type: 'null'
         name:
           type: string
         code:
@@ -1041,7 +1235,6 @@ components:
             - delivered
         delivery_date:
           type: string
-          nullable: true
           format: date
         number_of_items:
           type: integer
@@ -1053,9 +1246,8 @@ components:
           format: date-time
         cancelled_at:
           type: string
-          nullable: true
-          format: date-time
           description: 仕入納品APIでキャンセルした場合、キャンセル日時を設定
+          format: date-time
       required:
         - id
         - orders_maker_id
