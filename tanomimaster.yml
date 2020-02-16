@@ -220,56 +220,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                code:
-                  type: string
-                  description: ''
-                makers:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      maker_code:
-                        type: string
-                      products:
-                        type: array
-                        minItems: 1
-                        items:
-                          type: object
-                          properties:
-                            code:
-                              type: string
-                            branch_number:
-                              type: integer
-                              description: 明細枝番。指定しない場合、タノミマスターで自動発番
-                            number_of_items:
-                              type: integer
-                              minimum: 1
-                            gas_type_id:
-                              type: integer
-                              description: ガス種を選択する商品の場合、必須項目
-                              enum:
-                                - '1'
-                                - '2'
-                          required:
-                            - code
-                            - number_of_items
-                    required:
-                      - maker_code
-                retail_user_code:
-                  type: string
-                ordered_at:
-                  type: string
-                  format: date-time
-                  description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
-                desired_delivery_date:
-                  type: string
-                  format: date
-                  description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
-              required:
-                - retail_user_code
+              $ref: '#/components/schemas/OrderForCreate'
       tags:
         - Orders
   '/retail/orders/{order_code}':
@@ -1063,55 +1014,7 @@ paths:
               type: array
               minItems: 1
               items:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  makers:
-                    type: array
-                    minItems: 1
-                    items:
-                      type: object
-                      properties:
-                        maker_code:
-                          type: string
-                        products:
-                          type: array
-                          description: ''
-                          minItems: 1
-                          items:
-                            type: object
-                            properties:
-                              code:
-                                type: string
-                              branch_number:
-                                type: integer
-                                description: 明細枝番。指定しない場合、タノミマスターで自動発番
-                              number_of_items:
-                                type: integer
-                                minimum: 1
-                              gas_type:
-                                type: string
-                                enum:
-                                  - LP
-                                  - 12・13A
-                                description: ガス種を選択する商品の場合、必須項目
-                            required:
-                              - code
-                              - number_of_items
-                      required:
-                        - maker_code
-                  retail_user_code:
-                    type: string
-                  ordered_at:
-                    type: string
-                    format: date-time
-                    description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
-                  desired_delivery_date:
-                    type: string
-                    description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
-                required:
-                  - retail_user_code
+                $ref: '#/components/schemas/OrderForCreate'
       tags:
         - Orders
     parameters: []
@@ -1515,6 +1418,46 @@ components:
         - code
         - messages
       description: バリデーションエラーなど複数エラーメッセージがある場合
+    OrderForCreate:
+      title: OrderForCreate
+      type: object
+      properties:
+        makers:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            properties:
+              maker_code:
+                type: string
+              products:
+                type: array
+                minItems: 1
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    branch_number:
+                      type: integer
+                      description: 明細枝番。指定しない場合、タノミマスターで自動発番
+                    number_of_items:
+                      type: integer
+                      minimum: 1
+                    gas_type_id:
+                      type: integer
+                      description: ガス種を選択する商品の場合、必須項目
+                      enum:
+                        - '1'
+                        - '2'
+                  required:
+                    - code
+                    - number_of_items
+            required:
+              - maker_code
+        code:
+          type: string
+          description: ''
   securitySchemes:
     API Key:
       type: http
