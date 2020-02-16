@@ -213,7 +213,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: createOrder
+      description: Create an order
       security:
         - API Key: []
       requestBody:
@@ -340,6 +340,30 @@ paths:
             X-Total-Pages:
               schema:
                 type: integer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         default:
           description: unexpected error
           content:
@@ -629,23 +653,48 @@ paths:
                             type: string
                           maker_price_for_retail_amount:
                             description: 商品が存在する場合、その価格を設定する. 存在しない場合はnull
-                            anyOf:
-                              - type: integer
-                              - type: 'null'
+                            oneOf:
+                              - {}
+                            type:
+                              - integer
+                              - 'null'
+                          maker_price_for_retail_currency:
+                            oneOf:
+                              - {}
+                            type:
+                              - string
+                              - 'null'
+                          is_available:
+                            type: boolean
+                            description: The product is on sale or not
                         required:
                           - code
                   required:
                     - maker_code
                     - products
               examples:
-                タノミマスターに存在するproduct_codeのみ返却する:
+                normal response. returns availability and price.:
                   value:
                     - maker_code: rinnai
-                      product_code:
-                        - 12-10002
+                      products:
+                        - code: 12-10002
+                          maker_price_for_retail_amount: 10000
+                          maker_price_for_retail_currency: JPY
+                          is_available: true
+                        - code: 12-10003
+                          maker_price_for_retail_amount: null
+                          maker_price_for_retail_currency: null
+                          is_available: true
                     - maker_code: paloma
-                      product_code:
-                        - '190001'
+                      products:
+                        - code: '10002'
+                          maker_price_for_retail_amount: 10000
+                          maker_price_for_retail_currency: JPY
+                          is_available: false
+                        - code: '10003'
+                          maker_price_for_retail_amount: null
+                          maker_price_for_retail_currency: null
+                          is_available: false
         '400':
           description: Bad Request
           content:
