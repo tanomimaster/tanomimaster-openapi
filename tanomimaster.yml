@@ -605,16 +605,12 @@ paths:
                           maker_price_for_retail_amount:
                             description: 商品が存在する場合、その価格を設定する. 存在しない場合はnull
                             oneOf:
-                              - {}
-                            type:
-                              - integer
-                              - 'null'
+                              - type: integer
+                              - type: 'null'
                           maker_price_for_retail_currency:
                             oneOf:
-                              - {}
-                            type:
-                              - string
-                              - 'null'
+                              - type: string
+                              - type: 'null'
                           is_available:
                             type: boolean
                             description: The product is on sale or not
@@ -1200,6 +1196,7 @@ components:
           format: date-time
         cancelled_at:
           type: string
+          nullable: true
           description: 仕入納品APIでキャンセルした場合、キャンセル日時を設定
           format: date-time
       required:
@@ -1421,7 +1418,13 @@ components:
     OrderForCreate:
       title: OrderForCreate
       type: object
+      description: ''
+      x-tags:
+        - Orders
       properties:
+        code:
+          type: string
+          description: ''
         makers:
           type: array
           minItems: 1
