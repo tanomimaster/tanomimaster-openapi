@@ -398,8 +398,11 @@ paths:
                   type: string
                 shipping_tel:
                   type: string
-                gas_type:
-                  type: string
+                gas_type_id:
+                  description: ガス種を選択する商品の場合、必須項目
+                  oneOf:
+                    - type: integer
+                    - type: 'null'
               required:
                 - maker_code
                 - code
@@ -1155,6 +1158,7 @@ components:
         product_id:
           type: integer
         gas_type_id:
+          description: ガス種を選択する商品の場合、必須項目
           oneOf:
             - type: integer
             - type: 'null'
@@ -1448,11 +1452,10 @@ components:
                       type: integer
                       minimum: 1
                     gas_type_id:
-                      type: integer
                       description: ガス種を選択する商品の場合、必須項目
-                      enum:
-                        - '1'
-                        - '2'
+                      oneOf:
+                        - type: integer
+                        - type: 'null'
                   required:
                     - code
                     - number_of_items
