@@ -1456,11 +1456,39 @@ components:
                   required:
                     - code
                     - number_of_items
+              code:
+                type: string
+                description: order code per maker
+              shipping_postcode:
+                type: string
+              shipping_city:
+                type: string
+              shipping_street_address:
+                type: string
+              shipping_building:
+                type: string
+              shipping_office_name:
+                type: string
+              shipping_tel:
+                type: string
+              memo:
+                type: string
             required:
               - maker_code
-        code:
+        retail_user_code:
           type: string
-          description: ''
+        ordered_at:
+          type: string
+          format: date-time
+          description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
+        desired_delivery_date:
+          type: string
+          format: date
+          description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
+        retail_sales_office_code:
+          type: string
+      required:
+        - retail_user_code
   securitySchemes:
     API Key:
       type: http
