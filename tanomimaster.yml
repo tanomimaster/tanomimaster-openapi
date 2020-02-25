@@ -171,6 +171,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+              examples: {}
         '400':
           description: Bad Request
           content:
@@ -212,63 +213,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: createOrder
+      description: Create an order
       security:
         - API Key: []
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                code:
-                  type: string
-                  description: ''
-                makers:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      maker_code:
-                        type: string
-                      products:
-                        type: array
-                        minItems: 1
-                        items:
-                          type: object
-                          properties:
-                            code:
-                              type: string
-                            branch_number:
-                              type: integer
-                              description: 明細枝番。指定しない場合、タノミマスターで自動発番
-                            number_of_items:
-                              type: integer
-                              minimum: 1
-                            gas_type:
-                              type: string
-                              enum:
-                                - LP
-                                - 12・13A
-                              description: ガス種を選択する商品の場合、必須項目
-                          required:
-                            - code
-                            - number_of_items
-                    required:
-                      - maker_code
-                retail_user_code:
-                  type: string
-                ordered_at:
-                  type: string
-                  format: date-time
-                  description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
-                desired_delivery_date:
-                  type: string
-                  format: date
-                  description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
-              required:
-                - retail_user_code
+              $ref: '#/components/schemas/OrderForCreate'
       tags:
         - Orders
   '/retail/orders/{order_code}':
@@ -289,6 +241,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+              examples: {}
         default:
           description: unexpected error
           content:
@@ -338,6 +291,30 @@ paths:
             X-Total-Pages:
               schema:
                 type: integer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         default:
           description: unexpected error
           content:
@@ -421,8 +398,11 @@ paths:
                   type: string
                 shipping_tel:
                   type: string
-                gas_type:
-                  type: string
+                gas_type_id:
+                  description: ガス種を選択する商品の場合、必須項目
+                  oneOf:
+                    - type: integer
+                    - type: 'null'
               required:
                 - maker_code
                 - code
@@ -627,23 +607,44 @@ paths:
                             type: string
                           maker_price_for_retail_amount:
                             description: 商品が存在する場合、その価格を設定する. 存在しない場合はnull
-                            anyOf:
+                            oneOf:
                               - type: integer
                               - type: 'null'
+                          maker_price_for_retail_currency:
+                            oneOf:
+                              - type: string
+                              - type: 'null'
+                          is_available:
+                            type: boolean
+                            description: The product is on sale or not
                         required:
                           - code
                   required:
                     - maker_code
                     - products
               examples:
-                タノミマスターに存在するproduct_codeのみ返却する:
+                normal response. returns availability and price.:
                   value:
                     - maker_code: rinnai
-                      product_code:
-                        - 12-10002
+                      products:
+                        - code: 12-10002
+                          maker_price_for_retail_amount: 10000
+                          maker_price_for_retail_currency: JPY
+                          is_available: true
+                        - code: 12-10003
+                          maker_price_for_retail_amount: null
+                          maker_price_for_retail_currency: null
+                          is_available: true
                     - maker_code: paloma
-                      product_code:
-                        - '190001'
+                      products:
+                        - code: '10002'
+                          maker_price_for_retail_amount: 10000
+                          maker_price_for_retail_currency: JPY
+                          is_available: false
+                        - code: '10003'
+                          maker_price_for_retail_amount: null
+                          maker_price_for_retail_currency: null
+                          is_available: false
         '400':
           description: Bad Request
           content:
@@ -707,7 +708,7 @@ paths:
                     product_code:
                       - 12-10001
                       - 12-10002
-                  - maker_code: paloma
+                  - maker_code: noritz
                     product_code:
                       - '190001'
                       - '190002'
@@ -1012,55 +1013,7 @@ paths:
               type: array
               minItems: 1
               items:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  makers:
-                    type: array
-                    minItems: 1
-                    items:
-                      type: object
-                      properties:
-                        maker_code:
-                          type: string
-                        products:
-                          type: array
-                          description: ''
-                          minItems: 1
-                          items:
-                            type: object
-                            properties:
-                              code:
-                                type: string
-                              branch_number:
-                                type: integer
-                                description: 明細枝番。指定しない場合、タノミマスターで自動発番
-                              number_of_items:
-                                type: integer
-                                minimum: 1
-                              gas_type:
-                                type: string
-                                enum:
-                                  - LP
-                                  - 12・13A
-                                description: ガス種を選択する商品の場合、必須項目
-                            required:
-                              - code
-                              - number_of_items
-                      required:
-                        - maker_code
-                  retail_user_code:
-                    type: string
-                  ordered_at:
-                    type: string
-                    format: date-time
-                    description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
-                  desired_delivery_date:
-                    type: string
-                    description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
-                required:
-                  - retail_user_code
+                $ref: '#/components/schemas/OrderForCreate'
       tags:
         - Orders
     parameters: []
@@ -1205,6 +1158,7 @@ components:
         product_id:
           type: integer
         gas_type_id:
+          description: ガス種を選択する商品の場合、必須項目
           oneOf:
             - type: integer
             - type: 'null'
@@ -1246,6 +1200,7 @@ components:
           format: date-time
         cancelled_at:
           type: string
+          nullable: true
           description: 仕入納品APIでキャンセルした場合、キャンセル日時を設定
           format: date-time
       required:
@@ -1464,6 +1419,79 @@ components:
         - code
         - messages
       description: バリデーションエラーなど複数エラーメッセージがある場合
+    OrderForCreate:
+      title: OrderForCreate
+      type: object
+      description: ''
+      x-tags:
+        - Orders
+      properties:
+        code:
+          type: string
+          description: ''
+        makers:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            properties:
+              maker_code:
+                type: string
+              products:
+                type: array
+                minItems: 1
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    branch_number:
+                      type: integer
+                      description: 明細枝番。指定しない場合、タノミマスターで自動発番
+                    number_of_items:
+                      type: integer
+                      minimum: 1
+                    gas_type_id:
+                      description: ガス種を選択する商品の場合、必須項目
+                      oneOf:
+                        - type: integer
+                        - type: 'null'
+                  required:
+                    - code
+                    - number_of_items
+              code:
+                type: string
+                description: order code per maker
+              shipping_postcode:
+                type: string
+              shipping_city:
+                type: string
+              shipping_street_address:
+                type: string
+              shipping_building:
+                type: string
+              shipping_office_name:
+                type: string
+              shipping_tel:
+                type: string
+              memo:
+                type: string
+            required:
+              - maker_code
+        retail_user_code:
+          type: string
+        ordered_at:
+          type: string
+          format: date-time
+          description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
+        desired_delivery_date:
+          type: string
+          format: date
+          description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
+        retail_sales_office_code:
+          type: string
+      required:
+        - retail_user_code
   securitySchemes:
     API Key:
       type: http
