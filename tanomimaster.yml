@@ -403,6 +403,8 @@ paths:
                   oneOf:
                     - type: integer
                     - type: 'null'
+                memo:
+                  type: string
               required:
                 - maker_code
                 - code
@@ -1462,26 +1464,26 @@ components:
                       oneOf:
                         - type: integer
                         - type: 'null'
+                    shipping_postcode:
+                      type: string
+                    shipping_city:
+                      type: string
+                    shipping_street_address:
+                      type: string
+                    shipping_building:
+                      type: string
+                    shipping_office_name:
+                      type: string
+                    shipping_tel:
+                      type: string
+                    memo:
+                      type: string
                   required:
                     - code
                     - number_of_items
               code:
                 type: string
                 description: order code per maker
-              shipping_postcode:
-                type: string
-              shipping_city:
-                type: string
-              shipping_street_address:
-                type: string
-              shipping_building:
-                type: string
-              shipping_office_name:
-                type: string
-              shipping_tel:
-                type: string
-              memo:
-                type: string
             required:
               - maker_code
         retail_user_code:
