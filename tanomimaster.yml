@@ -403,6 +403,8 @@ paths:
                   oneOf:
                     - type: integer
                     - type: 'null'
+                memo:
+                  type: string
               required:
                 - maker_code
                 - code
@@ -486,7 +488,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: 仕入納品またはキャンセルを行う
+      description: 仕入納品または枝番納品キャンセル、枝番注文キャンセルを行う
       security:
         - API Key: []
       parameters: []
@@ -497,13 +499,19 @@ paths:
               type: object
               properties:
                 order_status:
-                  oneOf:
-                    - type: string
-                    - type: 'null'
+                  type: string
+                  enum:
+                    - delivered
+                    - undelivered
+                    - cancelled
             examples:
-              仕入納品する:
-                value: {}
-              キャンセルする:
+              仕入納品:
+                value:
+                  order_status: delivered
+              枝番納品キャンセル:
+                value:
+                  order_status: undelivered
+              枝番注文キャンセル:
                 value:
                   order_status: cancelled
         description: ''
@@ -1456,26 +1464,26 @@ components:
                       oneOf:
                         - type: integer
                         - type: 'null'
+                    shipping_postcode:
+                      type: string
+                    shipping_city:
+                      type: string
+                    shipping_street_address:
+                      type: string
+                    shipping_building:
+                      type: string
+                    shipping_office_name:
+                      type: string
+                    shipping_tel:
+                      type: string
+                    memo:
+                      type: string
                   required:
                     - code
                     - number_of_items
               code:
                 type: string
                 description: order code per maker
-              shipping_postcode:
-                type: string
-              shipping_city:
-                type: string
-              shipping_street_address:
-                type: string
-              shipping_building:
-                type: string
-              shipping_office_name:
-                type: string
-              shipping_tel:
-                type: string
-              memo:
-                type: string
             required:
               - maker_code
         retail_user_code:
