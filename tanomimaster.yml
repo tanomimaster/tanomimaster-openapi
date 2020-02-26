@@ -486,7 +486,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: 仕入納品またはキャンセルを行う
+      description: 仕入納品または枝番納品キャンセル、枝番注文キャンセルを行う
       security:
         - API Key: []
       parameters: []
@@ -497,13 +497,19 @@ paths:
               type: object
               properties:
                 order_status:
-                  oneOf:
-                    - type: string
-                    - type: 'null'
+                  type: string
+                  enum:
+                    - delivered
+                    - undelivered
+                    - cancelled
             examples:
-              仕入納品する:
-                value: {}
-              キャンセルする:
+              仕入納品:
+                value:
+                  order_status: delivered
+              枝番納品キャンセル:
+                value:
+                  order_status: undelivered
+              枝番注文キャンセル:
                 value:
                   order_status: cancelled
         description: ''
