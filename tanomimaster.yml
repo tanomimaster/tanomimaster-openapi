@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.9
+  version: 0.0.10
   title: REST API for makers
   description: Main file of Maker REST API.
   license:
@@ -106,6 +106,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - API Key: []
+      description: show product by id
     parameters:
       - schema:
           type: integer
@@ -120,7 +121,8 @@ paths:
     parameters: []
     get:
       summary: list orders
-      tags: []
+      tags:
+        - Orders
       responses:
         '200':
           description: OK
@@ -158,9 +160,9 @@ paths:
       security:
         - API Key: []
       operationId: listOrders
-      description: ''
+      description: list orders
     post:
-      summary: list orders
+      summary: post order
       operationId: createOrder
       responses:
         '201':
@@ -169,6 +171,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+              examples: {}
         '400':
           description: Bad Request
           content:
@@ -210,73 +213,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: createOrder
+      description: Create an order
       security:
         - API Key: []
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                code:
-                  type: string
-                  description: ''
-                makers:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      maker_code:
-                        type: string
-                      products:
-                        type: array
-                        minItems: 1
-                        items:
-                          type: object
-                          properties:
-                            code:
-                              type: string
-                            branch_number:
-                              type: integer
-                              description: 明細枝番。指定しない場合、タノミマスターで自動発番
-                            number_of_items:
-                              type: integer
-                              minimum: 1
-                            gas_type:
-                              type: string
-                              enum:
-                                - LP
-                                - 12・13A
-                              description: ガス種を選択する商品の場合、必須項目
-                          required:
-                            - code
-                            - number_of_items
-                    required:
-                      - maker_code
-                retail_user_code:
-                  type: string
-                ordered_at:
-                  type: string
-                  format: date-time
-                  description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
-                desired_delivery_date:
-                  type: string
-                  format: date
-                  description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
-              required:
-                - retail_user_code
-  '/retail/orders/{order_id}':
+              $ref: '#/components/schemas/OrderForCreate'
+      tags:
+        - Orders
+  '/retail/orders/{order_code}':
     parameters:
       - schema:
-          type: integer
-        name: order_id
+          type: string
+        name: order_code
         in: path
         required: true
     get:
       summary: show an order
-      tags: []
+      tags:
+        - Orders
       responses:
         '200':
           description: OK
@@ -284,6 +241,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+              examples: {}
         default:
           description: unexpected error
           content:
@@ -293,12 +251,12 @@ paths:
       security:
         - API Key: []
       operationId: showOrderById
-      description: ''
-  '/retail/orders/{order_id}/order_products':
+      description: show order by Code
+  '/retail/orders/{order_code}/order_products':
     parameters:
       - schema:
-          type: integer
-        name: order_id
+          type: string
+        name: order_code
         in: path
         required: true
     get:
@@ -333,21 +291,129 @@ paths:
             X-Total-Pages:
               schema:
                 type: integer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         default:
           description: unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      operationId: get-orders-order_id-products
+      operationId: get-orders-order_code-products
       description: list OrderProduct entities
       security:
         - API Key: []
-  '/retail/orders/{order_id}/order_products/{order_product_id}':
+    post:
+      summary: postOrderProduct
+      operationId: post-retail-orders-order_code-order_products
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderProduct'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: post order_product
+      tags:
+        - Orders
+      security:
+        - API Key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                maker_code:
+                  type: string
+                code:
+                  type: string
+                number_of_items:
+                  type: integer
+                branch_number:
+                  type: integer
+                shipping_postcode:
+                  type: string
+                shipping_preferecture_code:
+                  type: string
+                shipping_city:
+                  type: string
+                shipping_street_address:
+                  type: string
+                shipping_building:
+                  type: string
+                shipping_office_name:
+                  type: string
+                shipping_tel:
+                  type: string
+                gas_type_id:
+                  description: ガス種を選択する商品の場合、必須項目
+                  oneOf:
+                    - type: integer
+                    - type: 'null'
+                memo:
+                  type: string
+              required:
+                - maker_code
+                - code
+                - number_of_items
+  '/retail/orders/{order_code}/order_products/{order_product_id}':
     parameters:
       - schema:
           type: string
-        name: order_id
+        name: order_code
         in: path
         required: true
       - schema:
@@ -372,13 +438,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      operationId: get-orders-order_id-products-order_product_id
+      operationId: get-orders-order_code-products-order_product_id
       description: show OrderProduct entities corresponding to the id
       security:
         - API Key: []
     patch:
       summary: ''
-      operationId: patch-retail-orders-order_id-order_products-order_product_id
+      operationId: patch-retail-orders-order_code-order_products-order_product_id
       responses:
         '200':
           description: OK
@@ -422,7 +488,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: 仕入納品またはキャンセルを行う
+      description: 仕入納品または枝番納品キャンセル、枝番注文キャンセルを行う
       security:
         - API Key: []
       parameters: []
@@ -435,14 +501,22 @@ paths:
                 order_status:
                   type: string
                   enum:
+                    - delivered
+                    - undelivered
                     - cancelled
             examples:
-              仕入納品する:
-                value: {}
-              キャンセルする:
+              仕入納品:
+                value:
+                  order_status: delivered
+              枝番納品キャンセル:
+                value:
+                  order_status: undelivered
+              枝番注文キャンセル:
                 value:
                   order_status: cancelled
         description: ''
+      tags:
+        - Orders
   /makers:
     get:
       summary: listMakers
@@ -519,8 +593,6 @@ paths:
   /retail/products/check_code:
     post:
       summary: checkProductExistence
-      tags:
-        - Orders
       responses:
         '200':
           description: OK
@@ -534,22 +606,53 @@ paths:
                   properties:
                     maker_code:
                       type: string
-                    product_code:
+                    products:
                       type: array
                       items:
-                        type: string
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                          maker_price_for_retail_amount:
+                            description: 商品が存在する場合、その価格を設定する. 存在しない場合はnull
+                            oneOf:
+                              - type: integer
+                              - type: 'null'
+                          maker_price_for_retail_currency:
+                            oneOf:
+                              - type: string
+                              - type: 'null'
+                          is_available:
+                            type: boolean
+                            description: The product is on sale or not
+                        required:
+                          - code
                   required:
                     - maker_code
-                    - product_code
+                    - products
               examples:
-                タノミマスターに存在するproduct_codeのみ返却する:
+                normal response. returns availability and price.:
                   value:
                     - maker_code: rinnai
-                      product_code:
-                        - 12-10002
+                      products:
+                        - code: 12-10002
+                          maker_price_for_retail_amount: 10000
+                          maker_price_for_retail_currency: JPY
+                          is_available: true
+                        - code: 12-10003
+                          maker_price_for_retail_amount: null
+                          maker_price_for_retail_currency: null
+                          is_available: true
                     - maker_code: paloma
-                      product_code:
-                        - '190001'
+                      products:
+                        - code: '10002'
+                          maker_price_for_retail_amount: 10000
+                          maker_price_for_retail_currency: JPY
+                          is_available: false
+                        - code: '10003'
+                          maker_price_for_retail_amount: null
+                          maker_price_for_retail_currency: null
+                          is_available: false
         '400':
           description: Bad Request
           content:
@@ -613,13 +716,15 @@ paths:
                     product_code:
                       - 12-10001
                       - 12-10002
-                  - maker_code: paloma
+                  - maker_code: noritz
                     product_code:
                       - '190001'
                       - '190002'
         description: ''
       security:
         - API Key: []
+      tags:
+        - products
     parameters: []
   /categories:
     get:
@@ -673,6 +778,7 @@ paths:
       security:
         - API Key: []
       operationId: listCategories
+      description: list categories
     parameters: []
   '/categories/{category_id}':
     parameters:
@@ -683,7 +789,8 @@ paths:
         required: true
     get:
       summary: show the category
-      tags: []
+      tags:
+        - Common
       responses:
         '200':
           description: OK
@@ -698,7 +805,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       operationId: get-category-category_id
-      description: ''
+      description: show the category
   '/retail/retail_branches/{retail_branch_id}':
     get:
       summary: showRetailBranch
@@ -845,6 +952,79 @@ paths:
         name: retail_sales_office_id
         in: path
         required: true
+  /retail/retail_users:
+    get:
+      summary: listRetailUsers
+      tags:
+        - RetailUsers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetailUser'
+      operationId: get-retail-retail_users
+      description: list listRetailUser entities
+      security:
+        - API Key: []
+  /retail/orders/batch:
+    post:
+      summary: Bulk create orders
+      operationId: post-retai-orders-batch
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: '#/components/schemas/Order'
+                    - $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: bulk create orders
+      security:
+        - API Key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/OrderForCreate'
+      tags:
+        - Orders
+    parameters: []
 components:
   schemas:
     Product:
@@ -977,35 +1157,39 @@ components:
       type: object
       x-tags:
         - Orders
+      description: ''
       properties:
         id:
-          type: integer
+          type: string
         orders_maker_id:
-          type: integer
+          type: string
         product_id:
           type: integer
         gas_type_id:
-          type: integer
+          description: ガス種を選択する商品の場合、必須項目
+          oneOf:
+            - type: integer
+            - type: 'null'
         name:
           type: string
         code:
           type: string
         branch_number:
-          type: string
+          type: integer
         internal_code:
           type: string
         price_amount:
-          type: string
+          type: integer
         price_currency:
           type: string
         maker_price_for_retail_amount:
-          type: string
+          type: integer
         maker_price_for_retail_currency:
           type: string
         subtotal_excluding_tax:
-          type: string
+          type: integer
         estimated_delivery_duration:
-          type: string
+          type: integer
         shipping_status:
           type: string
           enum:
@@ -1024,8 +1208,9 @@ components:
           format: date-time
         cancelled_at:
           type: string
-          format: date-time
+          nullable: true
           description: 仕入納品APIでキャンセルした場合、キャンセル日時を設定
+          format: date-time
       required:
         - id
         - orders_maker_id
@@ -1176,7 +1361,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         maker_id:
           type: integer
         maker_user_id:
@@ -1242,6 +1427,79 @@ components:
         - code
         - messages
       description: バリデーションエラーなど複数エラーメッセージがある場合
+    OrderForCreate:
+      title: OrderForCreate
+      type: object
+      description: ''
+      x-tags:
+        - Orders
+      properties:
+        code:
+          type: string
+          description: ''
+        makers:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            properties:
+              maker_code:
+                type: string
+              products:
+                type: array
+                minItems: 1
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                    branch_number:
+                      type: integer
+                      description: 明細枝番。指定しない場合、タノミマスターで自動発番
+                    number_of_items:
+                      type: integer
+                      minimum: 1
+                    gas_type_id:
+                      description: ガス種を選択する商品の場合、必須項目
+                      oneOf:
+                        - type: integer
+                        - type: 'null'
+                    shipping_postcode:
+                      type: string
+                    shipping_city:
+                      type: string
+                    shipping_street_address:
+                      type: string
+                    shipping_building:
+                      type: string
+                    shipping_office_name:
+                      type: string
+                    shipping_tel:
+                      type: string
+                    memo:
+                      type: string
+                  required:
+                    - code
+                    - number_of_items
+              code:
+                type: string
+                description: order code per maker
+            required:
+              - maker_code
+        retail_user_code:
+          type: string
+        ordered_at:
+          type: string
+          format: date-time
+          description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
+        desired_delivery_date:
+          type: string
+          format: date
+          description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
+        retail_sales_office_code:
+          type: string
+      required:
+        - retail_user_code
   securitySchemes:
     API Key:
       type: http
