@@ -409,7 +409,7 @@ paths:
                 - maker_code
                 - code
                 - number_of_items
-  '/retail/orders/{order_code}/order_products/{order_product_code}':
+  '/retail/orders/{order_code}/order_products/{branch_number}':
     parameters:
       - schema:
           type: string
@@ -418,7 +418,7 @@ paths:
         required: true
       - schema:
           type: string
-        name: order_product_code
+        name: branch_number
         in: path
         required: true
     get:
@@ -1217,6 +1217,7 @@ components:
         - product_id
         - name
         - code
+        - branch_number
     Order:
       title: Order
       type: object
