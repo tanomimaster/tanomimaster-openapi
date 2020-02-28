@@ -221,6 +221,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/OrderForCreate'
+            examples: {}
       tags:
         - Orders
   '/retail/orders/{order_code}':
@@ -1174,6 +1175,14 @@ components:
           type: string
         code:
           type: string
+        retail_user_code:
+          type: string
+        desired_delivery_date:
+          type: string
+          format: date
+          description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
+        retail_sales_office_code:
+          type: string
         branch_number:
           type: integer
         internal_code:
@@ -1464,6 +1473,14 @@ components:
                       oneOf:
                         - type: integer
                         - type: 'null'
+                    retail_user_code:
+                      type: string
+                    desired_delivery_date:
+                      type: string
+                      format: date
+                      description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
+                    retail_sales_office_code:
+                      type: string
                     shipping_postcode:
                       type: string
                     shipping_city:
@@ -1481,25 +1498,16 @@ components:
                   required:
                     - code
                     - number_of_items
+                    - retail_user_code
               code:
                 type: string
                 description: order code per maker
             required:
               - maker_code
-        retail_user_code:
-          type: string
         ordered_at:
           type: string
           format: date-time
           description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
-        desired_delivery_date:
-          type: string
-          format: date
-          description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
-        retail_sales_office_code:
-          type: string
-      required:
-        - retail_user_code
   securitySchemes:
     API Key:
       type: http
