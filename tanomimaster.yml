@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.10
+  version: 0.0.11
   title: REST API for makers
   description: Main file of Maker REST API.
   license:
@@ -10,11 +10,11 @@ info:
     url: 'https://tanomimaster.freshdesk.com/support/tickets/new'
     email: support@tanomimaster.freshdesk.com
 servers:
-  - url: 'https://develop.tanomimaster.minedia.com/api/v1'
+  - url: 'https://development.tanomimaster.com/api/v1'
     description: Development
-  - url: 'https://staging.tanomimaster.minedia.com/api/v1'
+  - url: 'https://staging.tanomimaster.com/api/v1'
     description: Staging
-  - url: 'https://tanomimaster.minedia.com/api/v1'
+  - url: 'https://tanomimaster.com/api/v1'
     description: Production
 paths:
   /retail/products:
