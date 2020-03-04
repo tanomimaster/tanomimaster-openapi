@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.10
+  version: 0.0.11
   title: REST API for makers
   description: Main file of Maker REST API.
   license:
@@ -10,11 +10,11 @@ info:
     url: 'https://tanomimaster.freshdesk.com/support/tickets/new'
     email: support@tanomimaster.freshdesk.com
 servers:
-  - url: 'https://develop.tanomimaster.minedia.com/api/v1'
+  - url: 'https://development.tanomimaster.com/api/v1'
     description: Development
-  - url: 'https://staging.tanomimaster.minedia.com/api/v1'
+  - url: 'https://staging.tanomimaster.com/api/v1'
     description: Staging
-  - url: 'https://tanomimaster.minedia.com/api/v1'
+  - url: 'https://tanomimaster.com/api/v1'
     description: Production
 paths:
   /retail/products:
@@ -65,9 +65,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Product'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
         default:
           description: unexpected error
           content:
@@ -129,9 +132,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Order'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
           headers:
             X-Next-Page:
               schema:
@@ -221,6 +227,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/OrderForCreate'
+            examples: {}
       tags:
         - Orders
   '/retail/orders/{order_code}':
@@ -269,9 +276,10 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/OrderProduct'
+                type: object
+                properties:
+                  items:
+                    $ref: '#/components/schemas/OrderProduct'
           headers:
             X-Next-Page:
               schema:
@@ -409,7 +417,7 @@ paths:
                 - maker_code
                 - code
                 - number_of_items
-  '/retail/orders/{order_code}/order_products/{order_product_id}':
+  '/retail/orders/{order_code}/order_products/{branch_number}':
     parameters:
       - schema:
           type: string
@@ -418,7 +426,7 @@ paths:
         required: true
       - schema:
           type: string
-        name: order_product_id
+        name: branch_number
         in: path
         required: true
     get:
@@ -431,20 +439,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderProduct'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderProduct'
         default:
           description: unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      operationId: get-orders-order_code-products-order_product_id
+      operationId: get-orders-order_code-products-order_product_code
       description: show OrderProduct entities corresponding to the id
       security:
         - API Key: []
-    patch:
+    post:
       summary: ''
-      operationId: patch-retail-orders-order_code-order_products-order_product_id
+      operationId: post-retail-orders-order_code-order_products-order_product_id
       responses:
         '200':
           description: OK
@@ -526,9 +539,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Maker'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Maker'
           headers:
             X-Next-Page:
               schema:
@@ -599,37 +615,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                minItems: 1
-                items:
-                  type: object
-                  properties:
-                    maker_code:
-                      type: string
-                    products:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          code:
-                            type: string
-                          maker_price_for_retail_amount:
-                            description: 商品が存在する場合、その価格を設定する. 存在しない場合はnull
-                            oneOf:
-                              - type: integer
-                              - type: 'null'
-                          maker_price_for_retail_currency:
-                            oneOf:
-                              - type: string
-                              - type: 'null'
-                          is_available:
-                            type: boolean
-                            description: The product is on sale or not
-                        required:
-                          - code
-                  required:
-                    - maker_code
-                    - products
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductCheckCodeResponse'
               examples:
                 normal response. returns availability and price.:
                   value:
@@ -695,20 +686,12 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              minItems: 1
-              items:
-                type: object
-                properties:
-                  maker_code:
-                    type: string
-                  product_code:
-                    type: array
-                    items:
-                      type: string
-                required:
-                  - maker_code
-                  - product_code
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ProductCheckCodeRequest'
             examples:
               example:
                 value:
@@ -737,9 +720,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Category'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category'
             application/xml:
               schema:
                 type: array
@@ -844,9 +830,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RetailBranch'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RetailBranch'
           headers:
             X-Next-Page:
               schema:
@@ -888,9 +877,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RetailSalesOffice'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RetailSalesOffice'
           headers:
             X-Next-Page:
               schema:
@@ -963,9 +955,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RetailUser'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RetailUser'
       operationId: get-retail-retail_users
       description: list listRetailUser entities
       security:
@@ -980,19 +975,25 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Order'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  oneOf:
-                    - $ref: '#/components/schemas/Order'
-                    - $ref: '#/components/schemas/Errors'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: '#/components/schemas/Order'
+                        - $ref: '#/components/schemas/Errors'
         '401':
           description: Unauthorized
           content:
@@ -1018,10 +1019,12 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              minItems: 1
-              items:
-                $ref: '#/components/schemas/OrderForCreate'
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/OrderForCreate'
       tags:
         - Orders
     parameters: []
@@ -1217,6 +1220,7 @@ components:
         - product_id
         - name
         - code
+        - branch_number
     Order:
       title: Order
       type: object
@@ -1409,6 +1413,14 @@ components:
         updated_at:
           type: string
           format: date-time
+        retail_sales_office_code:
+          type: string
+        desired_delivery_date:
+          type: string
+          format: date
+          description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
+        retail_user_code:
+          type: string
       required:
         - id
         - maker_id
@@ -1464,18 +1476,6 @@ components:
                       oneOf:
                         - type: integer
                         - type: 'null'
-                    shipping_postcode:
-                      type: string
-                    shipping_city:
-                      type: string
-                    shipping_street_address:
-                      type: string
-                    shipping_building:
-                      type: string
-                    shipping_office_name:
-                      type: string
-                    shipping_tel:
-                      type: string
                     memo:
                       type: string
                   required:
@@ -1484,22 +1484,111 @@ components:
               code:
                 type: string
                 description: order code per maker
+              retail_sales_office_code:
+                type: string
+              retail_user_code:
+                type: string
+              desired_delivery_date:
+                type: string
+                format: date
+                description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
+              shipping_postcode:
+                type: string
+              shipping_city:
+                type: string
+              shipping_street_address:
+                type: string
+              shipping_building:
+                type: string
+              shipping_office_name:
+                type: string
+              shipping_tel:
+                type: string
             required:
               - maker_code
-        retail_user_code:
-          type: string
+              - retail_user_code
         ordered_at:
           type: string
           format: date-time
           description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
-        desired_delivery_date:
+      x-examples:
+        example:
+          code: '2000000014'
+          ordered_at: '2020/03/03 12:43:36'
+          makers:
+            - maker_code: '1'
+              shipping_postcode: null
+              shipping_city: null
+              shipping_street_address: 埼玉県さいたま市桜区上大久保８８８－５
+              shipping_building: null
+              shipping_office_name: 日本瓦斯株式会社　浦和営業所
+              shipping_tel: 048-854-1910
+              retail_user_code: '01210'
+              retail_sales_office_code: '00022'
+              desired_delivery_date: 2020/03/10
+              products:
+                - code: 60S W N300
+                  branch_number: 1
+                  number_of_items: 3
+                  gas_type_id: null
+                  memo: 備考欄
+    ProductCheckCodeRequest:
+      title: ProductCheckCodeRequest
+      type: object
+      description: POST /products/check_code Request
+      properties:
+        maker_code:
           type: string
-          format: date
-          description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
-        retail_sales_office_code:
-          type: string
+        product_code:
+          type: array
+          items:
+            type: string
       required:
-        - retail_user_code
+        - maker_code
+        - product_code
+    ProductCheckCodeResponse:
+      title: ProductCheckCodeResponse
+      type: object
+      x-examples:
+        example:
+          maker_code: rinnai
+          products:
+            - code: 12-10002
+              maker_price_for_retail_amount: 10000
+              maker_price_for_retail_currency: JPY
+              is_available: true
+            - code: 12-10003
+              maker_price_for_retail_amount: null
+              maker_price_for_retail_currency: null
+              is_available: false
+      properties:
+        maker_code:
+          type: string
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              maker_price_for_retail_amount:
+                oneOf:
+                  - type: integer
+                  - type: 'null'
+                description: ''
+              maker_price_for_retail_currency:
+                oneOf:
+                  - type: string
+                  - type: 'null'
+              is_available:
+                type: boolean
+                description: The product is on sale or not
+            required:
+              - code
+      required:
+        - maker_code
+        - products
+      description: POST /products/check_code Response
   securitySchemes:
     API Key:
       type: http
