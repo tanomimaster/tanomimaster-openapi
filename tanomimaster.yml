@@ -221,6 +221,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/OrderForCreate'
+            examples: {}
       tags:
         - Orders
   '/retail/orders/{order_code}':
@@ -1409,6 +1410,14 @@ components:
         updated_at:
           type: string
           format: date-time
+        retail_sales_office_code:
+          type: string
+        desired_delivery_date:
+          type: string
+          format: date
+          description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
+        retail_user_code:
+          type: string
       required:
         - id
         - maker_id
@@ -1464,18 +1473,6 @@ components:
                       oneOf:
                         - type: integer
                         - type: 'null'
-                    shipping_postcode:
-                      type: string
-                    shipping_city:
-                      type: string
-                    shipping_street_address:
-                      type: string
-                    shipping_building:
-                      type: string
-                    shipping_office_name:
-                      type: string
-                    shipping_tel:
-                      type: string
                     memo:
                       type: string
                   required:
@@ -1484,22 +1481,54 @@ components:
               code:
                 type: string
                 description: order code per maker
+              retail_sales_office_code:
+                type: string
+              retail_user_code:
+                type: string
+              desired_delivery_date:
+                type: string
+                format: date
+                description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
+              shipping_postcode:
+                type: string
+              shipping_city:
+                type: string
+              shipping_street_address:
+                type: string
+              shipping_building:
+                type: string
+              shipping_office_name:
+                type: string
+              shipping_tel:
+                type: string
             required:
               - maker_code
-        retail_user_code:
-          type: string
+              - retail_user_code
         ordered_at:
           type: string
           format: date-time
           description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
-        desired_delivery_date:
-          type: string
-          format: date
-          description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
-        retail_sales_office_code:
-          type: string
-      required:
-        - retail_user_code
+      x-examples:
+        example:
+          code: '2000000014'
+          ordered_at: '2020/03/03 12:43:36'
+          makers:
+            - maker_code: '1'
+              shipping_postcode: null
+              shipping_city: null
+              shipping_street_address: 埼玉県さいたま市桜区上大久保８８８－５
+              shipping_building: null
+              shipping_office_name: 日本瓦斯株式会社　浦和営業所
+              shipping_tel: 048-854-1910
+              retail_user_code: '01210'
+              retail_sales_office_code: '00022'
+              desired_delivery_date: 2020/03/10
+              products:
+                - code: 60S W N300
+                  branch_number: 1
+                  number_of_items: 3
+                  gas_type_id: null
+                  memo: 備考欄
   securitySchemes:
     API Key:
       type: http
