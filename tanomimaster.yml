@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.10
+  version: 0.0.11
   title: REST API for makers
   description: Main file of Maker REST API.
   license:
@@ -10,11 +10,11 @@ info:
     url: 'https://tanomimaster.freshdesk.com/support/tickets/new'
     email: support@tanomimaster.freshdesk.com
 servers:
-  - url: 'https://develop.tanomimaster.minedia.com/api/v1'
+  - url: 'https://development.tanomimaster.com/api/v1'
     description: Development
-  - url: 'https://staging.tanomimaster.minedia.com/api/v1'
+  - url: 'https://staging.tanomimaster.com/api/v1'
     description: Staging
-  - url: 'https://tanomimaster.minedia.com/api/v1'
+  - url: 'https://tanomimaster.com/api/v1'
     description: Production
 paths:
   /retail/products:
@@ -1508,9 +1508,27 @@ components:
           type: string
           format: date-time
           description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
-        ordered:
-          type: string
-          format: date-time
+      x-examples:
+        example:
+          code: '2000000014'
+          ordered_at: '2020/03/03 12:43:36'
+          makers:
+            - maker_code: '1'
+              shipping_postcode: null
+              shipping_city: null
+              shipping_street_address: 埼玉県さいたま市桜区上大久保８８８－５
+              shipping_building: null
+              shipping_office_name: 日本瓦斯株式会社　浦和営業所
+              shipping_tel: 048-854-1910
+              retail_user_code: '01210'
+              retail_sales_office_code: '00022'
+              desired_delivery_date: 2020/03/10
+              products:
+                - code: 60S W N300
+                  branch_number: 1
+                  number_of_items: 3
+                  gas_type_id: null
+                  memo: 備考欄
   securitySchemes:
     API Key:
       type: http
