@@ -410,7 +410,7 @@ paths:
                 - maker_code
                 - code
                 - number_of_items
-  '/retail/orders/{order_code}/order_products/{order_product_id}':
+  '/retail/orders/{order_code}/order_products/{branch_number}':
     parameters:
       - schema:
           type: string
@@ -419,7 +419,7 @@ paths:
         required: true
       - schema:
           type: string
-        name: order_product_id
+        name: branch_number
         in: path
         required: true
     get:
@@ -439,7 +439,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      operationId: get-orders-order_code-products-order_product_id
+      operationId: get-orders-order_code-products-order_product_code
       description: show OrderProduct entities corresponding to the id
       security:
         - API Key: []
@@ -1218,6 +1218,7 @@ components:
         - product_id
         - name
         - code
+        - branch_number
     Order:
       title: Order
       type: object
