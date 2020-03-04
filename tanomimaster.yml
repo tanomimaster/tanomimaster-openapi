@@ -455,9 +455,9 @@ paths:
       description: show OrderProduct entities corresponding to the id
       security:
         - API Key: []
-    patch:
+    post:
       summary: ''
-      operationId: patch-retail-orders-order_code-order_products-order_product_id
+      operationId: post-retail-orders-order_code-order_products-order_product_id
       responses:
         '200':
           description: OK
