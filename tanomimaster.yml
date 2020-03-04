@@ -65,9 +65,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Product'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
         default:
           description: unexpected error
           content:
@@ -129,9 +132,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Order'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
           headers:
             X-Next-Page:
               schema:
@@ -270,9 +276,10 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/OrderProduct'
+                type: object
+                properties:
+                  items:
+                    $ref: '#/components/schemas/OrderProduct'
           headers:
             X-Next-Page:
               schema:
@@ -432,7 +439,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderProduct'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderProduct'
         default:
           description: unexpected error
           content:
@@ -527,9 +539,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Maker'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Maker'
           headers:
             X-Next-Page:
               schema:
@@ -600,37 +615,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                minItems: 1
-                items:
-                  type: object
-                  properties:
-                    maker_code:
-                      type: string
-                    products:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          code:
-                            type: string
-                          maker_price_for_retail_amount:
-                            description: 商品が存在する場合、その価格を設定する. 存在しない場合はnull
-                            oneOf:
-                              - type: integer
-                              - type: 'null'
-                          maker_price_for_retail_currency:
-                            oneOf:
-                              - type: string
-                              - type: 'null'
-                          is_available:
-                            type: boolean
-                            description: The product is on sale or not
-                        required:
-                          - code
-                  required:
-                    - maker_code
-                    - products
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductCheckCodeResponse'
               examples:
                 normal response. returns availability and price.:
                   value:
@@ -696,20 +686,12 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              minItems: 1
-              items:
-                type: object
-                properties:
-                  maker_code:
-                    type: string
-                  product_code:
-                    type: array
-                    items:
-                      type: string
-                required:
-                  - maker_code
-                  - product_code
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ProductCheckCodeRequest'
             examples:
               example:
                 value:
@@ -738,9 +720,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Category'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category'
             application/xml:
               schema:
                 type: array
@@ -845,9 +830,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RetailBranch'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RetailBranch'
           headers:
             X-Next-Page:
               schema:
@@ -889,9 +877,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RetailSalesOffice'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RetailSalesOffice'
           headers:
             X-Next-Page:
               schema:
@@ -964,9 +955,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RetailUser'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RetailUser'
       operationId: get-retail-retail_users
       description: list listRetailUser entities
       security:
@@ -981,19 +975,25 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Order'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  oneOf:
-                    - $ref: '#/components/schemas/Order'
-                    - $ref: '#/components/schemas/Errors'
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: '#/components/schemas/Order'
+                        - $ref: '#/components/schemas/Errors'
         '401':
           description: Unauthorized
           content:
@@ -1019,10 +1019,12 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              minItems: 1
-              items:
-                $ref: '#/components/schemas/OrderForCreate'
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/OrderForCreate'
       tags:
         - Orders
     parameters: []
@@ -1530,6 +1532,63 @@ components:
                   number_of_items: 3
                   gas_type_id: null
                   memo: 備考欄
+    ProductCheckCodeRequest:
+      title: ProductCheckCodeRequest
+      type: object
+      description: POST /products/check_code Request
+      properties:
+        maker_code:
+          type: string
+        product_code:
+          type: array
+          items:
+            type: string
+      required:
+        - maker_code
+        - product_code
+    ProductCheckCodeResponse:
+      title: ProductCheckCodeResponse
+      type: object
+      x-examples:
+        example:
+          maker_code: rinnai
+          products:
+            - code: 12-10002
+              maker_price_for_retail_amount: 10000
+              maker_price_for_retail_currency: JPY
+              is_available: true
+            - code: 12-10003
+              maker_price_for_retail_amount: null
+              maker_price_for_retail_currency: null
+              is_available: false
+      properties:
+        maker_code:
+          type: string
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              maker_price_for_retail_amount:
+                oneOf:
+                  - type: integer
+                  - type: 'null'
+                description: ''
+              maker_price_for_retail_currency:
+                oneOf:
+                  - type: string
+                  - type: 'null'
+              is_available:
+                type: boolean
+                description: The product is on sale or not
+            required:
+              - code
+      required:
+        - maker_code
+        - products
+      description: POST /products/check_code Response
   securitySchemes:
     API Key:
       type: http
