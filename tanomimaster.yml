@@ -1214,6 +1214,29 @@ components:
           nullable: true
           description: 仕入納品APIでキャンセルした場合、キャンセル日時を設定
           format: date-time
+        shipping_postcode:
+          type: string
+        shipping_prefecture_code:
+          type: integer
+        shipping_city:
+          type: string
+        shipping_street_address:
+          type: string
+        shipping_building:
+          type: string
+        shipping_office_name:
+          type: string
+        shipping_tel:
+          type: string
+        estimated_delivery_date:
+          type: string
+          format: date
+        official_estimated_delivery_date:
+          type: string
+          format: date
+        answered_at:
+          type: string
+          format: date-time
       required:
         - id
         - orders_maker_id
@@ -1234,10 +1257,6 @@ components:
           type: string
         retail_id:
           type: integer
-        retail_sales_office_id:
-          type: integer
-        retail_user_id:
-          type: integer
         code:
           type: string
         created_at:
@@ -1246,17 +1265,12 @@ components:
         updated_at:
           type: string
           format: date-time
-        desired_delivery_date:
-          type: string
-          format: date
         ordered_at:
           type: string
           format: date-time
       required:
         - id
         - retail_id
-        - retail_sales_office_id
-        - retail_user_id
         - code
     RetailBranch:
       title: RetailBranch
@@ -1360,8 +1374,8 @@ components:
         - id
         - name
         - code
-    OrderMaker:
-      title: OrderMaker
+    OrdersMaker:
+      title: OrdersMaker
       type: object
       properties:
         id:
@@ -1383,30 +1397,6 @@ components:
             - shipped
             - delivered
             - canceled
-        estimated_delivery_date:
-          type: string
-        official_estimated_delivery_date:
-          type: string
-          format: date
-        answered_at:
-          type: string
-          format: date-time
-        delivery_date:
-          type: string
-        shipping_postcode:
-          type: string
-        shipping_prefecture_code:
-          type: string
-        shipping_city:
-          type: string
-        shipping_street_address:
-          type: string
-        shipping_building:
-          type: string
-        shipping_office_name:
-          type: string
-        shipping_tel:
-          type: string
         created_at:
           type: string
           format: date-time
@@ -1597,18 +1587,18 @@ components:
             orders_makers:
               type: array
               items:
-                $ref: '#/components/schemas/OrderMakerWithDescendant'
+                $ref: '#/components/schemas/OrdersMakerWithDescendant'
       title: OrderWithDescendant
-    OrderMakerWithDescendant:
+    OrdersMakerWithDescendant:
       allOf:
         - $ref: '#/components/schemas/OrderMaker'
         - type: object
           properties:
-            orders_products:
+            order_products:
               type: array
               items:
                 $ref: '#/components/schemas/OrderProduct'
-      title: OrderMakerWithDescendant
+      title: OrdersMakerWithDescendant
   securitySchemes:
     API Key:
       type: http
