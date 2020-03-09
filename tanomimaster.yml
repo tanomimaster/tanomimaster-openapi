@@ -1597,8 +1597,18 @@ components:
             orders_makers:
               type: array
               items:
-                $ref: '#/components/schemas/OrderMaker'
+                $ref: '#/components/schemas/OrderMakerWithOrderProduct'
       title: OrderWithOrderMaker
+    OrderMakerWithOrderProduct:
+      allOf:
+        - $ref: '#/components/schemas/OrderMaker'
+        - type: object
+          properties:
+            orders_products:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderProduct'
+      title: OrderMakerWithOrderProduct
   securitySchemes:
     API Key:
       type: http
