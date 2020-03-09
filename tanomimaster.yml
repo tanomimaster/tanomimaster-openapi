@@ -980,7 +980,7 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OrderWithOrderMaker'
+                      $ref: '#/components/schemas/OrderMakerWithDescendant'
         '400':
           description: Bad Request
           content:
@@ -1589,7 +1589,7 @@ components:
         - maker_code
         - products
       description: POST /products/check_code Response
-    OrderWithOrderMaker:
+    OrderWithDescendant:
       allOf:
         - $ref: '#/components/schemas/Order'
         - type: object
@@ -1597,9 +1597,9 @@ components:
             orders_makers:
               type: array
               items:
-                $ref: '#/components/schemas/OrderMakerWithOrderProduct'
-      title: OrderWithOrderMaker
-    OrderMakerWithOrderProduct:
+                $ref: '#/components/schemas/OrderMakerWithDescendant'
+      title: OrderWithDescendant
+    OrderMakerWithDescendant:
       allOf:
         - $ref: '#/components/schemas/OrderMaker'
         - type: object
@@ -1608,7 +1608,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/OrderProduct'
-      title: OrderMakerWithOrderProduct
+      title: OrderMakerWithDescendant
   securitySchemes:
     API Key:
       type: http
