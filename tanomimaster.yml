@@ -246,7 +246,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/OrderWithDescendant'
               examples: {}
         default:
           description: unexpected error
@@ -441,9 +441,7 @@ paths:
                 type: object
                 properties:
                   items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/OrderProduct'
+                    $ref: '#/components/schemas/OrderProduct'
         default:
           description: unexpected error
           content:
