@@ -175,7 +175,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/OrderWithDescendant'
               examples: {}
         '400':
           description: Bad Request
@@ -974,7 +974,9 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OrdersMakerWithDescendant'
+                      oneOf:
+                        - $ref: '#/components/schemas/OrderWithDescendant'
+                        - $ref: '#/components/schemas/Errors'
         '400':
           description: Bad Request
           content:
@@ -985,9 +987,7 @@ paths:
                   items:
                     type: array
                     items:
-                      oneOf:
-                        - $ref: '#/components/schemas/OrderWithDescendant'
-                        - $ref: '#/components/schemas/Errors'
+                      $ref: '#/components/schemas/Errors'
         '401':
           description: Unauthorized
           content:
