@@ -1032,11 +1032,12 @@ paths:
                       ordered_at: '2020/03/03 12:43:36'
                       makers:
                         - maker_code: matsukura
-                          shipping_postcode: null
-                          shipping_city: null
-                          shipping_street_address: 埼玉県さいたま市桜区上大久保８８８－５
+                          shipping_postcode: "338-0824"
+                          shipping_preferecture_code: "11"
+                          shipping_city: "さいたま市桜区"
+                          shipping_street_address: "上大久保８８８－５"
                           shipping_building: null
-                          shipping_office_name: 日本瓦斯株式会社　浦和営業所
+                          shipping_office_name: "日本瓦斯株式会社　浦和営業所"
                           shipping_tel: 048-854-1910
                           retail_user_code: matsukura-sales
                           retail_sales_office_code: '000'
