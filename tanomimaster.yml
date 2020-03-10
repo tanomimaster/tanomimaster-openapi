@@ -438,10 +438,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  items:
-                    $ref: '#/components/schemas/OrderProduct'
+                $ref: '#/components/schemas/OrderProduct'
         default:
           description: unexpected error
           content:
