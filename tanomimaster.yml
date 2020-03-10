@@ -113,8 +113,7 @@ paths:
     parameters:
       - schema:
           type: integer
-          default: '1'
-          maximum: 0
+          default: 1
           minimum: 1
         name: product_id
         in: path
@@ -980,7 +979,7 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OrderMakerWithDescendant'
+                      $ref: '#/components/schemas/OrdersMakerWithDescendant'
         '400':
           description: Bad Request
           content:
@@ -1591,7 +1590,7 @@ components:
       title: OrderWithDescendant
     OrdersMakerWithDescendant:
       allOf:
-        - $ref: '#/components/schemas/OrderMaker'
+        - $ref: '#/components/schemas/OrdersMaker'
         - type: object
           properties:
             order_products:
