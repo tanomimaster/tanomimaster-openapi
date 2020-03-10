@@ -991,7 +991,7 @@ paths:
                     type: array
                     items:
                       oneOf:
-                        - $ref: '#/components/schemas/Order'
+                        - $ref: '#/components/schemas/OrderWithDescendant'
                         - $ref: '#/components/schemas/Errors'
         '401':
           description: Unauthorized
