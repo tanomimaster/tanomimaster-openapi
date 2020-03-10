@@ -136,7 +136,7 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Order'
+                      $ref: '#/components/schemas/OrderWithDescendant'
           headers:
             X-Next-Page:
               schema:
@@ -246,7 +246,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/OrderWithDescendant'
               examples: {}
         default:
           description: unexpected error
@@ -441,9 +441,7 @@ paths:
                 type: object
                 properties:
                   items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/OrderProduct'
+                    $ref: '#/components/schemas/OrderProduct'
         default:
           description: unexpected error
           content:
@@ -991,7 +989,7 @@ paths:
                     type: array
                     items:
                       oneOf:
-                        - $ref: '#/components/schemas/Order'
+                        - $ref: '#/components/schemas/OrderWithDescendant'
                         - $ref: '#/components/schemas/Errors'
         '401':
           description: Unauthorized
