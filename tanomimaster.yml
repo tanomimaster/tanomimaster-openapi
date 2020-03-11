@@ -990,7 +990,10 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Errors'
+                      type: object
+                      properties:
+                        error:
+                          $ref: '#/components/schemas/Errors'
         '401':
           description: Unauthorized
           content:
