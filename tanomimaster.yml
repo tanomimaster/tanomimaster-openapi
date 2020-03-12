@@ -1237,6 +1237,22 @@ components:
         answered_at:
           type: string
           format: date-time
+        order_status:
+          type: string
+          enum:
+            - ordered
+            - answered
+            - shipped
+            - delivered
+            - cancelled
+        memo:
+          type: string
+        order_confirmed_at:
+          type: string
+          format: date-time
+        cancel_confirmed_at:
+          type: string
+          format: date-time
       required:
         - id
         - orders_maker_id
@@ -1377,6 +1393,7 @@ components:
     OrdersMaker:
       title: OrdersMaker
       type: object
+      description: ''
       properties:
         id:
           type: string
@@ -1392,11 +1409,10 @@ components:
           type: string
           enum:
             - ordered
-            - downloaded
             - answered
             - shipped
             - delivered
-            - canceled
+            - cancelled
         created_at:
           type: string
           format: date-time
@@ -1414,7 +1430,6 @@ components:
       required:
         - id
         - maker_id
-      description: ''
     Errors:
       title: Errors
       type: object
