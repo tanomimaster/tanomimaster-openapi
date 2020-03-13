@@ -278,7 +278,9 @@ paths:
                 type: object
                 properties:
                   items:
-                    $ref: '#/components/schemas/OrderProduct'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderProduct'
           headers:
             X-Next-Page:
               schema:
