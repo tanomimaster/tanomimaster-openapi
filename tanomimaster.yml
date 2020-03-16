@@ -395,8 +395,8 @@ paths:
                   type: integer
                 shipping_postcode:
                   type: string
-                shipping_preferecture_code:
-                  type: string
+                shipping_prefecture_code:
+                  type: integer
                 shipping_city:
                   type: string
                 shipping_street_address:
@@ -1072,6 +1072,8 @@ components:
           example: doggie
         category_id:
           type: integer
+        maker_code:
+          type: string
       required:
         - id
         - name
@@ -1429,6 +1431,8 @@ components:
           description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
         retail_user_code:
           type: string
+        maker_code:
+          type: string
       required:
         - id
         - maker_id
@@ -1453,6 +1457,28 @@ components:
       description: ''
       x-tags:
         - Orders
+      x-examples:
+        example:
+          code: '2000000014'
+          ordered_at: '2020/03/03 12:43:36'
+          makers:
+            - maker_code: '1'
+              shipping_postcode: null
+              shipping_prefecture_code: 15
+              shipping_city: null
+              shipping_street_address: 埼玉県さいたま市桜区上大久保８８８－５
+              shipping_building: null
+              shipping_office_name: 日本瓦斯株式会社　浦和営業所
+              shipping_tel: 048-854-1910
+              retail_user_code: '01210'
+              retail_sales_office_code: '00022'
+              desired_delivery_date: 2020/03/10
+              products:
+                - code: 60S W N300
+                  branch_number: 1
+                  number_of_items: 3
+                  gas_type_id: null
+                  memo: 備考欄
       properties:
         code:
           type: string
@@ -1512,6 +1538,8 @@ components:
                 type: string
               shipping_tel:
                 type: string
+              shipping_prefecture_code:
+                type: integer
             required:
               - maker_code
               - retail_user_code
@@ -1519,27 +1547,6 @@ components:
           type: string
           format: date-time
           description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
-      x-examples:
-        example:
-          code: '2000000014'
-          ordered_at: '2020/03/03 12:43:36'
-          makers:
-            - maker_code: '1'
-              shipping_postcode: null
-              shipping_city: null
-              shipping_street_address: 埼玉県さいたま市桜区上大久保８８８－５
-              shipping_building: null
-              shipping_office_name: 日本瓦斯株式会社　浦和営業所
-              shipping_tel: 048-854-1910
-              retail_user_code: '01210'
-              retail_sales_office_code: '00022'
-              desired_delivery_date: 2020/03/10
-              products:
-                - code: 60S W N300
-                  branch_number: 1
-                  number_of_items: 3
-                  gas_type_id: null
-                  memo: 備考欄
     ProductCheckCodeRequest:
       title: ProductCheckCodeRequest
       type: object
