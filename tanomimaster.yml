@@ -136,7 +136,7 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Order'
+                      $ref: '#/components/schemas/OrderWithDescendant'
           headers:
             X-Next-Page:
               schema:
@@ -175,7 +175,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/OrderWithDescendant'
               examples: {}
         '400':
           description: Bad Request
@@ -246,7 +246,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/OrderWithDescendant'
               examples: {}
         default:
           description: unexpected error
@@ -278,7 +278,9 @@ paths:
                 type: object
                 properties:
                   items:
-                    $ref: '#/components/schemas/OrderProduct'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderProduct'
           headers:
             X-Next-Page:
               schema:
@@ -393,8 +395,8 @@ paths:
                   type: integer
                 shipping_postcode:
                   type: string
-                shipping_preferecture_code:
-                  type: string
+                shipping_prefecture_code:
+                  type: integer
                 shipping_city:
                   type: string
                 shipping_street_address:
@@ -438,12 +440,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/OrderProduct'
+                $ref: '#/components/schemas/OrderProduct'
         default:
           description: unexpected error
           content:
@@ -529,7 +526,7 @@ paths:
         description: ''
       tags:
         - Orders
-  /makers:
+  /retail/makers:
     get:
       summary: listMakers
       responses:
@@ -576,7 +573,7 @@ paths:
       tags:
         - Makers
     parameters: []
-  '/makers/{maker_id}':
+  '/retail/makers/{maker_id}':
     parameters:
       - schema:
           type: integer
@@ -979,7 +976,12 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OrdersMakerWithDescendant'
+                      oneOf:
+                        - $ref: '#/components/schemas/OrderWithDescendant'
+                        - type: object
+                          properties:
+                            error:
+                              $ref: '#/components/schemas/Errors'
         '400':
           description: Bad Request
           content:
@@ -990,9 +992,10 @@ paths:
                   items:
                     type: array
                     items:
-                      oneOf:
-                        - $ref: '#/components/schemas/Order'
-                        - $ref: '#/components/schemas/Errors'
+                      type: object
+                      properties:
+                        error:
+                          $ref: '#/components/schemas/Errors'
         '401':
           description: Unauthorized
           content:
@@ -1051,6 +1054,45 @@ paths:
       tags:
         - Orders
     parameters: []
+  /status:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: Healthcheck OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                required:
+                  - version
+              examples:
+                Example:
+                  value:
+                    version: 1.0.0
+        '500':
+          description: Healthcheck NG
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                required:
+                  - version
+              examples:
+                Example:
+                  value:
+                    version: 1.0.0
+      operationId: get-status
+      security:
+        - API Key: []
+      description: show API version and healthcheck
 components:
   schemas:
     Product:
@@ -1093,6 +1135,8 @@ components:
           example: doggie
         category_id:
           type: integer
+        maker_code:
+          type: string
       required:
         - id
         - name
@@ -1262,6 +1306,22 @@ components:
         answered_at:
           type: string
           format: date-time
+        order_status:
+          type: string
+          enum:
+            - ordered
+            - answered
+            - shipped
+            - delivered
+            - cancelled
+        memo:
+          type: string
+        order_confirmed_at:
+          type: string
+          format: date-time
+        cancel_confirmed_at:
+          type: string
+          format: date-time
       required:
         - id
         - orders_maker_id
@@ -1410,6 +1470,7 @@ components:
       x-tags:
         - retail
       type: object
+      description: ''
       properties:
         id:
           type: string
@@ -1425,11 +1486,10 @@ components:
           type: string
           enum:
             - ordered
-            - downloaded
             - answered
             - shipped
             - delivered
-            - canceled
+            - cancelled
         created_at:
           type: string
           format: date-time
@@ -1443,6 +1503,8 @@ components:
           format: date
           description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
         retail_user_code:
+          type: string
+        maker_code:
           type: string
       required:
         - id
@@ -1470,6 +1532,28 @@ components:
       description: ''
       x-tags:
         - order
+      x-examples:
+        example:
+          code: '2000000014'
+          ordered_at: '2020/03/03 12:43:36'
+          makers:
+            - maker_code: '1'
+              shipping_postcode: null
+              shipping_prefecture_code: 15
+              shipping_city: null
+              shipping_street_address: 埼玉県さいたま市桜区上大久保８８８－５
+              shipping_building: null
+              shipping_office_name: 日本瓦斯株式会社　浦和営業所
+              shipping_tel: 048-854-1910
+              retail_user_code: '01210'
+              retail_sales_office_code: '00022'
+              desired_delivery_date: 2020/03/10
+              products:
+                - code: 60S W N300
+                  branch_number: 1
+                  number_of_items: 3
+                  gas_type_id: null
+                  memo: 備考欄
       properties:
         code:
           type: string
@@ -1529,6 +1613,8 @@ components:
                 type: string
               shipping_tel:
                 type: string
+              shipping_prefecture_code:
+                type: integer
             required:
               - maker_code
               - retail_user_code
@@ -1536,27 +1622,6 @@ components:
           type: string
           format: date-time
           description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
-      x-examples:
-        example:
-          code: '2000000014'
-          ordered_at: '2020/03/03 12:43:36'
-          makers:
-            - maker_code: '1'
-              shipping_postcode: null
-              shipping_city: null
-              shipping_street_address: 埼玉県さいたま市桜区上大久保８８８－５
-              shipping_building: null
-              shipping_office_name: 日本瓦斯株式会社　浦和営業所
-              shipping_tel: 048-854-1910
-              retail_user_code: '01210'
-              retail_sales_office_code: '00022'
-              desired_delivery_date: 2020/03/10
-              products:
-                - code: 60S W N300
-                  branch_number: 1
-                  number_of_items: 3
-                  gas_type_id: null
-                  memo: 備考欄
     ProductCheckCodeRequest:
       title: ProductCheckCodeRequest
       type: object
