@@ -526,7 +526,7 @@ paths:
         description: ''
       tags:
         - Orders
-  /makers:
+  /retail/makers:
     get:
       summary: listMakers
       responses:
@@ -573,7 +573,7 @@ paths:
       tags:
         - Makers
     parameters: []
-  '/makers/{maker_id}':
+  '/retail/makers/{maker_id}':
     parameters:
       - schema:
           type: integer
@@ -1030,6 +1030,45 @@ paths:
       tags:
         - Orders
     parameters: []
+  /status:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: Healthcheck OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                required:
+                  - version
+              examples:
+                Example:
+                  value:
+                    version: 1.0.0
+        '500':
+          description: Healthcheck NG
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                required:
+                  - version
+              examples:
+                Example:
+                  value:
+                    version: 1.0.0
+      operationId: get-status
+      security:
+        - API Key: []
+      description: show API version and healthcheck
 components:
   schemas:
     Product:
