@@ -1027,6 +1027,30 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/OrderForCreate'
+            examples:
+              single product:
+                value:
+                  items:
+                    - code: '2000000014'
+                      ordered_at: '2020/03/03 12:43:36'
+                      makers:
+                        - maker_code: matsukura
+                          shipping_postcode: "338-0824"
+                          shipping_preferecture_code: "11"
+                          shipping_city: "さいたま市桜区"
+                          shipping_street_address: "上大久保８８８－５"
+                          shipping_building: null
+                          shipping_office_name: "日本瓦斯株式会社　浦和営業所"
+                          shipping_tel: 048-854-1910
+                          retail_user_code: matsukura-sales
+                          retail_sales_office_code: '000'
+                          desired_delivery_date: 2020/03/20
+                          products:
+                            - code: '000'
+                              branch_number: 2
+                              number_of_items: 3
+                              gas_type_id: null
+                              memo: 備考欄
       tags:
         - Orders
     parameters: []
@@ -1077,7 +1101,7 @@ components:
       xml:
         name: Product
       x-tags:
-        - Products
+        - product
       description: A single product.
       properties:
         id:
@@ -1138,13 +1162,15 @@ components:
         - id
         - code
         - name
+      x-tags:
+        - maker
     Category:
       title: Category
       type: object
       x-examples:
         example-1: {}
       x-tags:
-        - Products
+        - product
       description: ''
       properties:
         id:
@@ -1173,7 +1199,7 @@ components:
       type: object
       description: A standard error object.
       x-tags:
-        - Common
+        - common
       properties:
         code:
           type: string
@@ -1202,7 +1228,7 @@ components:
       title: OrderProduct
       type: object
       x-tags:
-        - Orders
+        - order
       description: ''
       properties:
         id:
@@ -1308,7 +1334,7 @@ components:
       type: object
       description: ''
       x-tags:
-        - Orders
+        - order
       x-examples:
         example-1: {}
       properties:
@@ -1351,6 +1377,8 @@ components:
         - id
         - code
         - name
+      x-tags:
+        - retail
     RetailSalesOffice:
       title: RetailSalesOffice
       type: object
@@ -1379,6 +1407,8 @@ components:
         updated_at:
           type: string
           format: date-time
+      x-tags:
+        - retail
     RetailUser:
       title: RetailUser
       type: object
@@ -1413,6 +1443,8 @@ components:
         updated_at:
           type: string
           format: date-time
+      x-tags:
+        - retail
     Retail:
       title: Retail
       type: object
@@ -1435,6 +1467,8 @@ components:
         - code
     OrdersMaker:
       title: OrdersMaker
+      x-tags:
+        - retail
       type: object
       description: ''
       properties:
@@ -1490,12 +1524,14 @@ components:
         - code
         - messages
       description: バリデーションエラーなど複数エラーメッセージがある場合
+      x-tags:
+        - common
     OrderForCreate:
       title: OrderForCreate
       type: object
       description: ''
       x-tags:
-        - Orders
+        - order
       x-examples:
         example:
           code: '2000000014'
@@ -1600,6 +1636,19 @@ components:
       required:
         - maker_code
         - product_code
+      x-tags:
+        - product
+      x-examples:
+        example:
+          items:
+            - maker_code: maker01
+              product_code:
+                - '111'
+                - '222'
+            - maker_code: maker02
+              product_code:
+                - '333'
+                - '444'
     ProductCheckCodeResponse:
       title: ProductCheckCodeResponse
       type: object
