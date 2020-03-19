@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.11
+  version: 0.0.12
   title: REST API for makers
   description: Main file of Maker REST API.
   license:
@@ -113,8 +113,7 @@ paths:
     parameters:
       - schema:
           type: integer
-          default: '1'
-          maximum: 0
+          default: 1
           minimum: 1
         name: product_id
         in: path
@@ -137,7 +136,7 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Order'
+                      $ref: '#/components/schemas/OrderWithDescendant'
           headers:
             X-Next-Page:
               schema:
@@ -176,7 +175,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/OrderWithDescendant'
               examples: {}
         '400':
           description: Bad Request
@@ -247,7 +246,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/OrderWithDescendant'
               examples: {}
         default:
           description: unexpected error
@@ -279,7 +278,9 @@ paths:
                 type: object
                 properties:
                   items:
-                    $ref: '#/components/schemas/OrderProduct'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderProduct'
           headers:
             X-Next-Page:
               schema:
@@ -394,8 +395,8 @@ paths:
                   type: integer
                 shipping_postcode:
                   type: string
-                shipping_preferecture_code:
-                  type: string
+                shipping_prefecture_code:
+                  type: integer
                 shipping_city:
                   type: string
                 shipping_street_address:
@@ -439,12 +440,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/OrderProduct'
+                $ref: '#/components/schemas/OrderProduct'
         default:
           description: unexpected error
           content:
@@ -530,7 +526,7 @@ paths:
         description: ''
       tags:
         - Orders
-  /makers:
+  /retail/makers:
     get:
       summary: listMakers
       responses:
@@ -577,7 +573,7 @@ paths:
       tags:
         - Makers
     parameters: []
-  '/makers/{maker_id}':
+  '/retail/makers/{maker_id}':
     parameters:
       - schema:
           type: integer
@@ -980,7 +976,12 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Order'
+                      oneOf:
+                        - $ref: '#/components/schemas/OrderWithDescendant'
+                        - type: object
+                          properties:
+                            error:
+                              $ref: '#/components/schemas/Errors'
         '400':
           description: Bad Request
           content:
@@ -991,9 +992,10 @@ paths:
                   items:
                     type: array
                     items:
-                      oneOf:
-                        - $ref: '#/components/schemas/Order'
-                        - $ref: '#/components/schemas/Errors'
+                      type: object
+                      properties:
+                        error:
+                          $ref: '#/components/schemas/Errors'
         '401':
           description: Unauthorized
           content:
@@ -1025,9 +1027,72 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/OrderForCreate'
+            examples:
+              single product:
+                value:
+                  items:
+                    - code: '2000000014'
+                      ordered_at: '2020/03/03 12:43:36'
+                      makers:
+                        - maker_code: matsukura
+                          shipping_postcode: "338-0824"
+                          shipping_preferecture_code: "11"
+                          shipping_city: "さいたま市桜区"
+                          shipping_street_address: "上大久保８８８－５"
+                          shipping_building: null
+                          shipping_office_name: "日本瓦斯株式会社　浦和営業所"
+                          shipping_tel: 048-854-1910
+                          retail_user_code: matsukura-sales
+                          retail_sales_office_code: '000'
+                          desired_delivery_date: 2020/03/20
+                          products:
+                            - code: '000'
+                              branch_number: 2
+                              number_of_items: 3
+                              gas_type_id: null
+                              memo: 備考欄
       tags:
         - Orders
     parameters: []
+  /status:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: Healthcheck OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                required:
+                  - version
+              examples:
+                Example:
+                  value:
+                    version: 1.0.0
+        '500':
+          description: Healthcheck NG
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                required:
+                  - version
+              examples:
+                Example:
+                  value:
+                    version: 1.0.0
+      operationId: get-status
+      security:
+        - API Key: []
+      description: show API version and healthcheck
 components:
   schemas:
     Product:
@@ -1036,7 +1101,7 @@ components:
       xml:
         name: Product
       x-tags:
-        - Products
+        - product
       description: A single product.
       properties:
         id:
@@ -1070,6 +1135,8 @@ components:
           example: doggie
         category_id:
           type: integer
+        maker_code:
+          type: string
       required:
         - id
         - name
@@ -1095,13 +1162,15 @@ components:
         - id
         - code
         - name
+      x-tags:
+        - maker
     Category:
       title: Category
       type: object
       x-examples:
         example-1: {}
       x-tags:
-        - Products
+        - product
       description: ''
       properties:
         id:
@@ -1130,7 +1199,7 @@ components:
       type: object
       description: A standard error object.
       x-tags:
-        - Common
+        - common
       properties:
         code:
           type: string
@@ -1159,7 +1228,7 @@ components:
       title: OrderProduct
       type: object
       x-tags:
-        - Orders
+        - order
       description: ''
       properties:
         id:
@@ -1214,6 +1283,45 @@ components:
           nullable: true
           description: 仕入納品APIでキャンセルした場合、キャンセル日時を設定
           format: date-time
+        shipping_postcode:
+          type: string
+        shipping_prefecture_code:
+          type: integer
+        shipping_city:
+          type: string
+        shipping_street_address:
+          type: string
+        shipping_building:
+          type: string
+        shipping_office_name:
+          type: string
+        shipping_tel:
+          type: string
+        estimated_delivery_date:
+          type: string
+          format: date
+        official_estimated_delivery_date:
+          type: string
+          format: date
+        answered_at:
+          type: string
+          format: date-time
+        order_status:
+          type: string
+          enum:
+            - ordered
+            - answered
+            - shipped
+            - delivered
+            - cancelled
+        memo:
+          type: string
+        order_confirmed_at:
+          type: string
+          format: date-time
+        cancel_confirmed_at:
+          type: string
+          format: date-time
       required:
         - id
         - orders_maker_id
@@ -1226,17 +1334,13 @@ components:
       type: object
       description: ''
       x-tags:
-        - Orders
+        - order
       x-examples:
         example-1: {}
       properties:
         id:
           type: string
         retail_id:
-          type: integer
-        retail_sales_office_id:
-          type: integer
-        retail_user_id:
           type: integer
         code:
           type: string
@@ -1246,17 +1350,12 @@ components:
         updated_at:
           type: string
           format: date-time
-        desired_delivery_date:
-          type: string
-          format: date
         ordered_at:
           type: string
           format: date-time
       required:
         - id
         - retail_id
-        - retail_sales_office_id
-        - retail_user_id
         - code
     RetailBranch:
       title: RetailBranch
@@ -1278,6 +1377,8 @@ components:
         - id
         - code
         - name
+      x-tags:
+        - retail
     RetailSalesOffice:
       title: RetailSalesOffice
       type: object
@@ -1306,6 +1407,8 @@ components:
         updated_at:
           type: string
           format: date-time
+      x-tags:
+        - retail
     RetailUser:
       title: RetailUser
       type: object
@@ -1340,6 +1443,8 @@ components:
         updated_at:
           type: string
           format: date-time
+      x-tags:
+        - retail
     Retail:
       title: Retail
       type: object
@@ -1360,9 +1465,12 @@ components:
         - id
         - name
         - code
-    OrderMaker:
-      title: OrderMaker
+    OrdersMaker:
+      title: OrdersMaker
+      x-tags:
+        - retail
       type: object
+      description: ''
       properties:
         id:
           type: string
@@ -1378,35 +1486,10 @@ components:
           type: string
           enum:
             - ordered
-            - downloaded
             - answered
             - shipped
             - delivered
-            - canceled
-        estimated_delivery_date:
-          type: string
-        official_estimated_delivery_date:
-          type: string
-          format: date
-        answered_at:
-          type: string
-          format: date-time
-        delivery_date:
-          type: string
-        shipping_postcode:
-          type: string
-        shipping_prefecture_code:
-          type: string
-        shipping_city:
-          type: string
-        shipping_street_address:
-          type: string
-        shipping_building:
-          type: string
-        shipping_office_name:
-          type: string
-        shipping_tel:
-          type: string
+            - cancelled
         created_at:
           type: string
           format: date-time
@@ -1420,6 +1503,8 @@ components:
           format: date
           description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
         retail_user_code:
+          type: string
+        maker_code:
           type: string
       required:
         - id
@@ -1439,12 +1524,36 @@ components:
         - code
         - messages
       description: バリデーションエラーなど複数エラーメッセージがある場合
+      x-tags:
+        - common
     OrderForCreate:
       title: OrderForCreate
       type: object
       description: ''
       x-tags:
-        - Orders
+        - order
+      x-examples:
+        example:
+          code: '2000000014'
+          ordered_at: '2020/03/03 12:43:36'
+          makers:
+            - maker_code: '1'
+              shipping_postcode: null
+              shipping_prefecture_code: 15
+              shipping_city: null
+              shipping_street_address: 埼玉県さいたま市桜区上大久保８８８－５
+              shipping_building: null
+              shipping_office_name: 日本瓦斯株式会社　浦和営業所
+              shipping_tel: 048-854-1910
+              retail_user_code: '01210'
+              retail_sales_office_code: '00022'
+              desired_delivery_date: 2020/03/10
+              products:
+                - code: 60S W N300
+                  branch_number: 1
+                  number_of_items: 3
+                  gas_type_id: null
+                  memo: 備考欄
       properties:
         code:
           type: string
@@ -1504,6 +1613,8 @@ components:
                 type: string
               shipping_tel:
                 type: string
+              shipping_prefecture_code:
+                type: integer
             required:
               - maker_code
               - retail_user_code
@@ -1511,27 +1622,6 @@ components:
           type: string
           format: date-time
           description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
-      x-examples:
-        example:
-          code: '2000000014'
-          ordered_at: '2020/03/03 12:43:36'
-          makers:
-            - maker_code: '1'
-              shipping_postcode: null
-              shipping_city: null
-              shipping_street_address: 埼玉県さいたま市桜区上大久保８８８－５
-              shipping_building: null
-              shipping_office_name: 日本瓦斯株式会社　浦和営業所
-              shipping_tel: 048-854-1910
-              retail_user_code: '01210'
-              retail_sales_office_code: '00022'
-              desired_delivery_date: 2020/03/10
-              products:
-                - code: 60S W N300
-                  branch_number: 1
-                  number_of_items: 3
-                  gas_type_id: null
-                  memo: 備考欄
     ProductCheckCodeRequest:
       title: ProductCheckCodeRequest
       type: object
@@ -1546,6 +1636,19 @@ components:
       required:
         - maker_code
         - product_code
+      x-tags:
+        - product
+      x-examples:
+        example:
+          items:
+            - maker_code: maker01
+              product_code:
+                - '111'
+                - '222'
+            - maker_code: maker02
+              product_code:
+                - '333'
+                - '444'
     ProductCheckCodeResponse:
       title: ProductCheckCodeResponse
       type: object
@@ -1589,6 +1692,26 @@ components:
         - maker_code
         - products
       description: POST /products/check_code Response
+    OrderWithDescendant:
+      allOf:
+        - $ref: '#/components/schemas/Order'
+        - type: object
+          properties:
+            orders_makers:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrdersMakerWithDescendant'
+      title: OrderWithDescendant
+    OrdersMakerWithDescendant:
+      allOf:
+        - $ref: '#/components/schemas/OrdersMaker'
+        - type: object
+          properties:
+            order_products:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderProduct'
+      title: OrdersMakerWithDescendant
   securitySchemes:
     API Key:
       type: http
