@@ -976,9 +976,9 @@ paths:
                   items:
                     type: object
                     properties:
-                      retail_user_code:
+                      user_code:
                         type: string
-                      retail_sales_office_code:
+                      sales_office_code:
                         type: string
                       email:
                         type: string
