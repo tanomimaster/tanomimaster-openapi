@@ -961,6 +961,98 @@ paths:
       description: list listRetailUser entities
       security:
         - API Key: []
+    post:
+      summary: bulkCreateRetailUsers
+      tags:
+        - RetailUsers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      user_code:
+                        type: string
+                      sales_office_code:
+                        type: string
+                      email:
+                        type: string
+                      password:
+                        type: string
+                      last_name:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name_kane:
+                        type: string
+                      first_name_kana:
+                        type: string
+                      role:
+                        type: string
+                      tel:
+                        type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        retail_user_code:
+                          type: string
+                        successful:
+                          type: boolean
+                        message:
+                          type: string
+  /retail/retail_users/check_registrations:
+    post:
+      summary: checkRegisteredRetailUsers
+      tags:
+        - RetailUsers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        retail_user_code:
+                          type: string
+                        retail_sales_office_code:
+                          type: string
+                        registed:
+                          type: boolean
+      operationId: post-retail-retail_users-check_registrations
+      description: check registered retail users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                retail_user_codes:
+                  type: array
+                  items:
+                    type: string
+      security:
+        - API Key: []
   /retail/orders/batch:
     post:
       summary: Bulk create orders
