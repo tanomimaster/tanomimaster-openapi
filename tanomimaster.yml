@@ -714,6 +714,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: from
+          in: query
+          required: true
+          example: 2021/3/30
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -784,7 +790,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       operationId: get-products-kumo
-      description: Check the passed ids are existed in this system.
+      description: products data format for kumo.
       security:
         - API Key: []
       tags:
