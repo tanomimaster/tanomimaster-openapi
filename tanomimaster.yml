@@ -717,7 +717,8 @@ paths:
         - name: from
           in: query
           required: true
-          example: 2021/3/30
+          example: 2021/3/30 10:00:00
+          description: 時刻の指定が無い場合は0:00:00になります
           schema:
             type: string
       responses:
@@ -742,7 +743,7 @@ paths:
                       tax_division: 0
                       power_consumption: ""
                       horsepower: ""
-                      start_date: 2021/1/20
+                      start_date: 2021/01/20
                     - maker_code: RN
                       product_code: 12-10003
                       internal_code: 12-10003
@@ -752,7 +753,7 @@ paths:
                       tax_division: 0
                       power_consumption: ""
                       horsepower: ""
-                      start_date: 2021/1/20
+                      start_date: 2021/01/20
         '400':
           description: Bad Request
           content:
