@@ -705,6 +705,98 @@ paths:
       tags:
         - products
     parameters: []
+  /retail/products/kumo:
+    get:
+      summary: products data for kumo
+      parameters:
+        - name: maker_code
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: from
+          in: query
+          required: true
+          example: 2021/3/30 10:00:00
+          description: 時刻の指定が無い場合は0:00:00になります
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+              examples:
+                normal response. returns availability and price.:
+                  value:
+                    - maker_code: RN
+                      product_code: 12-10002
+                      internal_code: 12-10002
+                      name: ｶﾞｽｷｭｳﾄｳｷ002
+                      price_amount: 10000
+                      maker_price_for_retail_amount: 8000
+                      tax_division: 0
+                      power_consumption: ""
+                      horsepower: ""
+                      start_date: 2021/01/20
+                    - maker_code: RN
+                      product_code: 12-10003
+                      internal_code: 12-10003
+                      name: ｶﾞｽｷｭｳﾄｳｷ003
+                      price_amount: 30000
+                      maker_price_for_retail_amount: 20000
+                      tax_division: 0
+                      power_consumption: ""
+                      horsepower: ""
+                      start_date: 2021/01/20
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+              examples:
+                リクエストパラメータ不正:
+                  value:
+                    code: '400'
+                    messages:
+                      - 'メーカーが存在しません(<MakerName>)'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: get-products-kumo
+      description: products data format for kumo.
+      security:
+        - API Key: []
+      tags:
+        - products
+    parameters: []
   /categories:
     get:
       summary: listCategories
