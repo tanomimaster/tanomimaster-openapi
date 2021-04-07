@@ -721,6 +721,11 @@ paths:
           description: 時刻の指定が無い場合は0:00:00になります
           schema:
             type: string
+        - name: product_code
+          in: query
+          example: product-1
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -744,6 +749,7 @@ paths:
                       power_consumption: ""
                       horsepower: ""
                       start_date: 2021/01/20
+                      use_gas_type_master: false
                     - maker_code: RN
                       product_code: 12-10003
                       internal_code: 12-10003
@@ -754,6 +760,7 @@ paths:
                       power_consumption: ""
                       horsepower: ""
                       start_date: 2021/01/20
+                      use_gas_type_master: true
         '400':
           description: Bad Request
           content:
