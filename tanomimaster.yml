@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
   version: 0.0.13
-  title: REST API for makers
-  description: Main file of Maker REST API.
+  title: Tanomimaster REST API Specification
+  description: Written with Open API Specification 3.
   license:
     name: All Rights Reserved
   contact:
@@ -736,6 +736,8 @@ paths:
                 properties:
                   items:
                     type: array
+                    items:
+                      $ref: '#/components/schemas/ProductForKumo'
               examples:
                 normal response. returns availability and price.:
                   value:
@@ -1332,6 +1334,70 @@ components:
         - id
         - name
         - category_id
+    ProductForKumo:
+      title: Product for kumo
+      type: object
+      xml:
+        name: Product
+      x-tags:
+        - product
+      description: A single product.
+      properties:
+        maker_code:
+          type: string
+          description: 雲の宇宙船内で利用されているメーカーコード
+        product_code:
+          type: string
+          example: 111-222-333-444
+          description: 型式（品番）
+        internal_code:
+          type: string
+          description: メーカー内部コード
+          example: 12-10002
+        name:
+          type: string
+          description: 商品名
+          example: doggie
+        price_amount:
+          type: integer
+          description: メーカー希望小売価格(税抜)
+          example: 10000
+        maker_price_for_retail_amount:
+          type: integer
+          description: 仕入れ値
+          example: 8000
+        tax_division:
+          type: integer
+          description: '0固定(課税対象)'
+          example: 0
+        power_consumption:
+          type: string
+          description: '空文字固定'
+          example: ''
+        horsepower:
+          type: string
+          description: '空文字固定'
+          example: ''
+        start_date:
+          type: string
+          format: date
+          description: 取り扱い開始日
+          example: '2021/01/20'
+        use_gas_type_master:
+          type: boolean
+          description: ガス種の指定が必須かどうか
+          example: true
+      required:
+        - maker_code
+        - product_code
+        - name
+        - maker_price_for_retail_amount
+        - tax_division
+        - power_consumption
+        - horsepower
+        - start_date
+        - use_gas_type_master
+
     Maker:
       title: Maker
       type: object
@@ -1905,7 +1971,7 @@ components:
                 $ref: '#/components/schemas/OrderProduct'
       title: OrdersMakerWithDescendant
   securitySchemes:
-    API Key:
+    ApiKeyAuth:
       type: http
       scheme: Bearer
       description: API key acquired on retail management page by admin.
