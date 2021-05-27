@@ -1245,6 +1245,53 @@ paths:
       tags:
         - Orders
     parameters: []
+  /maker/orders:
+    parameters: []
+    get:
+      summary: list orders
+      tags:
+        - Orders
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderWithDescendant'
+          headers:
+            X-Next-Page:
+              schema:
+                type: integer
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - API Key: []
+      operationId: listOrders
+      description: list orders
   /status:
     get:
       summary: Your GET endpoint
