@@ -1290,7 +1290,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - API Key: []
-      operationId: listOrders
+      operationId: listOrdersForMaker
       description: list orders
   /status:
     get:
