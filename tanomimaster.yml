@@ -1317,6 +1317,58 @@ paths:
         - API Key: []
       operationId: listOrdersForMaker
       description: list orders
+  /maker/confirm_order/{order_code}:
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+    put:
+      summary: confirmOrder
+      operationId: confirm-order
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmedOrder'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: confirm order
+      tags:
+        - Orders
+      security:
+        - API Key: []
   /status:
     get:
       summary: Your GET endpoint
@@ -1614,6 +1666,28 @@ components:
           type: string
           format: date-time
         ordered_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - retail_id
+        - code
+    ConfirmedOrder:
+      title: Order
+      type: object
+      description: ''
+      x-tags:
+        - order
+      x-examples:
+        example-1: {}
+      properties:
+        id:
+          type: string
+        retail_id:
+          type: integer
+        code:
+          type: string
+        order_confirmed_at:
           type: string
           format: date-time
       required:
