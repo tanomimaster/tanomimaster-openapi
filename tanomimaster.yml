@@ -1251,6 +1251,31 @@ paths:
       summary: list orders
       tags:
         - Orders
+      parameters:
+        - name: is_confirmed
+          in: query
+          description: 受注確定しているかどうか
+          required: false
+          schema:
+            type: boolean
+        - name: status
+          in: query
+          description: ステータス(0：納期未回答, 2：出荷待ち, 3：出荷済み, 4：納品完了, 99：キャンセル)
+          required: false
+          schema:
+            type: integer
+        - name: delivery_date_from
+          in: query
+          description: 納品日FROM(YYYY-MM-DD)
+          required: false
+          schema:
+            type: string
+        - name: delivery_date_to
+          in: query
+          description: 納品日TO(YYYY-MM-DD)
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: OK
