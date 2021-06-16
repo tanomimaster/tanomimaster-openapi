@@ -1324,7 +1324,7 @@ paths:
         name: order_code
         in: path
         required: true
-    put:
+    patch:
       summary: メーカー用 受注確定API
       operationId: confirm-order
       responses:
