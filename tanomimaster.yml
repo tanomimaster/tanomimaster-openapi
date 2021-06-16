@@ -1673,7 +1673,7 @@ components:
         - retail_id
         - code
     ConfirmedOrder:
-      title: Order
+      title: ConfirmedOrder
       type: object
       description: ''
       x-tags:
