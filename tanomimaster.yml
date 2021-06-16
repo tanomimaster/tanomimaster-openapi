@@ -1248,7 +1248,7 @@ paths:
   /maker/orders:
     parameters: []
     get:
-      summary: list orders
+      summary: メーカー用 注文取得API
       tags:
         - Orders
       parameters:
@@ -1325,7 +1325,7 @@ paths:
         in: path
         required: true
     put:
-      summary: confirmOrder
+      summary: メーカー用 受注確定API
       operationId: confirm-order
       responses:
         '201':
