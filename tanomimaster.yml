@@ -1675,7 +1675,7 @@ components:
     ConfirmedOrder:
       title: ConfirmedOrder
       type: object
-      description: ''
+      description: 'エンティティはOrderですが、パフォーマンスとユースケースを考慮し、表示する項目を絞りたいため、別のエンティティとして定義しています。'
       x-tags:
         - order
       x-examples:
