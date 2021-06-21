@@ -1369,6 +1369,77 @@ paths:
         - Orders
       security:
         - API Key: []
+  /maker/answer_delivery_date/{order_code}/{branch_number}:
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+        description: 注文番号
+      - schema:
+          type: string
+        name: branch_number
+        in: path
+        required: true
+        description: 注文明細No
+      - schema:
+          type: string
+        name: official_estimated_delivery_date
+        in: query
+        required: true
+        description: 納期日(YYYY-MM-DD)
+      - schema:
+          type: string
+        name: retail_code
+        in: query
+        required: true
+        description: 小売コード
+    patch:
+      summary: メーカー用 納期回答API
+      operationId: answer-delivery-date
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderProduct'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: answer delivery date
+      tags:
+        - Orders
+      security:
+        - API Key: []
   /status:
     get:
       summary: Your GET endpoint
