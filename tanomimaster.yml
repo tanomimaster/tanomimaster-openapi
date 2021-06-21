@@ -1333,7 +1333,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConfirmedOrder'
+                $ref: '#/components/schemas/Order'
         '400':
           description: Bad Request
           content:
@@ -1666,28 +1666,6 @@ components:
           type: string
           format: date-time
         ordered_at:
-          type: string
-          format: date-time
-      required:
-        - id
-        - retail_id
-        - code
-    ConfirmedOrder:
-      title: ConfirmedOrder
-      type: object
-      description: 'エンティティはOrderですが、パフォーマンスとユースケースを考慮し、表示する項目を絞りたいため、別のエンティティとして定義しています。'
-      x-tags:
-        - order
-      x-examples:
-        example-1: {}
-      properties:
-        id:
-          type: string
-        retail_id:
-          type: integer
-        code:
-          type: string
-        order_confirmed_at:
           type: string
           format: date-time
       required:
