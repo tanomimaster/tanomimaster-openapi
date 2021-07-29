@@ -1324,7 +1324,7 @@ paths:
         name: order_code
         in: path
         required: true
-    patch:
+    post:
       summary: メーカー用 受注確定API
       operationId: confirm-order
       responses:
@@ -1395,7 +1395,7 @@ paths:
         in: query
         required: true
         description: 小売コード
-    patch:
+    post:
       summary: メーカー用 納期回答API
       operationId: answer-delivery-date
       responses:
