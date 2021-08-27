@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.13
+  version: 0.1.0-beta
   title: Tanomimaster REST API Specification
   description: Written with Open API Specification 3.
   license:
