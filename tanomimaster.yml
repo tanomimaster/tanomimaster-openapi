@@ -1245,6 +1245,293 @@ paths:
       tags:
         - Orders
     parameters: []
+  /maker/orders:
+    parameters: []
+    get:
+      summary: メーカー用 注文一覧取得API
+      tags:
+        - Orders
+      parameters:
+        - name: is_confirmed
+          in: query
+          description: 受注確定しているかどうか
+          required: false
+          schema:
+            type: boolean
+        - name: status
+          in: query
+          description: ステータス(0：納期未回答, 2：出荷待ち, 3：出荷済み, 4：納品完了, 99：キャンセル)
+          required: false
+          schema:
+            type: integer
+        - name: delivery_date_from
+          in: query
+          description: 納品日FROM(YYYY-MM-DD)
+          required: false
+          schema:
+            type: string
+        - name: delivery_date_to
+          in: query
+          description: 納品日TO(YYYY-MM-DD)
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderWithDescendant'
+          headers:
+            X-Next-Page:
+              schema:
+                type: integer
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - API Key: []
+      operationId: listOrdersForMaker
+      description: list orders
+  /maker/orders/{order_code}:
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+    get:
+      summary: メーカー用 注文取得API
+      tags:
+        - Orders
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdersMakerWithDescendant'
+              examples: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - API Key: []
+      operationId: showAnOrderForMaker
+      description: show an order
+  /maker/orders/{order_code}/order_products/{branch_number}/confirm:
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: branch_number
+        in: path
+        required: true
+    post:
+      summary: メーカー用 受注確定API
+      operationId: confirm-order
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: confirm order
+      tags:
+        - Orders
+      security:
+        - API Key: []
+  /maker/orders/{order_code}/order_products/{branch_number}/confirm_cancel:
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: branch_number
+        in: path
+        required: true
+    post:
+      summary: メーカー用 キャンセル受注確定API
+      operationId: confirm-cancel-order
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: confirm order
+      tags:
+        - Orders
+      security:
+        - API Key: []
+
+  /maker/orders/{order_code}/order_products/{branch_number}/delivery_date:
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+        description: 注文番号
+      - schema:
+          type: string
+        name: branch_number
+        in: path
+        required: true
+        description: 注文明細No
+      - schema:
+          type: string
+        name: official_estimated_delivery_date
+        in: query
+        required: true
+        description: 納期日(YYYY-MM-DD)
+      - schema:
+          type: string
+        name: retail_code
+        in: query
+        required: true
+        description: 小売コード
+    post:
+      summary: メーカー用 納期回答API
+      operationId: answer-delivery-date
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderProduct'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: answer delivery date
+      tags:
+        - Orders
+      security:
+        - API Key: []
   /status:
     get:
       summary: Your GET endpoint
