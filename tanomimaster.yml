@@ -1478,7 +1478,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/OrderProduct'
         '400':
           description: Bad Request
           content:
@@ -1535,12 +1535,6 @@ paths:
         in: query
         required: true
         description: 納期日(YYYY-MM-DD)
-      - schema:
-          type: string
-        name: retail_code
-        in: query
-        required: true
-        description: 小売コード
     post:
       summary: メーカー用 納期回答API
       operationId: answer-delivery-date
@@ -1608,7 +1602,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/OrderProduct'
         '400':
           description: Bad Request
           content:
