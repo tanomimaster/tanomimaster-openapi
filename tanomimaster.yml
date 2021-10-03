@@ -79,7 +79,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: list Product entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     parameters: []
   '/retail/products/{product_id}':
     get:
@@ -108,7 +108,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       description: show product by id
     parameters:
       - schema:
@@ -163,7 +163,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       operationId: listOrders
       description: list orders
     post:
@@ -220,7 +220,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: Create an order
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -255,7 +255,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       operationId: showOrderById
       description: show order by Code
   '/retail/orders/{order_code}/order_products':
@@ -333,7 +333,7 @@ paths:
       operationId: get-orders-order_code-products
       description: list OrderProduct entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     post:
       summary: postOrderProduct
       operationId: post-retail-orders-order_code-order_products
@@ -378,7 +378,7 @@ paths:
       tags:
         - Retail
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -450,7 +450,7 @@ paths:
       operationId: get-orders-order_code-products-order_product_code
       description: show OrderProduct entities corresponding to the id
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     post:
       summary: ''
       operationId: post-retail-orders-order_code-order_products-order_product_id
@@ -499,7 +499,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: 仕入納品または枝番納品キャンセル、枝番注文キャンセルを行う
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       parameters: []
       requestBody:
         content:
@@ -569,7 +569,7 @@ paths:
       operationId: listMakers
       description: list Maker entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - Retail
     parameters: []
@@ -601,7 +601,7 @@ paths:
       parameters: []
       description: Show Maker entity
       security:
-        - API Key: []
+        - ApiKeyAuth: []
   /retail/products/check_code:
     post:
       summary: checkProductExistence
@@ -701,7 +701,7 @@ paths:
                       - '190002'
         description: ''
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - Retail
     parameters: []
@@ -802,7 +802,7 @@ paths:
       operationId: get-products-kumo
       description: products data format for kumo.
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - Retail
     parameters: []
@@ -859,7 +859,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       operationId: listCategories
       description: list categories
     parameters: []
@@ -911,7 +911,7 @@ paths:
       parameters: []
       description: Show RetailBranch entity
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     parameters:
       - schema:
           type: integer
@@ -961,7 +961,7 @@ paths:
       operationId: listRetailBranches
       description: list listRetailBranch entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - Retail
     parameters: []
@@ -1008,7 +1008,7 @@ paths:
       operationId: listRetailSalesOffices
       description: list listRetailSalesOffice entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - Retail
     parameters: []
@@ -1034,7 +1034,7 @@ paths:
       parameters: []
       description: Show RetailSalesOffice entity
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     parameters:
       - schema:
           type: integer
@@ -1061,7 +1061,7 @@ paths:
       operationId: get-retail-retail_users
       description: list listRetailUser entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     post:
       summary: bulkCreateRetailUsers
       tags:
@@ -1153,7 +1153,7 @@ paths:
                   items:
                     type: string
       security:
-        - API Key: []
+        - ApiKeyAuth: []
   /retail/orders/batch:
     post:
       summary: Bulk create orders
@@ -1209,7 +1209,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: bulk create orders
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -1316,7 +1316,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       operationId: listOrdersForMaker
       description: list orders
   /maker/orders/{order_code}:
@@ -1345,7 +1345,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       operationId: showAnOrderForMaker
       description: show an order
   '/maker/orders/{order_code}/order_products':
@@ -1585,7 +1585,7 @@ paths:
       tags:
         - Maker
       security:
-        - API Key: []
+        - ApiKeyAuth: []
   /maker/orders/{order_code}/order_products/{branch_number}/confirm_cancel:
     parameters:
       - schema:
@@ -1643,7 +1643,7 @@ paths:
       tags:
         - Maker
       security:
-        - API Key: []
+        - ApiKeyAuth: []
 
   /status:
     get:
@@ -1683,7 +1683,7 @@ paths:
                     version: 1.0.0
       operationId: get-status
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       description: show API version and healthcheck
 components:
   schemas:
