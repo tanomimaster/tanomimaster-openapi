@@ -77,7 +77,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: list OrderProduct entities
+      description: list Product entities
       security:
         - API Key: []
     parameters: []
@@ -1348,6 +1348,115 @@ paths:
         - API Key: []
       operationId: showAnOrderForMaker
       description: show an order
+  '/maker/orders/{order_code}/order_products':
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+    get:
+      summary: list OrderProducts
+      tags:
+        - Maker
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderProduct'
+          headers:
+            X-Next-Page:
+              schema:
+                type: integer
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: maker-get-orders-order_code-products
+      description: list OrderProduct entities
+      security:
+        - ApiKeyAuth: []
+  '/maker/orders/{order_code}/order_products/{branch_number}':
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: branch_number
+        in: path
+        required: true
+    get:
+      summary: showOrderProduct
+      tags:
+        - Maker
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderProduct'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: maker-get-orders-order_code-products-order_product_code
+      description: show OrderProduct entities corresponding to the id
+      security:
+        - ApiKeyAuth: []
   /maker/orders/{order_code}/order_products/{branch_number}/confirm:
     parameters:
       - schema:
@@ -1404,9 +1513,9 @@ paths:
       tags:
         - Maker
       security:
-        - API Key: []
+        - ApiKeyAuth: []
 
-  /maker/orders/{order_code}/order_products/{branch_number}/delivery_date:
+  /maker/orders/{order_code}/order_products/{branch_number}/update_delivery_date:
     parameters:
       - schema:
           type: string
