@@ -22,7 +22,7 @@ paths:
       summary: List products
       operationId: listProducts
       tags:
-        - products
+        - Retail
       parameters:
         - name: limit
           in: query
@@ -86,7 +86,7 @@ paths:
       summary: show Product
       operationId: showProductById
       tags:
-        - products
+        - Retail
       parameters:
         - name: product_id
           in: path
@@ -124,7 +124,7 @@ paths:
     get:
       summary: list orders
       tags:
-        - Orders
+        - Retail
       responses:
         '200':
           description: OK
@@ -228,7 +228,7 @@ paths:
               $ref: '#/components/schemas/OrderForCreate'
             examples: {}
       tags:
-        - Orders
+        - Retail
   '/retail/orders/{order_code}':
     parameters:
       - schema:
@@ -239,7 +239,7 @@ paths:
     get:
       summary: show an order
       tags:
-        - Orders
+        - Retail
       responses:
         '200':
           description: OK
@@ -268,7 +268,7 @@ paths:
     get:
       summary: listOrderProducts
       tags:
-        - Orders
+        - Retail
       responses:
         '200':
           description: OK
@@ -376,7 +376,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: post order_product
       tags:
-        - Orders
+        - Retail
       security:
         - API Key: []
       requestBody:
@@ -433,7 +433,7 @@ paths:
     get:
       summary: showOrderProduct
       tags:
-        - Orders
+        - Retail
       responses:
         '200':
           description: OK
@@ -525,7 +525,7 @@ paths:
                   order_status: cancelled
         description: ''
       tags:
-        - Orders
+        - Retail
   /retail/makers:
     get:
       summary: listMakers
@@ -571,7 +571,7 @@ paths:
       security:
         - API Key: []
       tags:
-        - Makers
+        - Retail
     parameters: []
   '/retail/makers/{maker_id}':
     parameters:
@@ -583,7 +583,7 @@ paths:
     get:
       summary: showMaker
       tags:
-        - Makers
+        - Retail
       responses:
         '200':
           description: OK
@@ -703,7 +703,7 @@ paths:
       security:
         - API Key: []
       tags:
-        - products
+        - Retail
     parameters: []
   /retail/products/kumo:
     get:
@@ -804,7 +804,7 @@ paths:
       security:
         - API Key: []
       tags:
-        - products
+        - Retail
     parameters: []
   /categories:
     get:
@@ -893,7 +893,7 @@ paths:
     get:
       summary: showRetailBranch
       tags:
-        - RetailBranches
+        - Retail
       responses:
         '200':
           description: OK
@@ -963,7 +963,7 @@ paths:
       security:
         - API Key: []
       tags:
-        - RetailBranches
+        - Retail
     parameters: []
   /retail/retail_sales_offices:
     get:
@@ -1010,13 +1010,13 @@ paths:
       security:
         - API Key: []
       tags:
-        - RetailSalesOffices
+        - Retail
     parameters: []
   '/retail/retail_sales_offices/{retail_sales_office_id}':
     get:
       summary: showRetailSalesOffice
       tags:
-        - RetailSalesOffices
+        - Retail
       responses:
         '200':
           description: OK
@@ -1045,7 +1045,7 @@ paths:
     get:
       summary: listRetailUsers
       tags:
-        - RetailUsers
+        - Retail
       responses:
         '200':
           description: OK
@@ -1065,7 +1065,7 @@ paths:
     post:
       summary: bulkCreateRetailUsers
       tags:
-        - RetailUsers
+        - Retail
       requestBody:
         content:
           application/json:
@@ -1120,7 +1120,7 @@ paths:
     post:
       summary: checkRegisteredRetailUsers
       tags:
-        - RetailUsers
+        - Retail
       responses:
         '200':
           description: OK
@@ -1245,14 +1245,14 @@ paths:
                               gas_type_id: null
                               memo: 備考欄
       tags:
-        - Orders
+        - Retail
     parameters: []
   /maker/orders:
     parameters: []
     get:
       summary: メーカー用 注文一覧取得API
       tags:
-        - Orders
+        - Maker
       parameters:
         - name: is_confirmed
           in: query
@@ -1329,7 +1329,7 @@ paths:
     get:
       summary: メーカー用 注文取得API
       tags:
-        - Orders
+        - Maker
       responses:
         '200':
           description: OK
@@ -1402,64 +1402,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: confirm order
       tags:
-        - Orders
-      security:
-        - API Key: []
-  /maker/orders/{order_code}/order_products/{branch_number}/confirm_cancel:
-    parameters:
-      - schema:
-          type: string
-        name: order_code
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: branch_number
-        in: path
-        required: true
-    post:
-      summary: メーカー用 キャンセル受注確定API
-      operationId: confirm-cancel-order
-      responses:
-        '201':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Errors'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      description: confirm order
-      tags:
-        - Orders
+        - Maker
       security:
         - API Key: []
 
@@ -1531,13 +1474,73 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: answer delivery date
       tags:
-        - Orders
+        - Maker
       security:
         - API Key: []
+  /maker/orders/{order_code}/order_products/{branch_number}/confirm_cancel:
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+        description: 注文番号
+      - schema:
+          type: string
+        name: branch_number
+        in: path
+        required: true
+    post:
+      summary: メーカー用 キャンセル受注確定API
+      operationId: confirm-cancel-order
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: confirm order
+      tags:
+        - Maker
+      security:
+        - API Key: []
+
   /status:
     get:
       summary: Your GET endpoint
-      tags: []
+      tags:
+        - Common
       responses:
         '200':
           description: Healthcheck OK
