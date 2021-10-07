@@ -1331,6 +1331,82 @@ paths:
       parameters: []
       security:
         - ApiKeyAuth: []
+  /master/delivery_companys:
+    get:
+      summary: メーカーの一覧を取得
+      operationId: getDeliveryCompanys
+      description: DeliveryCompanyの配列を取得
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeliveryCompany'
+          headers:
+            X-Next-Page:
+              schema:
+                type: integer
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Common
+    parameters: []
+  '/master/delivery_companys/{delivery_company_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: delivery_company_id
+        in: path
+        required: true
+    get:
+      summary: メーカーを取得
+      operationId: getDeliveryCompany
+      description: DeliveryCompanyの取得
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryCompany'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters: []
+      security:
+        - ApiKeyAuth: []
   '/master/makers/{maker_id}/maker_branches':
     parameters:
       - schema:
@@ -2108,7 +2184,7 @@ paths:
         - Maker
       security:
         - ApiKeyAuth: []
-  /maker/orders/{order_code}/order_products/{branch_number}/update_shipping_slip:
+  /maker/orders/{order_code}/order_products/{branch_number}/shipped:
     parameters:
       - schema:
           type: string
@@ -2135,8 +2211,9 @@ paths:
         required: false
         description: 配送伝票番号
     post:
-      summary: メーカー用 配送伝票番号登録
-      operationId: updateShippingSlip
+      summary: 配送済みにステータスを変更
+      operationId: shipped
+      description: 配送済みにステータスを変更。オプションのパラメータによって配送業者と配送伝票番号を登録できる。
       responses:
         '201':
           description: Updated
@@ -2174,7 +2251,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: update shipping slip
       tags:
         - Maker
       security:
@@ -2348,6 +2424,26 @@ components:
         - horsepower
         - start_date
         - use_gas_type_master
+    DeliveryCompany:
+      title: DeliveryCompany
+      type: object
+      description: 配送会社
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+      x-tags:
+        - delivery_company
     Maker:
       title: Maker
       type: object
