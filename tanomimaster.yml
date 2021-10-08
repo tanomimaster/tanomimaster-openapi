@@ -1174,6 +1174,89 @@ paths:
     parameters: []
   /categories:
     get:
+      deprecated: true
+      summary: カテゴリ一覧
+      description: Categoryエンティティの配列を返却
+      operationId: listCategoriesOld
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+            multipart/form-data:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          headers:
+            X-Next-Page:
+              schema:
+                type: integer
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    parameters: []
+  '/categories/{category_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: category_id
+        in: path
+        required: true
+    get:
+      deprecated: true
+      summary: カテゴリ単体
+      description: Categoryエンティティの取得
+      operationId: getCategoryByIdOld
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /master/categories:
+    get:
       summary: カテゴリ一覧
       description: Categoryエンティティの配列を返却
       operationId: listCategories
@@ -1226,10 +1309,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      security:
-        - ApiKeyAuth: []
     parameters: []
-  '/categories/{category_id}':
+  '/master/categories/{category_id}':
     parameters:
       - schema:
           type: integer
@@ -1239,7 +1320,7 @@ paths:
     get:
       summary: カテゴリ単体
       description: Categoryエンティティの取得
-      operationId: getCategorById
+      operationId: getCategoryById
       tags:
         - Common
       responses:
@@ -1255,6 +1336,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
   /master/makers:
     get:
       summary: メーカーの一覧を取得
@@ -1849,8 +1931,6 @@ paths:
                 Example:
                   value:
                     version: 1.0.0
-      security:
-        - ApiKeyAuth: []
   /maker/orders:
     parameters: []
     get:
@@ -2184,7 +2264,7 @@ paths:
         - Maker
       security:
         - ApiKeyAuth: []
-  /maker/orders/{order_code}/order_products/{branch_number}/shipped:
+  /maker/orders/{order_code}/order_products/{branch_number}/ship:
     parameters:
       - schema:
           type: string
@@ -2622,14 +2702,17 @@ components:
       type: object
       x-tags:
         - order
-      description: ''
+      description: '枝番'
       properties:
         id:
           type: string
+          description: 'ID'
         orders_maker_id:
           type: string
+          description: 'OrdersMakerの外部キー'
         product_id:
           type: integer
+          description: 'ProductのID'
         gas_type_id:
           description: ガス種を選択する商品の場合、必須項目
           oneOf:
@@ -2637,40 +2720,47 @@ components:
             - type: 'null'
         name:
           type: string
+          description: 商品名
         code:
           type: string
+          description: 枝番
         branch_number:
           type: integer
+          description: 枝番
         internal_code:
           type: string
+          description: メーカー内部コード
         price_amount:
           type: integer
+          description: 定価
         price_currency:
           type: string
+          description: 通貨
         maker_price_for_retail_amount:
           type: integer
+          description: メーカーの卸値
         maker_price_for_retail_currency:
           type: string
+          description: メーカーの卸値（通貨）
         subtotal_excluding_tax:
           type: integer
+          description: 税抜小計
         estimated_delivery_duration:
           type: integer
+          description: 目安納期日数
         shipping_status:
           type: string
           enum:
             - undelivered
             - delivered
+          description: 配送ステータス
         delivery_date:
           type: string
           format: date
+          description: 納期目安
         number_of_items:
           type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
+          description: 個数
         cancelled_at:
           type: string
           nullable: true
@@ -2678,27 +2768,37 @@ components:
           format: date-time
         shipping_postcode:
           type: string
+          description: 郵便番号
         shipping_prefecture_code:
           type: integer
+          description: 都道府県
         shipping_city:
           type: string
+          description: 市区町村
         shipping_street_address:
           type: string
+          description: 番地・号
         shipping_building:
           type: string
+          description: 建物名
         shipping_office_name:
           type: string
+          description: 営業所名
         shipping_tel:
           type: string
+          description: 電話番号
         estimated_delivery_date:
           type: string
           format: date
+          description: 納期目安
         official_estimated_delivery_date:
           type: string
           format: date
+          description: 納期回答
         answered_at:
           type: string
           format: date-time
+          description: 納期回答日時
         order_status:
           type: string
           enum:
@@ -2707,14 +2807,26 @@ components:
             - shipped
             - delivered
             - cancelled
+          description: 枝番ステータス
         memo:
           type: string
+          description: 備考
         order_confirmed_at:
           type: string
           format: date-time
+          description: 注文受付日時
         cancel_confirmed_at:
           type: string
           format: date-time
+          description: キャンセル注文受付日時
+        created_at:
+          type: string
+          format: date-time
+          description: レコード作成日時
+        updated_at:
+          type: string
+          format: date-time
+          description: レコード更新日時
       required:
         - id
         - orders_maker_id
@@ -2725,7 +2837,7 @@ components:
     Order:
       title: Order
       type: object
-      description: ''
+      description: '注文'
       x-tags:
         - order
       x-examples:
@@ -2733,19 +2845,25 @@ components:
       properties:
         id:
           type: string
+          description: ID
         retail_id:
           type: integer
+          description: Retailの外部キー
         code:
           type: string
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
+          description: 注文ID
         ordered_at:
           type: string
           format: date-time
+          description: 注文日
+        created_at:
+          type: string
+          format: date-time
+          description: レコード作成日時
+        updated_at:
+          type: string
+          format: date-time
+          description: レコード更新日時
       required:
         - id
         - retail_id
@@ -2757,16 +2875,21 @@ components:
       properties:
         id:
           type: integer
+          description: ID
         name:
           type: string
+          description: 小売り名
         code:
           type: string
+          description: コード
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       required:
         - id
         - name
@@ -2801,10 +2924,13 @@ components:
       properties:
         id:
           type: string
+          description: ID
         code:
           type: string
+          description: コード
         name:
           type: string
+          description: 小売営業所名
         postcode:
           type: string
         prefecture:
@@ -2863,21 +2989,26 @@ components:
         - retail
     OrdersMaker:
       title: OrdersMaker
+      description: メーカーごとの注文
       x-tags:
         - retail
       type: object
-      description: ''
       properties:
         id:
           type: string
+          description: ID
         maker_id:
           type: integer
+          description: Makerの外部キー
         maker_user_id:
           type: integer
+          description: MakerUserの外部キー
         maker_sales_office_id:
           type: integer
+          description: MakerSalesOfficeの外部キー
         code:
           type: string
+          description: ID
         status:
           type: string
           enum:
@@ -2886,22 +3017,28 @@ components:
             - shipped
             - delivered
             - cancelled
+          description: ステータス
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
         retail_sales_office_code:
           type: string
+          description: RtailSalesOfficeのcode
         desired_delivery_date:
           type: string
           format: date
           description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
         retail_user_code:
           type: string
+          description: RetailのUsercode
         maker_code:
           type: string
+          description: MakerのUsercode
       required:
         - id
         - maker_id
