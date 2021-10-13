@@ -19,8 +19,9 @@ servers:
 paths:
   /retail/products:
     get:
-      summary: List products
-      operationId: listProducts
+      summary: 商品の一覧を取得
+      operationId: getProducts
+      description: Productの配列を取得
       tags:
         - Retail
       parameters:
@@ -77,21 +78,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: list Product entities
       security:
         - ApiKeyAuth: []
     parameters: []
   '/retail/products/{product_id}':
     get:
-      summary: show Product
+      summary: 商品を取得
       operationId: showProductById
+      description: Productを取得
       tags:
         - Retail
       parameters:
         - name: product_id
           in: path
           required: true
-          description: The id of the product to retrieve
+          description: ID
           schema:
             type: string
       responses:
@@ -109,7 +110,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - ApiKeyAuth: []
-      description: show product by id
     parameters:
       - schema:
           type: integer
@@ -122,7 +122,9 @@ paths:
   /retail/orders:
     parameters: []
     get:
-      summary: list orders
+      summary: 注文の一覧を取得
+      operationId: getRetailOrders
+      description: Orderの配列を取得
       tags:
         - Retail
       responses:
@@ -164,11 +166,10 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - ApiKeyAuth: []
-      operationId: listOrders
-      description: list orders
     post:
-      summary: Creating an order
-      operationId: createAnOrder
+      summary: 注文を作成
+      operationId: createOrder
+      description: 注文を作成
       responses:
         '201':
           description: Created
@@ -218,7 +219,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: Create an order
       security:
         - ApiKeyAuth: []
       requestBody:
@@ -237,7 +237,9 @@ paths:
         in: path
         required: true
     get:
-      summary: show an order
+      summary: 注文を取得
+      operationId: getRetailOrder
+      description: Orderを取得
       tags:
         - Retail
       responses:
@@ -256,8 +258,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - ApiKeyAuth: []
-      operationId: showOrderById
-      description: show order by Code
   '/retail/orders/{order_code}/order_products':
     parameters:
       - schema:
@@ -266,7 +266,7 @@ paths:
         in: path
         required: true
     get:
-      summary: listOrderProducts
+      summary: 枝番の一覧を取得
       tags:
         - Retail
       responses:
@@ -409,9 +409,8 @@ paths:
                   type: string
                 gas_type_id:
                   description: ガス種を選択する商品の場合、必須項目
-                  oneOf:
-                    - type: integer
-                    - type: 'null'
+                  type: integer
+                  nullable: true
                 memo:
                   type: string
               required:
@@ -1162,7 +1161,7 @@ paths:
                           shipping_tel: 048-854-1910
                           retail_user_code: matsukura-sales
                           retail_sales_office_code: '000'
-                          desired_delivery_date: 2020/03/20
+                          desired_delivery_date: 2020-03-20
                           products:
                             - code: '000'
                               branch_number: 2
@@ -1176,7 +1175,7 @@ paths:
     get:
       deprecated: true
       summary: カテゴリ一覧
-      description: Categoryエンティティの配列を返却
+      description: "`/master/categories`にエンドポイントが変更になります。"
       operationId: listCategoriesOld
       tags:
         - Common
@@ -1238,7 +1237,7 @@ paths:
     get:
       deprecated: true
       summary: カテゴリ単体
-      description: Categoryエンティティの取得
+      description: "`/master/category/{category_id}`にエンドポイントが変更になります。"
       operationId: getCategoryByIdOld
       tags:
         - Common
@@ -2715,9 +2714,8 @@ components:
           description: 'ProductのID'
         gas_type_id:
           description: ガス種を選択する商品の場合、必須項目
-          oneOf:
-            - type: integer
-            - type: 'null'
+          type: integer
+          nullable: true
         name:
           type: string
           description: 商品名
@@ -2811,6 +2809,7 @@ components:
         memo:
           type: string
           description: 備考
+          nullable: true
         order_confirmed_at:
           type: string
           format: date-time
@@ -2819,9 +2818,17 @@ components:
           type: string
           format: date-time
           description: キャンセル注文受付日時
+        shipping_slip_number:
+          description: 配送伝票番号
+          type: string
+          nullable: true
+        delivery_company_id:
+          description: 配送業者ID
+          type: integer
+          nullable: true
         created_at:
           type: string
-          format: date-time
+          format: date-timek
           description: レコード作成日時
         updated_at:
           type: string
@@ -2900,7 +2907,7 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
         code:
           type: string
         name:
@@ -3032,7 +3039,7 @@ components:
         desired_delivery_date:
           type: string
           format: date
-          description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
+          description: "希望納期日。指定しない場合、タノミマスター算出する納期目安を設定。(フォーマット: `yyyy-mm-dd`)"
         retail_user_code:
           type: string
           description: RetailのUsercode
@@ -3116,9 +3123,8 @@ components:
                       minimum: 1
                     gas_type_id:
                       description: ガス種を選択する商品の場合、必須項目
-                      oneOf:
-                        - type: integer
-                        - type: 'null'
+                      type: integer
+                      nullable: true
                     memo:
                       type: string
                   required:
