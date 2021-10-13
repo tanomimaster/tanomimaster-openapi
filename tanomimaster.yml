@@ -3215,14 +3215,13 @@ components:
               code:
                 type: string
               maker_price_for_retail_amount:
-                oneOf:
-                  - type: integer
-                  - type: 'null'
-                description: ''
+                type: integer
+                nullable: true
+                description: '定価。nullの場合はオープンプライス。'
               maker_price_for_retail_currency:
-                oneOf:
-                  - type: string
-                  - type: 'null'
+                type: string
+                nullable: true
+                description: '定価の通貨。ISO 4217。nullの場合はオープンプライス。'
               is_available:
                 type: boolean
                 description: The product is on sale or not
@@ -3257,3 +3256,4 @@ components:
       type: http
       scheme: Bearer
       description: API key acquired on retail management page by admin.
+
