@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.14
+  version: 0.0.15
   title: Tanomimaster REST API Specification
   description: Written with Open API Specification 3.
   license:
@@ -79,7 +79,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: list OrderProduct entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     parameters: []
   '/retail/products/{product_id}':
     get:
@@ -108,7 +108,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       description: show product by id
     parameters:
       - schema:
@@ -163,7 +163,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       operationId: listOrders
       description: list orders
     post:
@@ -220,7 +220,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: Create an order
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -255,7 +255,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       operationId: showOrderById
       description: show order by Code
   '/retail/orders/{order_code}/order_products':
@@ -333,7 +333,7 @@ paths:
       operationId: get-orders-order_code-products
       description: list OrderProduct entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     post:
       summary: postOrderProduct
       operationId: post-retail-orders-order_code-order_products
@@ -378,7 +378,7 @@ paths:
       tags:
         - Orders
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -450,7 +450,7 @@ paths:
       operationId: get-orders-order_code-products-order_product_code
       description: show OrderProduct entities corresponding to the id
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     post:
       summary: ''
       operationId: post-retail-orders-order_code-order_products-order_product_id
@@ -499,7 +499,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: 仕入納品または枝番納品キャンセル、枝番注文キャンセルを行う
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       parameters: []
       requestBody:
         content:
@@ -569,7 +569,7 @@ paths:
       operationId: listMakers
       description: list Maker entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - Makers
     parameters: []
@@ -601,7 +601,7 @@ paths:
       parameters: []
       description: Show Maker entity
       security:
-        - API Key: []
+        - ApiKeyAuth: []
   /retail/products/check_code:
     post:
       summary: checkProductExistence
@@ -701,7 +701,7 @@ paths:
                       - '190002'
         description: ''
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - products
     parameters: []
@@ -736,6 +736,9 @@ paths:
                 properties:
                   items:
                     type: array
+                    items:
+                      $ref: '#/components/schemas/ProductForKumo'
+
               examples:
                 normal response. returns availability and price.:
                   value:
@@ -800,7 +803,7 @@ paths:
       operationId: get-products-kumo
       description: products data format for kumo.
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - products
     parameters: []
@@ -857,7 +860,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       operationId: listCategories
       description: list categories
     parameters: []
@@ -909,7 +912,7 @@ paths:
       parameters: []
       description: Show RetailBranch entity
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     parameters:
       - schema:
           type: integer
@@ -959,7 +962,7 @@ paths:
       operationId: listRetailBranches
       description: list listRetailBranch entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - RetailBranches
     parameters: []
@@ -1006,7 +1009,7 @@ paths:
       operationId: listRetailSalesOffices
       description: list listRetailSalesOffice entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - RetailSalesOffices
     parameters: []
@@ -1032,7 +1035,7 @@ paths:
       parameters: []
       description: Show RetailSalesOffice entity
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     parameters:
       - schema:
           type: integer
@@ -1059,7 +1062,7 @@ paths:
       operationId: get-retail-retail_users
       description: list listRetailUser entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     post:
       summary: bulkCreateRetailUsers
       tags:
@@ -1151,7 +1154,7 @@ paths:
                   items:
                     type: string
       security:
-        - API Key: []
+        - ApiKeyAuth: []
   /retail/orders/batch:
     post:
       summary: Bulk create orders
@@ -1207,7 +1210,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: bulk create orders
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -1282,7 +1285,7 @@ paths:
                     version: 1.0.0
       operationId: get-status
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       description: show API version and healthcheck
 components:
   schemas:
@@ -1333,6 +1336,69 @@ components:
         - id
         - name
         - category_id
+    ProductForKumo:
+      title: Product for kumo
+      type: object
+      xml:
+        name: Product
+      x-tags:
+        - product
+      description: A single product.
+      properties:
+        maker_code:
+          type: string
+          description: 雲の宇宙船内で利用されているメーカーコード
+        product_code:
+          type: string
+          example: 111-222-333-444
+          description: 型式（品番）
+        internal_code:
+          type: string
+          description: メーカー内部コード
+          example: 12-10002
+        name:
+          type: string
+          description: 商品名
+          example: doggie
+        price_amount:
+          type: integer
+          description: メーカー希望小売価格(税抜)
+          example: 10000
+        maker_price_for_retail_amount:
+          type: integer
+          description: 仕入れ値
+          example: 8000
+        tax_division:
+          type: integer
+          description: '0固定(課税対象)'
+          example: 0
+        power_consumption:
+          type: string
+          description: '空文字固定'
+          example: ''
+        horsepower:
+          type: string
+          description: '空文字固定'
+          example: ''
+        start_date:
+          type: string
+          format: date
+          description: 取り扱い開始日
+          example: '2021/01/20'
+        use_gas_type_master:
+          type: boolean
+          description: ガス種の指定が必須かどうか
+          example: true
+      required:
+        - maker_code
+        - product_code
+        - name
+        - maker_price_for_retail_amount
+        - tax_division
+        - power_consumption
+        - horsepower
+        - start_date
+        - use_gas_type_master
     Maker:
       title: Maker
       type: object
@@ -1916,7 +1982,7 @@ components:
                 $ref: '#/components/schemas/OrderProduct'
       title: OrdersMakerWithDescendant
   securitySchemes:
-    API Key:
+    ApiKeyAuth:
       type: http
       scheme: Bearer
       description: API key acquired on retail management page by admin.
