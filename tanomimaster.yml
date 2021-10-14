@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.13
+  version: 0.0.14
   title: Tanomimaster REST API Specification
   description: Written with Open API Specification 3.
   license:
@@ -1321,6 +1321,7 @@ components:
             - sold
         internal_code:
           type: string
+          nullable: true
         name:
           type: string
           example: doggie
@@ -1441,10 +1442,13 @@ components:
           type: integer
         internal_code:
           type: string
+          nullable: true
         price_amount:
           type: integer
+          nullable: true
         price_currency:
           type: string
+          nullable: true
         maker_price_for_retail_amount:
           type: integer
         maker_price_for_retail_currency:
@@ -1461,6 +1465,7 @@ components:
         delivery_date:
           type: string
           format: date
+          nullable: true
         number_of_items:
           type: integer
         created_at:
@@ -1484,6 +1489,7 @@ components:
           type: string
         shipping_building:
           type: string
+          nullable: true
         shipping_office_name:
           type: string
         shipping_tel:
@@ -1494,9 +1500,11 @@ components:
         official_estimated_delivery_date:
           type: string
           format: date
+          nullable: true
         answered_at:
           type: string
           format: date-time
+          nullable: true
         order_status:
           type: string
           enum:
@@ -1507,12 +1515,15 @@ components:
             - cancelled
         memo:
           type: string
+          nullable: true
         order_confirmed_at:
           type: string
           format: date-time
+          nullable: true
         cancel_confirmed_at:
           type: string
           format: date-time
+          nullable: true
       required:
         - id
         - orders_maker_id
