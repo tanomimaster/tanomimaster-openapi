@@ -2278,8 +2278,8 @@ paths:
         required: true
         description: 注文明細No
       - schema:
-          type: string
-        name: delivery_company
+          type: integer
+        name: delivery_company_id
         in: query
         required: false
         description: 配送業者ID
