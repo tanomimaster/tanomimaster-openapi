@@ -266,7 +266,7 @@ paths:
         in: path
         required: true
     get:
-      summary: 枝番の一覧を取得
+      summary: 注文明細の一覧を取得
       tags:
         - Retail
       responses:
@@ -393,6 +393,7 @@ paths:
                   type: integer
                 branch_number:
                   type: integer
+                  description: 注文明細No
                 shipping_postcode:
                   type: string
                 shipping_prefecture_code:
@@ -429,6 +430,7 @@ paths:
         name: branch_number
         in: path
         required: true
+        description: 注文明細No
     get:
       summary: showOrderProduct
       tags:
@@ -496,7 +498,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: 仕入納品または枝番納品キャンセル、枝番注文キャンセルを行う
+      description: 仕入納品または注文明細納品キャンセル、注文明細キャンセルを行う
       security:
         - ApiKeyAuth: []
       parameters: []
@@ -516,10 +518,10 @@ paths:
               仕入納品:
                 value:
                   order_status: delivered
-              枝番納品キャンセル:
+              注文明細納品キャンセル:
                 value:
                   order_status: undelivered
-              枝番注文キャンセル:
+              注文明細注文キャンセル:
                 value:
                   order_status: cancelled
         description: ''
@@ -2039,7 +2041,7 @@ paths:
         in: path
         required: true
     get:
-      summary: 枝番注文の一覧を取得
+      summary: 注文明細の一覧を取得
       operationId: getOrderProducts
       description: 指定された注文における
       tags:
@@ -2119,6 +2121,7 @@ paths:
         name: branch_number
         in: path
         required: true
+        description: 注文明細No
     get:
       summary: showOrderProduct
       tags:
@@ -2152,6 +2155,7 @@ paths:
         name: branch_number
         in: path
         required: true
+        description: 注文明細No
     post:
       summary: メーカー用 受注確定
       operationId: confirm-order
@@ -2347,6 +2351,7 @@ paths:
         name: branch_number
         in: path
         required: true
+        description: 注文明細No
     post:
       summary: メーカー用 キャンセル受注確定API
       operationId: confirm-cancel-order
@@ -2701,7 +2706,7 @@ components:
       type: object
       x-tags:
         - order
-      description: '枝番'
+      description: '注文明細'
       properties:
         id:
           type: string
@@ -2721,10 +2726,10 @@ components:
           description: 商品名
         code:
           type: string
-          description: 枝番
+          description: 注文明細
         branch_number:
           type: integer
-          description: 枝番
+          description: 注文明細No
         internal_code:
           type: string
           description: メーカー内部コード
@@ -2805,7 +2810,7 @@ components:
             - shipped
             - delivered
             - cancelled
-          description: 枝番ステータス
+          description: 注文明細ステータス
         memo:
           type: string
           description: 備考
@@ -3117,7 +3122,7 @@ components:
                       type: string
                     branch_number:
                       type: integer
-                      description: 明細枝番。指定しない場合、タノミマスターで自動発番
+                      description: 注文明細No。指定しない場合、タノミマスターで自動発番
                     number_of_items:
                       type: integer
                       minimum: 1
@@ -3256,4 +3261,3 @@ components:
       type: http
       scheme: Bearer
       description: API key acquired on retail management page by admin.
-
