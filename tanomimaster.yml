@@ -54,6 +54,7 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Per-Page:
               schema:
                 type: integer
@@ -63,6 +64,7 @@ paths:
             X-Next-Page:
               schema:
                 type: integer
+                nullable: true
           content:
             application/json:
               schema:
@@ -140,9 +142,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrderWithDescendant'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -152,12 +151,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
@@ -282,9 +286,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrderProduct'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -294,12 +295,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         '401':
           description: Unauthorized
           content:
@@ -544,9 +550,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/Maker'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -556,12 +559,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
@@ -858,9 +866,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/RetailBranch'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -870,12 +875,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
@@ -906,9 +916,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/RetailSalesOffice'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -918,12 +925,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
@@ -1286,9 +1298,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/Category'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -1298,12 +1307,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
@@ -1356,9 +1370,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/Maker'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -1368,12 +1379,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
@@ -1432,9 +1448,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/DeliveryCompany'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -1444,12 +1457,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
@@ -1576,9 +1594,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/MakerSalesOffice'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -1588,12 +1603,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
@@ -1672,9 +1692,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/Retail'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -1684,12 +1701,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
@@ -1816,9 +1838,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/RetailSalesOffice'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -1828,12 +1847,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
@@ -1976,9 +2000,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrderWithDescendant'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -1988,12 +2009,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
@@ -2059,9 +2085,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrderProduct'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -2071,12 +2094,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         '401':
           description: Unauthorized
           content:
@@ -2557,7 +2585,7 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
         code:
           type: string
         name:
@@ -3018,6 +3046,12 @@ components:
         maker_sales_office_id:
           type: integer
           description: MakerSalesOfficeの外部キー
+        retail_user_id:
+          type: integer
+          description: RetailUserの外部キー
+        retail_sales_office_id:
+          type: integer
+          description: RetailSalesOfficeの外部キー
         code:
           type: string
           description: ID
@@ -3040,7 +3074,7 @@ components:
           description: レコード更新日時
         retail_sales_office_code:
           type: string
-          description: RtailSalesOfficeのcode
+          description: RetailSalesOfficeのcode
         desired_delivery_date:
           type: string
           format: date
