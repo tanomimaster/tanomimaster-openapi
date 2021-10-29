@@ -1351,6 +1351,84 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /master/delivery_companies:
+    get:
+      summary: メーカーの一覧を取得
+      operationId: getDeliveryCompanys
+      description: DeliveryCompanyの配列を取得
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeliveryCompany'
+          headers:
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Common
+    parameters: []
+  '/master/delivery_companies/{delivery_company_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: delivery_company_id
+        in: path
+        required: true
+    get:
+      summary: メーカーを取得
+      operationId: getDeliveryCompany
+      description: DeliveryCompanyの取得
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryCompany'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters: []
+      security:
+        - ApiKeyAuth: []
 
   /master/makers:
     get:
@@ -1421,84 +1499,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Maker'
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      parameters: []
-      security:
-        - ApiKeyAuth: []
-  /master/delivery_companys:
-    get:
-      summary: メーカーの一覧を取得
-      operationId: getDeliveryCompanys
-      description: DeliveryCompanyの配列を取得
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/DeliveryCompany'
-          headers:
-            X-Page:
-              schema:
-                type: integer
-            X-Per-Page:
-              schema:
-                type: integer
-            X-Prev-Page:
-              schema:
-                type: integer
-                nullable: true
-            X-Total:
-              schema:
-                type: integer
-            X-Total-Pages:
-              schema:
-                type: integer
-            X-Next-Page:
-              schema:
-                type: integer
-                nullable: true
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      security:
-        - ApiKeyAuth: []
-      tags:
-        - Common
-    parameters: []
-  '/master/delivery_companys/{delivery_company_id}':
-    parameters:
-      - schema:
-          type: integer
-        name: delivery_company_id
-        in: path
-        required: true
-    get:
-      summary: メーカーを取得
-      operationId: getDeliveryCompany
-      description: DeliveryCompanyの取得
-      tags:
-        - Common
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeliveryCompany'
         default:
           description: unexpected error
           content:
