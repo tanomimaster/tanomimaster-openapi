@@ -3136,7 +3136,6 @@ components:
       properties:
         code:
           type: string
-          pattern: '^[0-9]{10,}$'
           description: 注文番号
         makers:
           type: array
@@ -3201,6 +3200,8 @@ components:
           type: string
           format: date-time
           description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
+      required:
+        - code
     ProductCheckCodeRequest:
       title: ProductCheckCodeRequest
       type: object
