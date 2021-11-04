@@ -2441,16 +2441,22 @@ components:
           format: int64
         created_at:
           type: string
+          format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
         disabled_at:
           type: string
           format: date-time
+          nullable: true
         estimated_delivery_duration:
           type: integer
+          nullable: true
         use_gas_type_master:
           type: boolean
+          nullable: true
         maker_id:
           type: integer
         status:
@@ -2466,7 +2472,7 @@ components:
           description: メーカー内部コード
         name:
           type: string
-          example: doggie
+          example: 商品A
         category_id:
           type: integer
         maker_code:
@@ -2545,14 +2551,20 @@ components:
       properties:
         id:
           type: integer
+          example: 1
+          description: 配送会社ID
         name:
           type: string
+          description: 配送会社名
+          example: ヤマト急便
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       required:
         - id
         - name
@@ -2572,9 +2584,11 @@ components:
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       required:
         - id
         - code
@@ -2595,9 +2609,11 @@ components:
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       required:
         - id
         - code
@@ -2630,9 +2646,11 @@ components:
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       x-tags:
         - Maker
     MakerUser:
@@ -2666,9 +2684,11 @@ components:
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       x-tags:
         - Maker
     Category:
@@ -2687,12 +2707,14 @@ components:
           type: integer
         ancestry:
           type: string
-        updated_at:
-          type: string
-          format: date-time
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
+        updated_at:
+          type: string
+          format: date-time
+          description: レコード更新日時
         name:
           type: string
         disabled_at:
@@ -2741,12 +2763,15 @@ components:
         id:
           type: string
           description: 'ID'
+          example: 1
         orders_maker_id:
           type: string
           description: 'OrdersMakerの外部キー'
+          example: 1
         product_id:
           type: integer
           description: 'ProductのID'
+          example: 1
         gas_type_id:
           description: ガス種を選択する商品の場合、必須項目
           type: integer
@@ -2762,12 +2787,16 @@ components:
           description: 注文明細No
         internal_code:
           type: string
+          nullable: true
           description: メーカー内部コード
+          example: 12-10002
         price_amount:
           type: integer
+          nullable: true
           description: 定価
         price_currency:
           type: string
+          nullable: true
           description: 通貨
         maker_price_for_retail_amount:
           type: integer
@@ -2783,6 +2812,7 @@ components:
           description: 目安納期日数
         shipping_status:
           type: string
+          nullable: true
           enum:
             - undelivered
             - delivered
@@ -2801,35 +2831,45 @@ components:
           format: date-time
         shipping_postcode:
           type: string
+          nullable: true
           description: 郵便番号
         shipping_prefecture_code:
           type: integer
+          nullable: true
           description: 都道府県
         shipping_city:
           type: string
+          nullable: true
           description: 市区町村
         shipping_street_address:
           type: string
+          nullable: true
           description: 番地・号
         shipping_building:
           type: string
+          nullable: true
           description: 建物名
         shipping_office_name:
           type: string
+          nullable: true
           description: 営業所名
         shipping_tel:
           type: string
+          nullable: true
           description: 電話番号
         estimated_delivery_date:
           type: string
+          nullable: true
           format: date
           description: 納期目安
         official_estimated_delivery_date:
           type: string
+          nullable: true
           format: date
           description: 納期回答
         answered_at:
           type: string
+          nullable: true
           format: date-time
           description: 納期回答日時
         order_status:
@@ -2843,24 +2883,26 @@ components:
           description: 注文明細ステータス
         memo:
           type: string
-          description: 備考
           nullable: true
+          description: 備考
         order_confirmed_at:
           type: string
+          nullable: true
           format: date-time
           description: 注文受付日時
         cancel_confirmed_at:
           type: string
+          nullable: true
           format: date-time
           description: キャンセル注文受付日時
         shipping_slip_number:
           description: 配送伝票番号
-          type: string
           nullable: true
+          type: string
         delivery_company_id:
           description: 配送業者ID
-          type: integer
           nullable: true
+          type: integer
         created_at:
           type: string
           format: date-timek
@@ -2950,9 +2992,11 @@ components:
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       required:
         - id
         - code
@@ -2988,9 +3032,11 @@ components:
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       x-tags:
         - retail
     RetailUser:
@@ -3024,9 +3070,11 @@ components:
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       x-tags:
         - retail
     OrdersMaker:
