@@ -2819,6 +2819,7 @@ components:
           description: 配送ステータス
         delivery_date:
           type: string
+          nullable: true
           format: date
           description: 納期目安
         number_of_items:
