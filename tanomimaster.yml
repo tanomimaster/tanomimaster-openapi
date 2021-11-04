@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.13
+  version: 0.0.16
   title: Tanomimaster REST API Specification
   description: Written with Open API Specification 3.
   license:
@@ -79,7 +79,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: list OrderProduct entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     parameters: []
   '/retail/products/{product_id}':
     get:
@@ -108,7 +108,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       description: show product by id
     parameters:
       - schema:
@@ -163,7 +163,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       operationId: listOrders
       description: list orders
     post:
@@ -220,7 +220,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: Create an order
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -255,7 +255,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       operationId: showOrderById
       description: show order by Code
   '/retail/orders/{order_code}/order_products':
@@ -333,7 +333,7 @@ paths:
       operationId: get-orders-order_code-products
       description: list OrderProduct entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     post:
       summary: postOrderProduct
       operationId: post-retail-orders-order_code-order_products
@@ -378,7 +378,7 @@ paths:
       tags:
         - Orders
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -450,7 +450,7 @@ paths:
       operationId: get-orders-order_code-products-order_product_code
       description: show OrderProduct entities corresponding to the id
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     post:
       summary: ''
       operationId: post-retail-orders-order_code-order_products-order_product_id
@@ -499,7 +499,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: 仕入納品または枝番納品キャンセル、枝番注文キャンセルを行う
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       parameters: []
       requestBody:
         content:
@@ -569,7 +569,7 @@ paths:
       operationId: listMakers
       description: list Maker entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - Makers
     parameters: []
@@ -601,7 +601,7 @@ paths:
       parameters: []
       description: Show Maker entity
       security:
-        - API Key: []
+        - ApiKeyAuth: []
   /retail/products/check_code:
     post:
       summary: checkProductExistence
@@ -701,7 +701,7 @@ paths:
                       - '190002'
         description: ''
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - products
     parameters: []
@@ -802,7 +802,7 @@ paths:
       operationId: get-products-kumo
       description: products data format for kumo.
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - products
     parameters: []
@@ -859,7 +859,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       operationId: listCategories
       description: list categories
     parameters: []
@@ -911,7 +911,7 @@ paths:
       parameters: []
       description: Show RetailBranch entity
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     parameters:
       - schema:
           type: integer
@@ -961,7 +961,7 @@ paths:
       operationId: listRetailBranches
       description: list listRetailBranch entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - RetailBranches
     parameters: []
@@ -1008,7 +1008,7 @@ paths:
       operationId: listRetailSalesOffices
       description: list listRetailSalesOffice entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       tags:
         - RetailSalesOffices
     parameters: []
@@ -1034,7 +1034,7 @@ paths:
       parameters: []
       description: Show RetailSalesOffice entity
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     parameters:
       - schema:
           type: integer
@@ -1061,7 +1061,7 @@ paths:
       operationId: get-retail-retail_users
       description: list listRetailUser entities
       security:
-        - API Key: []
+        - ApiKeyAuth: []
     post:
       summary: bulkCreateRetailUsers
       tags:
@@ -1153,7 +1153,7 @@ paths:
                   items:
                     type: string
       security:
-        - API Key: []
+        - ApiKeyAuth: []
   /retail/orders/batch:
     post:
       summary: Bulk create orders
@@ -1209,7 +1209,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: bulk create orders
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -1228,12 +1228,12 @@ paths:
                       ordered_at: '2020/03/03 12:43:36'
                       makers:
                         - maker_code: matsukura
-                          shipping_postcode: 338-0824
-                          shipping_preferecture_code: '11'
-                          shipping_city: さいたま市桜区
-                          shipping_street_address: 上大久保８８８－５
+                          shipping_postcode: "338-0824"
+                          shipping_preferecture_code: "11"
+                          shipping_city: "さいたま市桜区"
+                          shipping_street_address: "上大久保８８８－５"
                           shipping_building: null
-                          shipping_office_name: 日本瓦斯株式会社　浦和営業所
+                          shipping_office_name: "日本瓦斯株式会社　浦和営業所"
                           shipping_tel: 048-854-1910
                           retail_user_code: matsukura-sales
                           retail_sales_office_code: '000'
@@ -1284,7 +1284,7 @@ paths:
                     version: 1.0.0
       operationId: get-status
       security:
-        - API Key: []
+        - ApiKeyAuth: []
       description: show API version and healthcheck
 components:
   schemas:
@@ -1323,6 +1323,7 @@ components:
             - sold
         internal_code:
           type: string
+          nullable: true
         name:
           type: string
           example: doggie
@@ -1397,7 +1398,6 @@ components:
         - horsepower
         - start_date
         - use_gas_type_master
-
     Maker:
       title: Maker
       type: object
@@ -1507,10 +1507,13 @@ components:
           type: integer
         internal_code:
           type: string
+          nullable: true
         price_amount:
           type: integer
+          nullable: true
         price_currency:
           type: string
+          nullable: true
         maker_price_for_retail_amount:
           type: integer
         maker_price_for_retail_currency:
@@ -1527,6 +1530,7 @@ components:
         delivery_date:
           type: string
           format: date
+          nullable: true
         number_of_items:
           type: integer
         created_at:
@@ -1550,6 +1554,7 @@ components:
           type: string
         shipping_building:
           type: string
+          nullable: true
         shipping_office_name:
           type: string
         shipping_tel:
@@ -1560,9 +1565,11 @@ components:
         official_estimated_delivery_date:
           type: string
           format: date
+          nullable: true
         answered_at:
           type: string
           format: date-time
+          nullable: true
         order_status:
           type: string
           enum:
@@ -1573,12 +1580,15 @@ components:
             - cancelled
         memo:
           type: string
+          nullable: true
         order_confirmed_at:
           type: string
           format: date-time
+          nullable: true
         cancel_confirmed_at:
           type: string
           format: date-time
+          nullable: true
       required:
         - id
         - orders_maker_id

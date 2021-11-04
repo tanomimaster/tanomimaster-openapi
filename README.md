@@ -21,6 +21,12 @@ We need to re-define branch release model associating server-side and client-sid
   - https://docs.gitlab.com/ee/api/README.html#gitlab-ci-job-token
 
 
+## Run Github Actions on local
+
+```
+% act pull_request
+```
+
 ## Tools
 
 - Viewer
