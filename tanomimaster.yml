@@ -1219,6 +1219,7 @@ paths:
             X-Next-Page:
               schema:
                 type: integer
+                nullable: true
             X-Page:
               schema:
                 type: integer
@@ -1228,6 +1229,7 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
@@ -1956,7 +1958,7 @@ paths:
                 Example:
                   value:
                     version: 1.0.0
-  /maker/orders:
+  /maker/orders_makers:
     parameters: []
     get:
       summary: メーカー用 注文一覧取得API
@@ -1998,7 +2000,7 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OrderWithDescendant'
+                      $ref: '#/components/schemas/OrdersMakerWithDescendant'
           headers:
             X-Page:
               schema:
@@ -2030,7 +2032,7 @@ paths:
         - ApiKeyAuth: []
       operationId: listOrdersForMaker
       description: list orders
-  /maker/orders/{order_code}:
+  /maker/orders_makers/{order_code}:
     parameters:
       - schema:
           type: string
@@ -2048,7 +2050,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrdersMakerWithDescendant'
-              examples: {}
         default:
           description: unexpected error
           content:
@@ -2059,7 +2060,7 @@ paths:
         - ApiKeyAuth: []
       operationId: showAnOrderForMaker
       description: show an order
-  '/maker/orders/{order_code}/order_products':
+  '/maker/orders_makers/{order_code}/order_products':
     parameters:
       - schema:
           type: string
@@ -2137,7 +2138,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - ApiKeyAuth: []
-  '/maker/orders/{order_code}/order_products/{branch_number}':
+  '/maker/orders_makers/{order_code}/order_products/{branch_number}':
     parameters:
       - schema:
           type: string
@@ -2171,7 +2172,7 @@ paths:
       description: show OrderProduct entities corresponding to the id
       security:
         - ApiKeyAuth: []
-  /maker/orders/{order_code}/order_products/{branch_number}/confirm:
+  /maker/orders_makers/{order_code}/order_products/{branch_number}/confirm:
     parameters:
       - schema:
           type: string
@@ -2230,7 +2231,7 @@ paths:
       security:
         - ApiKeyAuth: []
 
-  /maker/orders/{order_code}/order_products/{branch_number}/update_delivery_date:
+  /maker/orders_makers/{order_code}/order_products/{branch_number}/update_delivery_date:
     parameters:
       - schema:
           type: string
@@ -2295,7 +2296,7 @@ paths:
         - Maker
       security:
         - ApiKeyAuth: []
-  /maker/orders/{order_code}/order_products/{branch_number}/ship:
+  /maker/orders_makers/{order_code}/order_products/{branch_number}/ship:
     parameters:
       - schema:
           type: string
@@ -2366,7 +2367,7 @@ paths:
         - Maker
       security:
         - ApiKeyAuth: []
-  /maker/orders/{order_code}/order_products/{branch_number}/confirm_cancel:
+  /maker/orders_makers/{order_code}/order_products/{branch_number}/confirm_cancel:
     parameters:
       - schema:
           type: string
@@ -2707,6 +2708,7 @@ components:
           type: integer
         ancestry:
           type: string
+          nullable: true
         created_at:
           type: string
           format: date-time
@@ -2720,6 +2722,7 @@ components:
         disabled_at:
           type: string
           format: date-time
+          nullable: true
       required:
         - id
         - name
@@ -3083,6 +3086,7 @@ components:
       description: メーカーごとの注文
       x-tags:
         - retail
+        - maker
       type: object
       properties:
         id:
@@ -3341,6 +3345,8 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/OrderProduct'
+            order:
+              $ref: '#/components/schemas/OrderWithDescendant'
       title: OrdersMakerWithDescendant
   securitySchemes:
     ApiKeyAuth:
