@@ -2040,7 +2040,7 @@ paths:
         in: path
         required: true
     get:
-      summary: メーカー用 注文取得API
+      summary: メーカー用 注文取得
       tags:
         - Maker
       responses:
@@ -3127,16 +3127,10 @@ components:
           type: string
           format: date-time
           description: レコード更新日時
-        retail_sales_office_code:
-          type: string
-          description: RetailSalesOfficeのcode
         desired_delivery_date:
           type: string
           format: date
           description: "希望納期日。指定しない場合、タノミマスター算出する納期目安を設定。(フォーマット: `yyyy-mm-dd`)"
-        retail_user_code:
-          type: string
-          description: RetailのUsercode
         maker_code:
           type: string
           description: MakerのUsercode
@@ -3347,6 +3341,10 @@ components:
                 $ref: '#/components/schemas/OrderProduct'
             order:
               $ref: '#/components/schemas/OrderWithDescendant'
+            retail_user:
+              $ref: '#/components/schemas/RetailUser'
+            sales_office:
+              $ref: '#/components/schemas/RetailSalesOffice'
       title: OrdersMakerWithDescendant
   securitySchemes:
     ApiKeyAuth:
