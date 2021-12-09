@@ -1971,6 +1971,12 @@ paths:
           required: false
           schema:
             type: boolean
+        - name: is_cancel_confirmed
+          in: query
+          description: キャンセル確定しているかどうか
+          required: false
+          schema:
+            type: boolean
         - name: status
           in: query
           description: ステータス(0：納期未回答, 2：出荷待ち, 3：出荷済み, 4：納品完了, 99：キャンセル)
