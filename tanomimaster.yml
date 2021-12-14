@@ -341,8 +341,8 @@ paths:
       security:
         - ApiKeyAuth: []
     post:
-      summary: postOrderProduct
-      operationId: post-retail-orders-order_code-order_products
+      summary: 注文明細を変更する
+      operationId: postRetailOrdersOrderCodeOrderProducts
       responses:
         '201':
           description: Created
@@ -438,7 +438,7 @@ paths:
         required: true
         description: 注文明細No
     get:
-      summary: showOrderProduct
+      summary: 注文明細を取得する
       tags:
         - Retail
       responses:
@@ -459,7 +459,7 @@ paths:
       security:
         - ApiKeyAuth: []
     post:
-      summary: ''
+      summary: 注文明細のステータスを変更する
       operationId: post-retail-orders-order_code-order_products-order_product_id
       responses:
         '200':
@@ -718,7 +718,7 @@ paths:
     parameters: []
   /retail/products/kumo:
     get:
-      summary: products data for kumo
+      summary: 基幹システム連動用に商品一覧を取得
       parameters:
         - name: maker_code
           in: query
@@ -1056,7 +1056,7 @@ paths:
                           type: string
   /retail/retail_users/check_registrations:
     post:
-      summary: checkRegisteredRetailUsers
+      summary: 指定したユーザが存在するかをチェック
       operationId: checkRegistrationForRetailUser
       description: RetailUserの存在確認用
       tags:
@@ -2158,7 +2158,7 @@ paths:
         required: true
         description: 注文明細No
     get:
-      summary: showOrderProduct
+      summary: 注文明細を取得する
       tags:
         - Maker
       responses:
