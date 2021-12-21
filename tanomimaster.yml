@@ -2,20 +2,50 @@ openapi: 3.0.3
 info:
   version: 0.1.0-beta
   title: Tanomimaster REST API Specification
-  description: Written with Open API Specification 3.
+  description: |
+    タノミマスターのREST APIサービスの仕様書です。
+    APIの仕様策定は以下のレポジトリで行っています。
+    [https://github.com/tanomimaster/tanomimaster-openapi](https://github.com/tanomimaster/tanomimaster-openapi).
+    APIの実行にはAPIキーが必要です。小売、またはメーカーの管理画面から取得できます。
+
+    # 概要
+    このAPI仕様書は **OpenAPI フォーマット** で記述されています。
+    APIの種別は3つあります。
+    - 小売り(発注者)向け
+    - メーカー(受注者)向け
+    - 共通
+
+    サーバを通してこのドキュメントをプレビューしている場合は、このドキュメントにあるAPI仕様が実装されたバージョンのアプリケーションが稼働していることを担保されています。
+    動作している環境によってバージョン番号が異なることがあると思いますのでご注意ください。
+
+    <!--
+    # Cross-Origin Resource Sharing
+    This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
+    And that allows cross-domain communication from the browser.
+    All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
+    -->
+
+    # 認証
+
+    タノミマスターはAPIキーによる認証を提供しています。
+
   license:
     name: All Rights Reserved
   contact:
     name: Yuki Matsukura
     url: 'https://tanomimaster.freshdesk.com/support/tickets/new'
     email: support@tanomimaster.freshdesk.com
+  x-logo:
+    url: "https://tanomimaster.com/favicons/icon-256x256.png"
+    backgroundColor: '#000000'
+    altText: 'Tanomimaster'
 servers:
   - url: 'https://development.tanomimaster.com/api/v1'
-    description: Development
+    description: 開発環境
   - url: 'https://staging.tanomimaster.com/api/v1'
-    description: Staging
+    description: ステージング
   - url: 'https://tanomimaster.com/api/v1'
-    description: Production
+    description: 本番環境
 paths:
   /retail/products:
     get:
@@ -1961,7 +1991,7 @@ paths:
   /maker/orders_makers:
     parameters: []
     get:
-      summary: メーカー用 注文一覧取得API
+      summary: メーカー用 注文一覧取得
       tags:
         - Maker
       parameters:
@@ -2258,7 +2288,7 @@ paths:
         required: true
         description: 納期日(YYYY-MM-DD)
     post:
-      summary: メーカー用 納期回答API
+      summary: メーカー用 納期回答
       operationId: answer-delivery-date
       responses:
         '201':
@@ -2388,7 +2418,7 @@ paths:
         required: true
         description: 注文明細No
     post:
-      summary: メーカー用 キャンセル受注確定API
+      summary: メーカー用 キャンセル受注確定
       operationId: confirm-cancel-order
       description: キャンセル処理を受け付けたことを通知
       responses:
@@ -2750,7 +2780,7 @@ components:
         認証失敗:
           code: '401'
           message: 認証に失敗しました
-        実行権限がない(e.g. メーカーが本APIを実行した場合など):
+        実行権限がない:
           code: '403'
           message: APIを実行する権限がありません
         注文番号重複エラー:
@@ -3356,4 +3386,4 @@ components:
     ApiKeyAuth:
       type: http
       scheme: Bearer
-      description: API key acquired on retail management page by admin.
+      description: 管理者権限で管理画面にログインし、左側のメニューから「APIキーの確認」を選んでください。
