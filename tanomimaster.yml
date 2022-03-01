@@ -2327,7 +2327,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: answer delivery date
+      description: 納期回答を行います。納期日が変更になった場合にもこちらのエンドポイントを再度利用してください。
       tags:
         - Maker
       security:
