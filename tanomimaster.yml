@@ -1,28 +1,59 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
-  version: 0.0.15
+  version: 2.2.0-rc1
   title: Tanomimaster REST API Specification
-  description: Written with Open API Specification 3.
+  description: |
+    タノミマスターのREST APIサービスの仕様書です。
+    APIの仕様策定は以下のレポジトリで行っています。
+    [https://github.com/tanomimaster/tanomimaster-openapi](https://github.com/tanomimaster/tanomimaster-openapi).
+    APIの実行にはAPIキーが必要です。小売、またはメーカーの管理画面から取得できます。
+
+    # 概要
+    このAPI仕様書は **OpenAPI フォーマット** で記述されています。
+    APIの種別は3つあります。
+    - 小売り(発注者)向け
+    - メーカー(受注者)向け
+    - 共通
+
+    サーバを通してこのドキュメントをプレビューしている場合は、このドキュメントにあるAPI仕様が実装されたバージョンのアプリケーションが稼働していることを担保されています。
+    動作している環境によってバージョン番号が異なることがあると思いますのでご注意ください。
+
+    <!--
+    # Cross-Origin Resource Sharing
+    This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
+    And that allows cross-domain communication from the browser.
+    All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
+    -->
+
+    # 認証
+
+    タノミマスターはAPIキーによる認証を提供しています。
+
   license:
     name: All Rights Reserved
   contact:
     name: Yuki Matsukura
     url: 'https://tanomimaster.freshdesk.com/support/tickets/new'
     email: support@tanomimaster.freshdesk.com
+  x-logo:
+    url: "https://tanomimaster.com/favicons/icon-256x256.png"
+    backgroundColor: '#000000'
+    altText: 'Tanomimaster'
 servers:
   - url: 'https://development.tanomimaster.com/api/v1'
-    description: Development
+    description: 開発環境
   - url: 'https://staging.tanomimaster.com/api/v1'
-    description: Staging
+    description: ステージング
   - url: 'https://tanomimaster.com/api/v1'
-    description: Production
+    description: 本番環境
 paths:
   /retail/products:
     get:
-      summary: List products
-      operationId: listProducts
+      summary: 商品の一覧を取得
+      operationId: getProducts
+      description: Productの配列を取得
       tags:
-        - products
+        - Retail
       parameters:
         - name: limit
           in: query
@@ -53,6 +84,7 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Per-Page:
               schema:
                 type: integer
@@ -62,6 +94,7 @@ paths:
             X-Next-Page:
               schema:
                 type: integer
+                nullable: true
           content:
             application/json:
               schema:
@@ -77,21 +110,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: list OrderProduct entities
       security:
         - ApiKeyAuth: []
     parameters: []
   '/retail/products/{product_id}':
     get:
-      summary: show Product
+      summary: 商品を取得
       operationId: showProductById
+      description: Productを取得
       tags:
-        - products
+        - Retail
       parameters:
         - name: product_id
           in: path
           required: true
-          description: The id of the product to retrieve
+          description: ID
           schema:
             type: string
       responses:
@@ -109,7 +142,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - ApiKeyAuth: []
-      description: show product by id
     parameters:
       - schema:
           type: integer
@@ -122,9 +154,11 @@ paths:
   /retail/orders:
     parameters: []
     get:
-      summary: list orders
+      summary: 注文の一覧を取得
+      operationId: getRetailOrders
+      description: Orderの配列を取得
       tags:
-        - Orders
+        - Retail
       responses:
         '200':
           description: OK
@@ -138,9 +172,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrderWithDescendant'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -150,12 +181,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
@@ -164,11 +200,10 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - ApiKeyAuth: []
-      operationId: listOrders
-      description: list orders
     post:
-      summary: post order
+      summary: 注文を作成
       operationId: createOrder
+      description: 注文を作成
       responses:
         '201':
           description: Created
@@ -218,7 +253,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: Create an order
       security:
         - ApiKeyAuth: []
       requestBody:
@@ -228,7 +262,7 @@ paths:
               $ref: '#/components/schemas/OrderForCreate'
             examples: {}
       tags:
-        - Orders
+        - Retail
   '/retail/orders/{order_code}':
     parameters:
       - schema:
@@ -237,9 +271,11 @@ paths:
         in: path
         required: true
     get:
-      summary: show an order
+      summary: 注文を取得
+      operationId: getRetailOrder
+      description: Orderを取得
       tags:
-        - Orders
+        - Retail
       responses:
         '200':
           description: OK
@@ -256,8 +292,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - ApiKeyAuth: []
-      operationId: showOrderById
-      description: show order by Code
   '/retail/orders/{order_code}/order_products':
     parameters:
       - schema:
@@ -266,9 +300,9 @@ paths:
         in: path
         required: true
     get:
-      summary: listOrderProducts
+      summary: 注文明細の一覧を取得
       tags:
-        - Orders
+        - Retail
       responses:
         '200':
           description: OK
@@ -282,9 +316,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrderProduct'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -294,12 +325,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         '401':
           description: Unauthorized
           content:
@@ -335,8 +371,8 @@ paths:
       security:
         - ApiKeyAuth: []
     post:
-      summary: postOrderProduct
-      operationId: post-retail-orders-order_code-order_products
+      summary: 注文明細を変更する
+      operationId: postRetailOrdersOrderCodeOrderProducts
       responses:
         '201':
           description: Created
@@ -376,7 +412,7 @@ paths:
                 $ref: '#/components/schemas/Error'
       description: post order_product
       tags:
-        - Orders
+        - Retail
       security:
         - ApiKeyAuth: []
       requestBody:
@@ -393,6 +429,7 @@ paths:
                   type: integer
                 branch_number:
                   type: integer
+                  description: 注文明細No
                 shipping_postcode:
                   type: string
                 shipping_prefecture_code:
@@ -409,9 +446,8 @@ paths:
                   type: string
                 gas_type_id:
                   description: ガス種を選択する商品の場合、必須項目
-                  oneOf:
-                    - type: integer
-                    - type: 'null'
+                  type: integer
+                  nullable: true
                 memo:
                   type: string
               required:
@@ -430,10 +466,11 @@ paths:
         name: branch_number
         in: path
         required: true
+        description: 注文明細No
     get:
-      summary: showOrderProduct
+      summary: 注文明細を取得する
       tags:
-        - Orders
+        - Retail
       responses:
         '200':
           description: OK
@@ -452,7 +489,7 @@ paths:
       security:
         - ApiKeyAuth: []
     post:
-      summary: ''
+      summary: 注文明細のステータスを変更する
       operationId: post-retail-orders-order_code-order_products-order_product_id
       responses:
         '200':
@@ -497,7 +534,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: 仕入納品または枝番納品キャンセル、枝番注文キャンセルを行う
+      description: 仕入納品または注文明細納品キャンセル、注文明細キャンセルを行う
       security:
         - ApiKeyAuth: []
       parameters: []
@@ -517,17 +554,18 @@ paths:
               仕入納品:
                 value:
                   order_status: delivered
-              枝番納品キャンセル:
+              注文明細納品キャンセル:
                 value:
                   order_status: undelivered
-              枝番注文キャンセル:
+              注文明細注文キャンセル:
                 value:
                   order_status: cancelled
         description: ''
       tags:
-        - Orders
+        - Retail
   /retail/makers:
     get:
+      deprecated: true
       summary: listMakers
       responses:
         '200':
@@ -542,9 +580,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/Maker'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -554,12 +589,17 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
@@ -571,7 +611,7 @@ paths:
       security:
         - ApiKeyAuth: []
       tags:
-        - Makers
+        - Retail
     parameters: []
   '/retail/makers/{maker_id}':
     parameters:
@@ -581,9 +621,10 @@ paths:
         in: path
         required: true
     get:
+      deprecated: true
       summary: showMaker
       tags:
-        - Makers
+        - Retail
       responses:
         '200':
           description: OK
@@ -703,11 +744,11 @@ paths:
       security:
         - ApiKeyAuth: []
       tags:
-        - products
+        - Retail
     parameters: []
   /retail/products/kumo:
     get:
-      summary: products data for kumo
+      summary: 基幹システム連動用に商品一覧を取得
       parameters:
         - name: maker_code
           in: query
@@ -738,7 +779,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ProductForKumo'
-
               examples:
                 normal response. returns availability and price.:
                   value:
@@ -805,96 +845,16 @@ paths:
       security:
         - ApiKeyAuth: []
       tags:
-        - products
+        - Retail
     parameters: []
-  /categories:
-    get:
-      summary: listCategories
-      tags:
-        - Common
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Category'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Category'
-            multipart/form-data:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Category'
-          headers:
-            X-Next-Page:
-              schema:
-                type: integer
-            X-Page:
-              schema:
-                type: integer
-            X-Per-Page:
-              schema:
-                type: integer
-            X-Prev-Page:
-              schema:
-                type: integer
-            X-Total:
-              schema:
-                type: integer
-            X-Total-Pages:
-              schema:
-                type: integer
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      security:
-        - ApiKeyAuth: []
-      operationId: listCategories
-      description: list categories
-    parameters: []
-  '/categories/{category_id}':
-    parameters:
-      - schema:
-          type: integer
-        name: category_id
-        in: path
-        required: true
-    get:
-      summary: show the category
-      tags:
-        - Common
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Category'
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      operationId: get-category-category_id
-      description: show the category
   '/retail/retail_branches/{retail_branch_id}':
     get:
+      deprecated: true
       summary: showRetailBranch
+      operationId: showRetailsRetailBranchById
+      description: 廃止予定。`/master/retails/{retail_id}/retail_branches/{retail_branch_id}` を利用してください。
       tags:
-        - RetailBranches
+        - Retail
       responses:
         '200':
           description: OK
@@ -908,9 +868,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      operationId: showRetailBranchById
       parameters: []
-      description: Show RetailBranch entity
       security:
         - ApiKeyAuth: []
     parameters:
@@ -921,7 +879,10 @@ paths:
         required: true
   /retail/retail_branches:
     get:
+      deprecated: true
       summary: listRetailBranches
+      operationId: listRetailBranches
+      description: 廃止予定。`/master/retails/{retail_id}/retail_branches` を利用してください。
       responses:
         '200':
           description: OK
@@ -935,9 +896,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/RetailBranch'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -947,28 +905,34 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      operationId: listRetailBranches
-      description: list listRetailBranch entities
       security:
         - ApiKeyAuth: []
       tags:
-        - RetailBranches
+        - Retail
     parameters: []
   /retail/retail_sales_offices:
     get:
+      deprecated: true
       summary: listRetailSalesOffices
+      operationId: listRetailSalesOffices
+      description: 廃止予定。`/master/retails/{retail_id}/retail_branches` を利用してください。
       responses:
         '200':
           description: OK
@@ -982,9 +946,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/RetailSalesOffice'
           headers:
-            X-Next-Page:
-              schema:
-                type: integer
             X-Page:
               schema:
                 type: integer
@@ -994,30 +955,36 @@ paths:
             X-Prev-Page:
               schema:
                 type: integer
+                nullable: true
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
                 type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
         default:
           description: unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      operationId: listRetailSalesOffices
-      description: list listRetailSalesOffice entities
       security:
         - ApiKeyAuth: []
       tags:
-        - RetailSalesOffices
+        - Retail
     parameters: []
   '/retail/retail_sales_offices/{retail_sales_office_id}':
     get:
+      deprecated: true
       summary: showRetailSalesOffice
+      operationId: showRetailSalesOfficeById
+      description: 廃止予定。`/master/retails/{retail_id}/retail_branches/{sales_office_id}` を利用してください。
       tags:
-        - RetailSalesOffices
+        - Retail
       responses:
         '200':
           description: OK
@@ -1031,9 +998,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      operationId: showRetailSalesOfficeById
       parameters: []
-      description: Show RetailSalesOffice entity
       security:
         - ApiKeyAuth: []
     parameters:
@@ -1044,9 +1009,11 @@ paths:
         required: true
   /retail/retail_users:
     get:
-      summary: listRetailUsers
+      summary: 自社小売りのユーザ一覧を取得
+      operationId: getRetailUsers
+      description: RetailUserの配列を取得
       tags:
-        - RetailUsers
+        - Retail
       responses:
         '200':
           description: OK
@@ -1059,14 +1026,14 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/RetailUser'
-      operationId: get-retail-retail_users
-      description: list listRetailUser entities
       security:
         - ApiKeyAuth: []
     post:
-      summary: bulkCreateRetailUsers
+      summary: 自社小売りのユーザを一括更新
+      operationId: updateRetailUsers
+      description: RetailUserの配列をパラメータとして一括更新
       tags:
-        - RetailUsers
+        - Retail
       requestBody:
         content:
           application/json:
@@ -1119,9 +1086,11 @@ paths:
                           type: string
   /retail/retail_users/check_registrations:
     post:
-      summary: checkRegisteredRetailUsers
+      summary: 指定したユーザが存在するかをチェック
+      operationId: checkRegistrationForRetailUser
+      description: RetailUserの存在確認用
       tags:
-        - RetailUsers
+        - Retail
       responses:
         '200':
           description: OK
@@ -1141,8 +1110,6 @@ paths:
                           type: string
                         registed:
                           type: boolean
-      operationId: post-retail-retail_users-check_registrations
-      description: check registered retail users
       requestBody:
         content:
           application/json:
@@ -1157,8 +1124,9 @@ paths:
         - ApiKeyAuth: []
   /retail/orders/batch:
     post:
-      summary: Bulk create orders
+      summary: 一括で発注する
       operationId: post-retai-orders-batch
+      description: OrderForCreateの配列を指定することにより一括で注文を作成する。
       responses:
         '201':
           description: Created
@@ -1208,7 +1176,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: bulk create orders
       security:
         - ApiKeyAuth: []
       requestBody:
@@ -1238,7 +1205,7 @@ paths:
                           shipping_tel: 048-854-1910
                           retail_user_code: matsukura-sales
                           retail_sales_office_code: '000'
-                          desired_delivery_date: 2020/03/20
+                          desired_delivery_date: 2020-03-20
                           products:
                             - code: '000'
                               branch_number: 2
@@ -1246,12 +1213,750 @@ paths:
                               gas_type_id: null
                               memo: 備考欄
       tags:
-        - Orders
+        - Retail
     parameters: []
+  /categories:
+    get:
+      deprecated: true
+      summary: カテゴリ一覧
+      description: "`/master/categories`にエンドポイントが変更になります。"
+      operationId: listCategoriesOld
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+            multipart/form-data:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          headers:
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    parameters: []
+  '/categories/{category_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: category_id
+        in: path
+        required: true
+    get:
+      deprecated: true
+      summary: カテゴリ単体
+      description: "`/master/category/{category_id}`にエンドポイントが変更になります。"
+      operationId: getCategoryByIdOld
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /master/categories:
+    get:
+      summary: カテゴリ一覧
+      description: Categoryエンティティの配列を返却
+      operationId: listCategories
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+            multipart/form-data:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          headers:
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    parameters: []
+  '/master/categories/{category_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: category_id
+        in: path
+        required: true
+    get:
+      summary: カテゴリ単体
+      description: Categoryエンティティの取得
+      operationId: getCategoryById
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /master/delivery_companies:
+    get:
+      summary: 配送会社の一覧を取得
+      operationId: getDeliveryCompanys
+      description: DeliveryCompanyの配列を取得
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeliveryCompany'
+          headers:
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Common
+    parameters: []
+  '/master/delivery_companies/{delivery_company_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: delivery_company_id
+        in: path
+        required: true
+    get:
+      summary: 配送会社を取得
+      operationId: getDeliveryCompany
+      description: DeliveryCompanyの取得
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryCompany'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters: []
+      security:
+        - ApiKeyAuth: []
+
+  /master/makers:
+    get:
+      summary: メーカーの一覧を取得
+      operationId: getMakers
+      description: Makerの配列を取得
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Maker'
+          headers:
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Common
+    parameters: []
+  '/master/makers/{maker_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: maker_id
+        in: path
+        required: true
+    get:
+      summary: メーカーを取得
+      operationId: getMaker
+      description: Makerの取得
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Maker'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters: []
+      security:
+        - ApiKeyAuth: []
+  '/master/makers/{maker_id}/maker_branches':
+    parameters:
+      - schema:
+          type: integer
+        name: maker_id
+        in: path
+        required: true
+    get:
+      summary: メーカーの支店一覧を取得
+      operationId: getMakerBranches
+      description: MakerBranchの配列を取得
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MakerBranch'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters: []
+      security:
+        - ApiKeyAuth: []
+  '/master/makers/{maker_id}/maker_branches/{maker_branch_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: maker_id
+        in: path
+        required: true
+      - schema:
+          type: integer
+        name: maker_branch_id
+        in: path
+        required: true
+    get:
+      summary: メーカーの支店を取得
+      operationId: getMakerBranch
+      description: MakerBranchの取得
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MakerBranch'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters: []
+      security:
+        - ApiKeyAuth: []
+  /master/makers/{maker_id}/maker_branches/{maker_branch_id}/maker_sales_offices:
+    get:
+      summary: メーカーの営業所一覧の取得
+      operationId: listMasterMakerSalesOffices
+      description: MakerSalesOfficeの配列
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MakerSalesOffice'
+          headers:
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Common
+    parameters:
+      - schema:
+          type: integer
+        name: maker_id
+        in: path
+        required: true
+      - schema:
+          type: integer
+        name: maker_branch_id
+        in: path
+        required: true
+  '/master/makers/{maker_id}/maker_branches/{maker_branch_id}/maker_sales_offices/{maker_sales_office_id}':
+    get:
+      summary: メーカーの営業所の取得
+      operationId: showMasterMakerMakerSalesOfficeById
+      description: MakerSalesOfficeの取得
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MakerSalesOffice'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters: []
+      security:
+        - ApiKeyAuth: []
+    parameters:
+      - schema:
+          type: integer
+        name: maker_id
+        in: path
+        required: true
+      - schema:
+          type: integer
+        name: maker_branch_id
+        in: path
+        required: true
+      - schema:
+          type: integer
+        name: maker_sales_office_id
+        in: path
+        required: true
+  /master/retails:
+    get:
+      summary: 小売りの一覧を取得
+      operationId: getRetails
+      description: Retailの配列を取得
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Retail'
+          headers:
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Common
+    parameters: []
+  '/master/retails/{retail_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: retail_id
+        in: path
+        required: true
+    get:
+      summary: 小売りを取得
+      operationId: getRetail
+      description: Retailの取得
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Retail'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters: []
+      security:
+        - ApiKeyAuth: []
+  '/master/retails/{retail_id}/retail_branches':
+    parameters:
+      - schema:
+          type: integer
+        name: retail_id
+        in: path
+        required: true
+    get:
+      summary: 小売りの支店一覧を取得
+      operationId: getRetailBranches
+      description: RetailBranchの配列を取得
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RetailBranch'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters: []
+      security:
+        - ApiKeyAuth: []
+  '/master/retails/{retail_id}/retail_branches/{retail_branch_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: retail_id
+        in: path
+        required: true
+      - schema:
+          type: integer
+        name: retail_branch_id
+        in: path
+        required: true
+    get:
+      summary: 小売りの支店を取得
+      operationId: getRetailBranch
+      description: RetailBranchの取得
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetailBranch'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters: []
+      security:
+        - ApiKeyAuth: []
+  /master/retails/{retail_id}/retail_branches/{retail_branch_id}/retail_sales_offices:
+    get:
+      summary: 小売りの営業所一覧の取得
+      operationId: listMasterRetailSalesOffices
+      description: RetailSalesOfficeの配列
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RetailSalesOffice'
+          headers:
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Common
+    parameters:
+      - schema:
+          type: integer
+        name: retail_id
+        in: path
+        required: true
+      - schema:
+          type: integer
+        name: retail_branch_id
+        in: path
+        required: true
+  '/master/retails/{retail_id}/retail_branches/{retail_branch_id}/retail_sales_offices/{retail_sales_office_id}':
+    get:
+      summary: 小売りの営業所の取得
+      operationId: showMasterRetailRetailSalesOfficeById
+      description: RetailSalesOfficeの取得
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetailSalesOffice'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters: []
+      security:
+        - ApiKeyAuth: []
+    parameters:
+      - schema:
+          type: integer
+        name: retail_id
+        in: path
+        required: true
+      - schema:
+          type: integer
+        name: retail_branch_id
+        in: path
+        required: true
+      - schema:
+          type: integer
+        name: retail_sales_office_id
+        in: path
+        required: true
   /status:
     get:
-      summary: Your GET endpoint
-      tags: []
+      summary: ヘルスチェック用URL
+      operationId: getStatus
+      description: 稼働中のAPI仕様のバージョンを表示することと、ヘルスチェック用のエンドポイントです。
+      tags:
+        - Common
       responses:
         '200':
           description: Healthcheck OK
@@ -1283,10 +1988,480 @@ paths:
                 Example:
                   value:
                     version: 1.0.0
-      operationId: get-status
+  /maker/orders_makers:
+    parameters: []
+    get:
+      summary: メーカー用 注文一覧取得
+      tags:
+        - Maker
+      parameters:
+        - name: is_confirmed
+          in: query
+          description: 受注確定しているかどうか
+          required: false
+          schema:
+            type: boolean
+        - name: is_cancel_confirmed
+          in: query
+          description: キャンセル確定しているかどうか
+          required: false
+          schema:
+            type: boolean
+        - name: status
+          in: query
+          description: ステータス(0：納期未回答, 2：出荷待ち, 3：出荷済み, 4：納品完了, 99：キャンセル)
+          required: false
+          schema:
+            type: integer
+        - name: delivery_date_from
+          in: query
+          description: 納品日FROM(YYYY-MM-DD)
+          required: false
+          schema:
+            type: string
+        - name: delivery_date_to
+          in: query
+          description: 納品日TO(YYYY-MM-DD)
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrdersMakerWithDescendant'
+          headers:
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security:
         - ApiKeyAuth: []
-      description: show API version and healthcheck
+      operationId: listOrdersForMaker
+      description: list orders
+  /maker/orders_makers/{order_code}:
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+    get:
+      summary: メーカー用 注文取得
+      tags:
+        - Maker
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdersMakerWithDescendant'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+      operationId: showAnOrderForMaker
+      description: show an order
+  '/maker/orders_makers/{order_code}/order_products':
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+    get:
+      summary: 注文明細の一覧を取得
+      operationId: getOrderProducts
+      description: 指定された注文における
+      tags:
+        - Maker
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderProduct'
+          headers:
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  '/maker/orders_makers/{order_code}/order_products/{branch_number}':
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: branch_number
+        in: path
+        required: true
+        description: 注文明細No
+    get:
+      summary: 注文明細を取得する
+      tags:
+        - Maker
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderProduct'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: maker-get-orders-order_code-products-order_product_code
+      description: show OrderProduct entities corresponding to the id
+      security:
+        - ApiKeyAuth: []
+  /maker/orders_makers/{order_code}/order_products/{branch_number}/confirm:
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: branch_number
+        in: path
+        required: true
+        description: 注文明細No
+    post:
+      summary: メーカー用 受注確定
+      operationId: confirm-order
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderProduct'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: confirm order
+      tags:
+        - Maker
+      security:
+        - ApiKeyAuth: []
+
+  /maker/orders_makers/{order_code}/order_products/{branch_number}/update_delivery_date:
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+        description: 注文番号
+      - schema:
+          type: string
+        name: branch_number
+        in: path
+        required: true
+        description: 注文明細No
+      - schema:
+          type: string
+        name: official_estimated_delivery_date
+        in: query
+        required: true
+        description: 納期日(YYYY-MM-DD)
+    post:
+      summary: メーカー用 納期回答
+      operationId: answer-delivery-date
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderProduct'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: 納期回答を行います。納期日が変更になった場合にもこちらのエンドポイントを再度利用してください。
+      tags:
+        - Maker
+      security:
+        - ApiKeyAuth: []
+  /maker/orders_makers/{order_code}/order_products/{branch_number}/ship:
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+        description: 注文番号
+      - schema:
+          type: string
+        name: branch_number
+        in: path
+        required: true
+        description: 注文明細No
+      - schema:
+          type: integer
+        name: delivery_company_id
+        in: query
+        required: false
+        description: 配送業者ID
+      - schema:
+          type: string
+        name: shipping_slip_number
+        in: query
+        required: false
+        description: 配送伝票番号
+    post:
+      summary: 配送済みにステータスを変更
+      operationId: shipped
+      description: 配送済みにステータスを変更。オプションのパラメータによって配送業者と配送伝票番号を登録できる。
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderProduct'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      tags:
+        - Maker
+      security:
+        - ApiKeyAuth: []
+  /maker/orders_makers/{order_code}/order_products/{branch_number}/confirm_cancel:
+    parameters:
+      - schema:
+          type: string
+        name: order_code
+        in: path
+        required: true
+        description: 注文番号
+      - schema:
+          type: string
+        name: branch_number
+        in: path
+        required: true
+        description: 注文明細No
+    post:
+      summary: メーカー用 キャンセル受注確定
+      operationId: confirm-cancel-order
+      description: キャンセル処理を受け付けたことを通知
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderProduct'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      tags:
+        - Maker
+      security:
+        - ApiKeyAuth: []
 components:
   schemas:
     Product:
@@ -1303,16 +2478,22 @@ components:
           format: int64
         created_at:
           type: string
+          format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
         disabled_at:
           type: string
           format: date-time
+          nullable: true
         estimated_delivery_duration:
           type: integer
+          nullable: true
         use_gas_type_master:
           type: boolean
+          nullable: true
         maker_id:
           type: integer
         status:
@@ -1325,9 +2506,10 @@ components:
         internal_code:
           type: string
           nullable: true
+          description: メーカー内部コード
         name:
           type: string
-          example: doggie
+          example: 商品A
         category_id:
           type: integer
         maker_code:
@@ -1399,10 +2581,36 @@ components:
         - horsepower
         - start_date
         - use_gas_type_master
+    DeliveryCompany:
+      title: DeliveryCompany
+      type: object
+      description: 配送会社
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: 配送会社ID
+        name:
+          type: string
+          description: 配送会社名
+          example: ヤマト急便
+        created_at:
+          type: string
+          format: date-time
+          description: レコード作成日時
+        updated_at:
+          type: string
+          format: date-time
+          description: レコード更新日時
+      required:
+        - id
+        - name
+      x-tags:
+        - delivery_company
     Maker:
       title: Maker
       type: object
-      description: A maker
+      description: メーカー
       properties:
         id:
           type: integer
@@ -1413,224 +2621,24 @@ components:
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       required:
         - id
         - code
         - name
       x-tags:
         - maker
-    Category:
-      title: Category
-      type: object
-      x-examples:
-        example-1: {}
-      x-tags:
-        - product
-      description: ''
-      properties:
-        id:
-          type: integer
-          format: int64
-        ancestry_depth:
-          type: integer
-        ancestry:
-          type: string
-        updated_at:
-          type: string
-          format: date-time
-        created_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        disabled_at:
-          type: string
-          format: date-time
-      required:
-        - id
-        - name
-    Error:
-      title: Error
-      type: object
-      description: A standard error object.
-      x-tags:
-        - common
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-      required:
-        - code
-        - message
-      x-examples:
-        認証失敗:
-          code: '401'
-          message: 認証に失敗しました
-        実行権限がない(e.g. メーカーが本APIを実行した場合など):
-          code: '403'
-          message: APIを実行する権限がありません
-        注文番号重複エラー:
-          code: '409'
-          message: 注文番号190123456789はすでに存在しています
-        注文が見つからない:
-          code: '404'
-          message: 注文が見つかりませんでした
-        サーバエラー:
-          code: '500'
-          message: 'APIサーバーでエラーが発生しました. <アプリケーションのエラーメッセージ> <発生時刻> <リクエストID>'
-    OrderProduct:
-      title: OrderProduct
-      type: object
-      x-tags:
-        - order
-      description: ''
-      properties:
-        id:
-          type: string
-        orders_maker_id:
-          type: string
-        product_id:
-          type: integer
-        gas_type_id:
-          description: ガス種を選択する商品の場合、必須項目
-          oneOf:
-            - type: integer
-            - type: 'null'
-        name:
-          type: string
-        code:
-          type: string
-        branch_number:
-          type: integer
-        internal_code:
-          type: string
-          nullable: true
-        price_amount:
-          type: integer
-          nullable: true
-        price_currency:
-          type: string
-          nullable: true
-        maker_price_for_retail_amount:
-          type: integer
-        maker_price_for_retail_currency:
-          type: string
-        subtotal_excluding_tax:
-          type: integer
-        estimated_delivery_duration:
-          type: integer
-        shipping_status:
-          type: string
-          enum:
-            - undelivered
-            - delivered
-        delivery_date:
-          type: string
-          format: date
-          nullable: true
-        number_of_items:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        cancelled_at:
-          type: string
-          nullable: true
-          description: 仕入納品APIでキャンセルした場合、キャンセル日時を設定
-          format: date-time
-        shipping_postcode:
-          type: string
-        shipping_prefecture_code:
-          type: integer
-        shipping_city:
-          type: string
-        shipping_street_address:
-          type: string
-        shipping_building:
-          type: string
-          nullable: true
-        shipping_office_name:
-          type: string
-        shipping_tel:
-          type: string
-        estimated_delivery_date:
-          type: string
-          format: date
-        official_estimated_delivery_date:
-          type: string
-          format: date
-          nullable: true
-        answered_at:
-          type: string
-          format: date-time
-          nullable: true
-        order_status:
-          type: string
-          enum:
-            - ordered
-            - answered
-            - shipped
-            - delivered
-            - cancelled
-        memo:
-          type: string
-          nullable: true
-        order_confirmed_at:
-          type: string
-          format: date-time
-          nullable: true
-        cancel_confirmed_at:
-          type: string
-          format: date-time
-          nullable: true
-      required:
-        - id
-        - orders_maker_id
-        - product_id
-        - name
-        - code
-        - branch_number
-    Order:
-      title: Order
-      type: object
-      description: ''
-      x-tags:
-        - order
-      x-examples:
-        example-1: {}
-      properties:
-        id:
-          type: string
-        retail_id:
-          type: integer
-        code:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        ordered_at:
-          type: string
-          format: date-time
-      required:
-        - id
-        - retail_id
-        - code
-    RetailBranch:
-      title: RetailBranch
+    MakerBranch:
+      title: MakerBranch
+      description: メーカーの支店
       type: object
       properties:
         id:
-          type: string
+          type: integer
         code:
           type: string
         name:
@@ -1638,17 +2646,20 @@ components:
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       required:
         - id
         - code
         - name
       x-tags:
-        - retail
-    RetailSalesOffice:
-      title: RetailSalesOffice
+        - maker
+    MakerSalesOffice:
+      title: MakerSalesOffice
+      description: メーカーの営業所
       type: object
       properties:
         id:
@@ -1672,15 +2683,17 @@ components:
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       x-tags:
-        - retail
-    RetailUser:
-      title: RetailUser
+        - Maker
+    MakerUser:
+      title: MakerUser
+      description: メーカーのユーザ
       type: object
-      description: ''
       properties:
         id:
           type: integer
@@ -1708,48 +2721,431 @@ components:
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       x-tags:
-        - retail
+        - Maker
+    Category:
+      title: Category
+      type: object
+      x-examples:
+        example-1: {}
+      x-tags:
+        - product
+      description: ''
+      properties:
+        id:
+          type: integer
+          format: int64
+        ancestry_depth:
+          type: integer
+        ancestry:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          description: レコード作成日時
+        updated_at:
+          type: string
+          format: date-time
+          description: レコード更新日時
+        name:
+          type: string
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - id
+        - name
+    Error:
+      title: Error
+      type: object
+      description: A standard error object.
+      x-tags:
+        - common
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+      x-examples:
+        認証失敗:
+          code: '401'
+          message: 認証に失敗しました
+        実行権限がない:
+          code: '403'
+          message: APIを実行する権限がありません
+        注文番号重複エラー:
+          code: '409'
+          message: 注文番号190123456789はすでに存在しています
+        注文が見つからない:
+          code: '404'
+          message: 注文が見つかりませんでした
+        サーバエラー:
+          code: '500'
+          message: 'APIサーバーでエラーが発生しました. <アプリケーションのエラーメッセージ> <発生時刻> <リクエストID>'
+    OrderProduct:
+      title: OrderProduct
+      type: object
+      x-tags:
+        - order
+      description: '注文明細'
+      properties:
+        id:
+          type: string
+          description: 'ID'
+          example: 1
+        orders_maker_id:
+          type: string
+          description: 'OrdersMakerの外部キー'
+          example: 1
+        product_id:
+          type: integer
+          description: 'ProductのID'
+          example: 1
+        gas_type_id:
+          description: ガス種を選択する商品の場合、必須項目
+          type: integer
+          nullable: true
+        name:
+          type: string
+          description: 商品名
+        code:
+          type: string
+          description: 注文明細
+        branch_number:
+          type: integer
+          description: 注文明細No
+        internal_code:
+          type: string
+          nullable: true
+          description: メーカー内部コード
+          example: 12-10002
+        price_amount:
+          type: integer
+          nullable: true
+          description: 定価
+        price_currency:
+          type: string
+          nullable: true
+          description: 通貨
+        maker_price_for_retail_amount:
+          type: integer
+          description: メーカーの卸値
+        maker_price_for_retail_currency:
+          type: string
+          description: メーカーの卸値（通貨）
+        subtotal_excluding_tax:
+          type: integer
+          description: 税抜小計
+        estimated_delivery_duration:
+          type: integer
+          description: 目安納期日数
+        shipping_status:
+          type: string
+          nullable: true
+          enum:
+            - undelivered
+            - delivered
+          description: 配送ステータス
+        delivery_date:
+          type: string
+          nullable: true
+          format: date
+          description: 納期目安
+        number_of_items:
+          type: integer
+          description: 個数
+        cancelled_at:
+          type: string
+          nullable: true
+          description: 仕入納品APIでキャンセルした場合、キャンセル日時を設定
+          format: date-time
+        shipping_postcode:
+          type: string
+          nullable: true
+          description: 郵便番号
+        shipping_prefecture_code:
+          type: integer
+          nullable: true
+          description: 都道府県
+        shipping_city:
+          type: string
+          nullable: true
+          description: 市区町村
+        shipping_street_address:
+          type: string
+          nullable: true
+          description: 番地・号
+        shipping_building:
+          type: string
+          nullable: true
+          description: 建物名
+        shipping_office_name:
+          type: string
+          nullable: true
+          description: 営業所名
+        shipping_tel:
+          type: string
+          nullable: true
+          description: 電話番号
+        estimated_delivery_date:
+          type: string
+          nullable: true
+          format: date
+          description: 納期目安
+        official_estimated_delivery_date:
+          type: string
+          nullable: true
+          format: date
+          description: 納期回答
+        answered_at:
+          type: string
+          nullable: true
+          format: date-time
+          description: 納期回答日時
+        order_status:
+          type: string
+          enum:
+            - ordered
+            - answered
+            - shipped
+            - delivered
+            - cancelled
+          description: 注文明細ステータス
+        memo:
+          type: string
+          nullable: true
+          description: 備考
+        order_confirmed_at:
+          type: string
+          nullable: true
+          format: date-time
+          description: 注文受付日時
+        cancel_confirmed_at:
+          type: string
+          nullable: true
+          format: date-time
+          description: キャンセル注文受付日時
+        shipping_slip_number:
+          description: 配送伝票番号
+          nullable: true
+          type: string
+        delivery_company_id:
+          description: 配送業者ID
+          nullable: true
+          type: integer
+        created_at:
+          type: string
+          format: date-timek
+          description: レコード作成日時
+        updated_at:
+          type: string
+          format: date-time
+          description: レコード更新日時
+      required:
+        - id
+        - orders_maker_id
+        - product_id
+        - name
+        - code
+        - branch_number
+    Order:
+      title: Order
+      type: object
+      description: '注文'
+      x-tags:
+        - order
+      x-examples:
+        example-1: {}
+      properties:
+        id:
+          type: string
+          description: ID
+        retail_id:
+          type: integer
+          description: Retailの外部キー
+        code:
+          type: string
+          description: 注文ID
+        ordered_at:
+          type: string
+          format: date-time
+          description: 注文日
+        created_at:
+          type: string
+          format: date-time
+          description: レコード作成日時
+        updated_at:
+          type: string
+          format: date-time
+          description: レコード更新日時
+      required:
+        - id
+        - retail_id
+        - code
     Retail:
       title: Retail
+      description: 小売り
       type: object
       properties:
         id:
           type: integer
+          description: ID
         name:
           type: string
+          description: 小売り名
         code:
           type: string
+          description: コード
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
+          description: レコード更新日時
       required:
         - id
         - name
         - code
-    OrdersMaker:
-      title: OrdersMaker
-      x-tags:
-        - retail
+    RetailBranch:
+      title: RetailBranch
+      description: 小売りの支店
       type: object
-      description: ''
       properties:
         id:
-          type: string
-        maker_id:
-          type: integer
-        maker_user_id:
-          type: integer
-        maker_sales_office_id:
           type: integer
         code:
           type: string
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          description: レコード作成日時
+        updated_at:
+          type: string
+          format: date-time
+          description: レコード更新日時
+      required:
+        - id
+        - code
+        - name
+      x-tags:
+        - retail
+    RetailSalesOffice:
+      title: RetailSalesOffice
+      description: 小売りの営業所
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID
+        code:
+          type: string
+          description: コード
+        name:
+          type: string
+          description: 小売営業所名
+        postcode:
+          type: string
+        prefecture:
+          type: string
+        city:
+          type: string
+        street_address:
+          type: string
+        tel:
+          type: string
+        fax:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          description: レコード作成日時
+        updated_at:
+          type: string
+          format: date-time
+          description: レコード更新日時
+      x-tags:
+        - retail
+    RetailUser:
+      title: RetailUser
+      description: 小売りのユーザ
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum:
+            - admin
+            - clerk
+            - sales
+        last_name:
+          type: string
+        first_name:
+          type: string
+        last_name_kane:
+          type: string
+        first_name_kana:
+          type: string
+        tel:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          description: レコード作成日時
+        updated_at:
+          type: string
+          format: date-time
+          description: レコード更新日時
+      x-tags:
+        - retail
+    OrdersMaker:
+      title: OrdersMaker
+      description: メーカーごとの注文
+      x-tags:
+        - retail
+        - maker
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID
+        maker_id:
+          type: integer
+          description: Makerの外部キー
+        maker_user_id:
+          type: integer
+          description: MakerUserの外部キー
+        maker_sales_office_id:
+          type: integer
+          description: MakerSalesOfficeの外部キー
+        retail_user_id:
+          type: integer
+          description: RetailUserの外部キー
+        retail_sales_office_id:
+          type: integer
+          description: RetailSalesOfficeの外部キー
+        code:
+          type: string
+          description: ID
         status:
           type: string
           enum:
@@ -1758,22 +3154,22 @@ components:
             - shipped
             - delivered
             - cancelled
+          description: ステータス
         created_at:
           type: string
           format: date-time
+          description: レコード作成日時
         updated_at:
           type: string
           format: date-time
-        retail_sales_office_code:
-          type: string
+          description: レコード更新日時
         desired_delivery_date:
           type: string
           format: date
-          description: 希望納期. 指定しない場合、タノミマスター算出する納期目安を設定
-        retail_user_code:
-          type: string
+          description: "希望納期日。指定しない場合、タノミマスター算出する納期目安を設定。(フォーマット: `yyyy-mm-dd`)"
         maker_code:
           type: string
+          description: MakerのUsercode
       required:
         - id
         - maker_id
@@ -1825,7 +3221,6 @@ components:
       properties:
         code:
           type: string
-          pattern: '^[0-9]{10,}$'
           description: 注文番号
         makers:
           type: array
@@ -1845,15 +3240,14 @@ components:
                       type: string
                     branch_number:
                       type: integer
-                      description: 明細枝番。指定しない場合、タノミマスターで自動発番
+                      description: 注文明細No。指定しない場合、タノミマスターで自動発番
                     number_of_items:
                       type: integer
                       minimum: 1
                     gas_type_id:
                       description: ガス種を選択する商品の場合、必須項目
-                      oneOf:
-                        - type: integer
-                        - type: 'null'
+                      type: integer
+                      nullable: true
                     memo:
                       type: string
                   required:
@@ -1891,6 +3285,8 @@ components:
           type: string
           format: date-time
           description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
+      required:
+        - code
     ProductCheckCodeRequest:
       title: ProductCheckCodeRequest
       type: object
@@ -1944,14 +3340,13 @@ components:
               code:
                 type: string
               maker_price_for_retail_amount:
-                oneOf:
-                  - type: integer
-                  - type: 'null'
-                description: ''
+                type: integer
+                nullable: true
+                description: '定価。nullの場合はオープンプライス。'
               maker_price_for_retail_currency:
-                oneOf:
-                  - type: string
-                  - type: 'null'
+                type: string
+                nullable: true
+                description: '定価の通貨。ISO 4217。nullの場合はオープンプライス。'
               is_available:
                 type: boolean
                 description: The product is on sale or not
@@ -1980,9 +3375,15 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/OrderProduct'
+            order:
+              $ref: '#/components/schemas/OrderWithDescendant'
+            retail_user:
+              $ref: '#/components/schemas/RetailUser'
+            sales_office:
+              $ref: '#/components/schemas/RetailSalesOffice'
       title: OrdersMakerWithDescendant
   securitySchemes:
     ApiKeyAuth:
       type: http
       scheme: Bearer
-      description: API key acquired on retail management page by admin.
+      description: 管理者権限で管理画面にログインし、左側のメニューから「APIキーの確認」を選んでください。
