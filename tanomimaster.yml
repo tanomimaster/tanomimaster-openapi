@@ -450,6 +450,7 @@ paths:
                   nullable: true
                 memo:
                   type: string
+                  nullable: true
               required:
                 - maker_code
                 - code
@@ -2976,6 +2977,10 @@ components:
         code:
           type: string
           description: 注文ID
+        memo:
+          type: string
+          description: 注文に対する備考
+          nullable: true
         ordered_at:
           type: string
           format: date-time
