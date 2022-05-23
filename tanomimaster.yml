@@ -2531,6 +2531,7 @@ components:
         maker_code:
           type: string
           description: 雲の宇宙船内で利用されているメーカーコード
+          example: RN
         product_code:
           type: string
           example: 111-222-333-444
@@ -2565,8 +2566,7 @@ components:
           example: ''
         start_date:
           type: string
-          format: date
-          description: 取り扱い開始日
+          description: 取り扱い開始日(YYYY/MM/DD)
           example: '2021/01/20'
         use_gas_type_master:
           type: boolean
