@@ -1097,7 +1097,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/retail/retail_users/{id}':
+  '/retail/retail_users/{retail_user_id}':
     parameters:
       - schema:
           type: integer
