@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v2.2.7
+  version: v2.2.8
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -1008,7 +1008,7 @@ paths:
         name: retail_sales_office_id
         in: path
         required: true
-  /retail/retail_users:
+  '/retail/retail_users':
     get:
       summary: 自社小売りのユーザ一覧を取得
       operationId: getRetailUsers
@@ -1027,6 +1027,12 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/RetailUser'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security:
         - ApiKeyAuth: []
     post:
@@ -1085,6 +1091,41 @@ paths:
                           type: boolean
                         message:
                           type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/retail/retail_users/{retail_user_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: 自社小売りのユーザを取得
+      operationId: getRetailUser
+      description: RetailUserを取得
+      tags:
+        - Retail
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetailUser'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+
   /retail/retail_users/check_registrations:
     post:
       summary: 指定したユーザが存在するかをチェック
@@ -1107,10 +1148,19 @@ paths:
                       properties:
                         retail_user_code:
                           type: string
+                          nullable: true
                         retail_sales_office_code:
                           type: string
+                          nullable: true
                         registed:
                           type: boolean
+                          nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       requestBody:
         content:
           application/json:
@@ -2727,6 +2777,9 @@ components:
           type: string
           format: date-time
           description: レコード更新日時
+      required:
+        - id
+        - code
       x-tags:
         - Maker
     Category:
@@ -3112,6 +3165,7 @@ components:
           type: string
         tel:
           type: string
+          nullable: true
         created_at:
           type: string
           format: date-time
@@ -3120,6 +3174,9 @@ components:
           type: string
           format: date-time
           description: レコード更新日時
+      required:
+        - id
+        - code
       x-tags:
         - retail
     OrdersMaker:
