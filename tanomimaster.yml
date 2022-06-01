@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v2.2.8
+  version: v2.2.7
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -1101,7 +1101,7 @@ paths:
     parameters:
       - schema:
           type: integer
-        name: id
+        name: retail_user_id
         in: path
         required: true
     get:
@@ -1117,6 +1117,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RetailUser'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        error:
+                          $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         default:
           description: unexpected error
           content:
@@ -1157,6 +1189,25 @@ paths:
                           nullable: true
         default:
           description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          description: Forbidden
           content:
             application/json:
               schema:
@@ -1223,6 +1274,12 @@ paths:
                 $ref: '#/components/schemas/Error'
         '500':
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
           content:
             application/json:
               schema:
@@ -2729,9 +2786,12 @@ components:
           type: string
         tel:
           type: string
+          nullable: true
         fax:
           type: string
+          nullable: true
         created_at:
+          nullable: true
           type: string
           format: date-time
           description: レコード作成日時
@@ -3107,7 +3167,7 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
           description: ID
         code:
           type: string
@@ -3125,8 +3185,10 @@ components:
           type: string
         tel:
           type: string
+          nullable: true
         fax:
           type: string
+          nullable: true
         created_at:
           type: string
           format: date-time
