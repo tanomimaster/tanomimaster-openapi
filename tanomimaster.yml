@@ -1008,7 +1008,7 @@ paths:
         name: retail_sales_office_id
         in: path
         required: true
-  /retail/retail_users:
+  '/retail/retail_users':
     get:
       summary: 自社小売りのユーザ一覧を取得
       operationId: getRetailUsers
@@ -1027,6 +1027,12 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/RetailUser'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security:
         - ApiKeyAuth: []
     post:
@@ -1085,6 +1091,73 @@ paths:
                           type: boolean
                         message:
                           type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/retail/retail_users/{retail_user_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: retail_user_id
+        in: path
+        required: true
+    get:
+      summary: 自社小売りのユーザを取得
+      operationId: getRetailUser
+      description: RetailUserを取得
+      tags:
+        - Retail
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetailUser'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        error:
+                          $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+
   /retail/retail_users/check_registrations:
     post:
       summary: 指定したユーザが存在するかをチェック
@@ -1107,10 +1180,38 @@ paths:
                       properties:
                         retail_user_code:
                           type: string
+                          nullable: true
                         retail_sales_office_code:
                           type: string
+                          nullable: true
                         registed:
                           type: boolean
+                          nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       requestBody:
         content:
           application/json:
@@ -1173,6 +1274,12 @@ paths:
                 $ref: '#/components/schemas/Error'
         '500':
           description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
           content:
             application/json:
               schema:
@@ -2531,18 +2638,19 @@ components:
         maker_code:
           type: string
           description: 雲の宇宙船内で利用されているメーカーコード
+          example: RN
         product_code:
           type: string
-          example: 111-222-333-444
+          example: '111-222-333-444'
           description: 型式（品番）
         internal_code:
           type: string
           description: メーカー内部コード
-          example: 12-10002
+          example: '12-10002'
         name:
           type: string
           description: 商品名
-          example: doggie
+          example: '商品A'
         price_amount:
           type: integer
           description: メーカー希望小売価格(税抜)
@@ -2565,8 +2673,7 @@ components:
           example: ''
         start_date:
           type: string
-          format: date
-          description: 取り扱い開始日
+          description: 取り扱い開始日(YYYY/MM/DD)
           example: '2021/01/20'
         use_gas_type_master:
           type: boolean
@@ -2679,9 +2786,12 @@ components:
           type: string
         tel:
           type: string
+          nullable: true
         fax:
           type: string
+          nullable: true
         created_at:
+          nullable: true
           type: string
           format: date-time
           description: レコード作成日時
@@ -2727,6 +2837,9 @@ components:
           type: string
           format: date-time
           description: レコード更新日時
+      required:
+        - id
+        - code
       x-tags:
         - Maker
     Category:
@@ -2803,7 +2916,7 @@ components:
         id:
           type: string
           description: 'ID'
-          example: 1
+          example: 'Z2lkOi8vdGFub21pbWFzdGVyLXd3dy9PcmRlclByb2R1Y3QvMQ'
         orders_maker_id:
           type: string
           description: 'OrdersMakerの外部キー'
@@ -2813,43 +2926,54 @@ components:
           description: 'ProductのID'
           example: 1
         gas_type_id:
-          description: ガス種を選択する商品の場合、必須項目
+          description: 'ガス種を選択する商品の場合、必須項目(1: LP, 2: 12・13A)'
           type: integer
           nullable: true
+          example: 1
         name:
           type: string
           description: 商品名
+          example: '商品A'
+        name:
         code:
           type: string
           description: 注文明細
+          example: '商品A'
         branch_number:
           type: integer
           description: 注文明細No
+          example: '5d25c1884ee2f597047be83d11'
         internal_code:
           type: string
           nullable: true
           description: メーカー内部コード
-          example: 12-10002
+          example: '12-10002'
         price_amount:
           type: integer
           nullable: true
           description: 定価
+          example: 100000
         price_currency:
           type: string
           nullable: true
           description: 通貨
+          example: 'JPY'
         maker_price_for_retail_amount:
           type: integer
           description: メーカーの卸値
+          example: 90000
         maker_price_for_retail_currency:
           type: string
           description: メーカーの卸値（通貨）
+          example: 'JPY'
         subtotal_excluding_tax:
           type: integer
           description: 税抜小計
+          example: 90000
         estimated_delivery_duration:
           type: integer
           description: 目安納期日数
+          example: 3
         shipping_status:
           type: string
           nullable: true
@@ -2857,57 +2981,70 @@ components:
             - undelivered
             - delivered
           description: 配送ステータス
+          example: undelivered
         delivery_date:
           type: string
           nullable: true
           format: date
           description: 納期目安
+          example: '2022-06-03'
         number_of_items:
           type: integer
           description: 個数
+          example: 1
         cancelled_at:
           type: string
           nullable: true
           description: 仕入納品APIでキャンセルした場合、キャンセル日時を設定
           format: date-time
+          example: '2022-06-03'
         shipping_postcode:
           type: string
           nullable: true
           description: 郵便番号
+          example: '1060031'
         shipping_prefecture_code:
           type: integer
           nullable: true
           description: 都道府県
+          example: '東京都'
         shipping_city:
           type: string
           nullable: true
           description: 市区町村
+          example: '渋谷区'
         shipping_street_address:
           type: string
           nullable: true
           description: 番地・号
+          example: '代々木1-1-1'
         shipping_building:
           type: string
           nullable: true
           description: 建物名
+          example: 'テスト建物101'
         shipping_office_name:
           type: string
           nullable: true
           description: 営業所名
+          example: 'テスト営業所'
         shipping_tel:
           type: string
           nullable: true
           description: 電話番号
+          example: '03-0000-0000'
         estimated_delivery_date:
           type: string
           nullable: true
           format: date
           description: 納期目安
+          example: '2022-06-03'
         official_estimated_delivery_date:
           type: string
           nullable: true
           format: date
           description: 納期回答
+          example: '2022-06-03'
         answered_at:
           type: string
           nullable: true
@@ -2922,10 +3059,12 @@ components:
             - delivered
             - cancelled
           description: 注文明細ステータス
+          example: 'ordered'
         memo:
           type: string
           nullable: true
           description: 備考
+          example: 'メモメモ'
         order_confirmed_at:
           type: string
           nullable: true
@@ -2946,7 +3085,7 @@ components:
           type: integer
         created_at:
           type: string
-          format: date-timek
+          format: date-time
           description: レコード作成日時
         updated_at:
           type: string
@@ -2971,16 +3110,20 @@ components:
         id:
           type: string
           description: ID
+          example: '5d25c1884ee2f597047be83d11'
         retail_id:
           type: integer
           description: Retailの外部キー
+          example: 1
         code:
           type: string
           description: 注文ID
+          example: '5d25c1884ee2f597047be83d11'
         memo:
           type: string
           description: 注文に対する備考
           nullable: true
+          example: 'メモメモ'
         ordered_at:
           type: string
           format: date-time
@@ -3054,7 +3197,7 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
           description: ID
         code:
           type: string
@@ -3072,8 +3215,10 @@ components:
           type: string
         tel:
           type: string
+          nullable: true
         fax:
           type: string
+          nullable: true
         created_at:
           type: string
           format: date-time
@@ -3112,6 +3257,7 @@ components:
           type: string
         tel:
           type: string
+          nullable: true
         created_at:
           type: string
           format: date-time
@@ -3120,6 +3266,9 @@ components:
           type: string
           format: date-time
           description: レコード更新日時
+      required:
+        - id
+        - code
       x-tags:
         - retail
     OrdersMaker:
