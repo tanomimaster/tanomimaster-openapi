@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.0.0
+  version: v3.0.1
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -1207,7 +1207,6 @@ paths:
                 $ref: '#/components/schemas/Error'
         '500':
           description: Internal Server Error
-          description: Forbidden
           content:
             application/json:
               schema:
