@@ -2931,8 +2931,12 @@ components:
       properties:
         code:
           type: string
+          description: 'エラーコード'
+          example: '500'
         message:
           type: string
+          description: 'エラーメッセージ'
+          example: 'サーバ内でエラーが発生しました'
       required:
         - code
         - message
