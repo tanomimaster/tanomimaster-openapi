@@ -3298,8 +3298,12 @@ components:
       properties:
         id:
           type: integer
+          example: 1
+          description: 小売りユーザID
         code:
           type: string
+          example: '0001'
+          description: 小売りユーザコード
         email:
           type: string
           format: email
