@@ -1035,10 +1035,12 @@ paths:
                 $ref: '#/components/schemas/Error'
       parameters:
         - schema:
-            type: integer
+            type: string
           name: retail_user_code
           in: query
           required: false
+          description: 小売りユーザコード(完全一致)
+          example: '0001'
       security:
         - ApiKeyAuth: []
     post:
