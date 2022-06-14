@@ -1033,6 +1033,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      parameters:
+        - schema:
+            type: integer
+          name: retail_user_code
+          in: query
+          required: false
       security:
         - ApiKeyAuth: []
     post:
