@@ -3369,7 +3369,7 @@ components:
       properties:
         id:
           type: string
-          description: ID
+          description: メーカーごとの注文ID。orders_maker_id
           example: 'Z2lkOi8vdGFub21pbWFzdGVyLXd3dy9PcmRlcnNNYWtlci8xOQ'
         maker_id:
           type: integer
