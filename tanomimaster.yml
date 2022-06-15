@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.0.1
+  version: v3.0.2
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -2175,11 +2175,11 @@ paths:
         - ApiKeyAuth: []
       operationId: listOrdersForMaker
       description: list orders
-  /maker/orders_makers/{order_code}:
+  /maker/orders_makers/{orders_maker_id}:
     parameters:
       - schema:
           type: string
-        name: order_code
+        name: orders_maker_id
         in: path
         required: true
     get:
@@ -2203,11 +2203,11 @@ paths:
         - ApiKeyAuth: []
       operationId: showAnOrderForMaker
       description: show an order
-  '/maker/orders_makers/{order_code}/order_products':
+  '/maker/orders_makers/{orders_maker_id}/order_products':
     parameters:
       - schema:
           type: string
-        name: order_code
+        name: orders_maker_id
         in: path
         required: true
     get:
@@ -2281,11 +2281,11 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - ApiKeyAuth: []
-  '/maker/orders_makers/{order_code}/order_products/{branch_number}':
+  '/maker/orders_makers/{orders_maker_id}/order_products/{branch_number}':
     parameters:
       - schema:
           type: string
-        name: order_code
+        name: orders_maker_id
         in: path
         required: true
       - schema:
@@ -2315,11 +2315,11 @@ paths:
       description: show OrderProduct entities corresponding to the id
       security:
         - ApiKeyAuth: []
-  /maker/orders_makers/{order_code}/order_products/{branch_number}/confirm:
+  /maker/orders_makers/{orders_maker_id}/order_products/{branch_number}/confirm:
     parameters:
       - schema:
           type: string
-        name: order_code
+        name: orders_maker_id
         in: path
         required: true
       - schema:
@@ -2374,11 +2374,11 @@ paths:
       security:
         - ApiKeyAuth: []
 
-  /maker/orders_makers/{order_code}/order_products/{branch_number}/update_delivery_date:
+  /maker/orders_makers/{orders_maker_id}/order_products/{branch_number}/update_delivery_date:
     parameters:
       - schema:
           type: string
-        name: order_code
+        name: orders_maker_id
         in: path
         required: true
         description: 注文番号
@@ -2439,11 +2439,11 @@ paths:
         - Maker
       security:
         - ApiKeyAuth: []
-  /maker/orders_makers/{order_code}/order_products/{branch_number}/ship:
+  /maker/orders_makers/{orders_maker_id}/order_products/{branch_number}/ship:
     parameters:
       - schema:
           type: string
-        name: order_code
+        name: orders_maker_id
         in: path
         required: true
         description: 注文番号
@@ -2510,11 +2510,11 @@ paths:
         - Maker
       security:
         - ApiKeyAuth: []
-  /maker/orders_makers/{order_code}/order_products/{branch_number}/confirm_cancel:
+  /maker/orders_makers/{orders_maker_id}/order_products/{branch_number}/confirm_cancel:
     parameters:
       - schema:
           type: string
-        name: order_code
+        name: orders_maker_id
         in: path
         required: true
         description: 注文番号
@@ -2586,11 +2586,13 @@ components:
         created_at:
           type: string
           format: date-time
-          description: レコード作成日時
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
-          description: レコード更新日時
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         disabled_at:
           type: string
           format: date-time
@@ -2704,11 +2706,13 @@ components:
         created_at:
           type: string
           format: date-time
-          description: レコード作成日時
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
-          description: レコード更新日時
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
       required:
         - id
         - name
@@ -2735,10 +2739,12 @@ components:
           type: string
           format: date-time
           description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
           description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
       required:
         - id
         - code
@@ -2766,9 +2772,11 @@ components:
           type: string
           format: date-time
           description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
+          example: '2022-06-06T18:32:35.956+09:00'
           description: 'レコード更新日時'
       required:
         - id
@@ -2818,10 +2826,12 @@ components:
           type: string
           format: date-time
           description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
           description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
       x-tags:
         - Maker
     MakerUser:
@@ -2873,10 +2883,12 @@ components:
           type: string
           format: date-time
           description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
           description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
       required:
         - id
         - code
@@ -2902,11 +2914,13 @@ components:
         created_at:
           type: string
           format: date-time
-          description: レコード作成日時
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
-          description: レコード更新日時
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         name:
           type: string
         disabled_at:
@@ -3125,11 +3139,13 @@ components:
         created_at:
           type: string
           format: date-time
-          description: レコード作成日時
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
-          description: レコード更新日時
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
       required:
         - id
         - orders_maker_id
@@ -3170,11 +3186,13 @@ components:
         created_at:
           type: string
           format: date-time
-          description: レコード作成日時
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
-          description: レコード更新日時
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
       required:
         - id
         - retail_id
@@ -3199,11 +3217,13 @@ components:
         created_at:
           type: string
           format: date-time
-          description: レコード作成日時
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
-          description: レコード更新日時
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
       required:
         - id
         - name
@@ -3229,10 +3249,12 @@ components:
           type: string
           format: date-time
           description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
           description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
       required:
         - id
         - code
@@ -3272,11 +3294,13 @@ components:
         created_at:
           type: string
           format: date-time
-          description: レコード作成日時
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
-          description: レコード更新日時
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
       x-tags:
         - retail
     RetailUser:
@@ -3323,11 +3347,13 @@ components:
         created_at:
           type: string
           format: date-time
-          description: レコード作成日時
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
-          description: レコード更新日時
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
       required:
         - id
         - code
@@ -3344,24 +3370,31 @@ components:
         id:
           type: string
           description: ID
+          example: 'Z2lkOi8vdGFub21pbWFzdGVyLXd3dy9PcmRlcnNNYWtlci8xOQ'
         maker_id:
           type: integer
           description: Makerの外部キー
+          example: 1
         maker_user_id:
           type: integer
           description: MakerUserの外部キー
+          example: 1
         maker_sales_office_id:
           type: integer
           description: MakerSalesOfficeの外部キー
+          example: 1
         retail_user_id:
           type: integer
           description: RetailUserの外部キー
+          example: 1
         retail_sales_office_id:
           type: integer
           description: RetailSalesOfficeの外部キー
+          example: 1
         code:
           type: string
-          description: ID
+          description: 注文コード（重複可能性あり）
+          example: '73445180582331397080'
         status:
           type: string
           enum:
@@ -3371,21 +3404,26 @@ components:
             - delivered
             - cancelled
           description: ステータス
+          example: 'ordered'
         created_at:
           type: string
           format: date-time
-          description: レコード作成日時
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
           type: string
           format: date-time
-          description: レコード更新日時
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
         desired_delivery_date:
           type: string
           format: date
           description: "希望納期日。指定しない場合、タノミマスター算出する納期目安を設定。(フォーマット: `yyyy-mm-dd`)"
+          example: '2022-06-09'
         maker_code:
           type: string
-          description: MakerのUsercode
+          description: Makerのcode
+          example: '0001'
       required:
         - id
         - maker_id
