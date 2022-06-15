@@ -3422,7 +3422,7 @@ components:
           example: '2022-06-09'
         maker_code:
           type: string
-          description: Makerのcode
+          description: 'メーカーコード'
           example: '0001'
       required:
         - id
