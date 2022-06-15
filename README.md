@@ -4,14 +4,15 @@
 
 ## Workflow
 
-- Design OpenAPI and write prgram on server side.
-- The newest OAS API spec is `develop`.
-- @matsubo reviews the `develop` branch and merge to `master`.
+- Design OpenAPI and write program on server side.
+- A head of development is `develop` branch.
+- @matsubo reviews the `develop`  when deploying `tanomimaster-www` and merge `develop` into `master`. Increment API version number.
 
 - master
   - Publish to clients and vendors
+  - Current production release.
 - develop
-  - The newest design of current server side development.
+  - The newest development version.
 
 We need to re-define branch release model associating server-side and client-side application deployment.
 
