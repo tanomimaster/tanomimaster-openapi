@@ -1568,6 +1568,84 @@ paths:
       parameters: []
       security:
         - ApiKeyAuth: []
+  /master/gas_types:
+    get:
+      summary: ガス種の一覧を取得
+      operationId: getGasTypes
+      description: GasTypeの配列を取得
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GasType'
+          headers:
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - Common
+    parameters: []
+  '/master/gas_types/{gas_type_id}':
+    parameters:
+      - schema:
+          type: integer
+        name: gas_type_id
+        in: path
+        required: true
+    get:
+      summary: ガス種を取得
+      operationId: getGasType
+      description: GasTypeの取得
+      tags:
+        - Common
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GasType'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters: []
+      security:
+        - ApiKeyAuth: []
 
   /master/makers:
     get:
@@ -2719,6 +2797,34 @@ components:
           type: string
           description: '配送会社名'
           example: 'ヤマト急便'
+        created_at:
+          type: string
+          format: date-time
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
+        updated_at:
+          type: string
+          format: date-time
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
+      required:
+        - id
+        - name
+      x-tags:
+        - delivery_company
+    GasType:
+      title: GasType
+      type: object
+      description: ガス種
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: 'ガス種ID'
+        name:
+          type: string
+          description: 'ガス種名'
+          example: 'LP'
         created_at:
           type: string
           format: date-time
