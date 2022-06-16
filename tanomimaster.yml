@@ -853,7 +853,7 @@ paths:
       deprecated: true
       summary: showRetailBranch
       operationId: showRetailsRetailBranchById
-      description: v3.2.0で廃止予定`/master/retails/{retail_id}/retail_branches/{retail_branch_id}` を利用してください。
+      description: 2022年9月1日以降のリリースで廃止予定`/master/retails/{retail_id}/retail_branches/{retail_branch_id}` を利用してください。
       tags:
         - Retail
       responses:
@@ -883,7 +883,7 @@ paths:
       deprecated: true
       summary: listRetailBranches
       operationId: listRetailBranches
-      description: v3.2.0で廃止予定`/master/retails/{retail_id}/retail_branches` を利用してください。
+      description: 2022年8月で廃止予定`/master/retails/{retail_id}/retail_branches` を利用してください。
       responses:
         '200':
           description: OK
@@ -933,7 +933,7 @@ paths:
       deprecated: true
       summary: listRetailSalesOffices
       operationId: listRetailSalesOffices
-      description: v3.2.0で廃止予定`/master/retails/{retail_id}/retail_branches` を利用してください。
+      description: 2022年9月1日以降のリリースで廃止予定`/master/retails/{retail_id}/retail_branches` を利用してください。
       responses:
         '200':
           description: OK
@@ -983,7 +983,7 @@ paths:
       deprecated: true
       summary: showRetailSalesOffice
       operationId: showRetailSalesOfficeById
-      description: v3.2.0で廃止予定`/master/retails/{retail_id}/retail_branches/{sales_office_id}` を利用してください。
+      description: 2022年9月1日以降のリリースで廃止予定`/master/retails/{retail_id}/retail_branches/{sales_office_id}` を利用してください。
       tags:
         - Retail
       responses:
