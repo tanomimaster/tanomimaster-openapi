@@ -853,7 +853,7 @@ paths:
       deprecated: true
       summary: showRetailBranch
       operationId: showRetailsRetailBranchById
-      description: 廃止予定。`/master/retails/{retail_id}/retail_branches/{retail_branch_id}` を利用してください。
+      description: v3.2.0で廃止予定`/master/retails/{retail_id}/retail_branches/{retail_branch_id}` を利用してください。
       tags:
         - Retail
       responses:
@@ -883,7 +883,7 @@ paths:
       deprecated: true
       summary: listRetailBranches
       operationId: listRetailBranches
-      description: 廃止予定。`/master/retails/{retail_id}/retail_branches` を利用してください。
+      description: v3.2.0で廃止予定`/master/retails/{retail_id}/retail_branches` を利用してください。
       responses:
         '200':
           description: OK
@@ -933,7 +933,7 @@ paths:
       deprecated: true
       summary: listRetailSalesOffices
       operationId: listRetailSalesOffices
-      description: 廃止予定。`/master/retails/{retail_id}/retail_branches` を利用してください。
+      description: v3.2.0で廃止予定`/master/retails/{retail_id}/retail_branches` を利用してください。
       responses:
         '200':
           description: OK
@@ -983,7 +983,7 @@ paths:
       deprecated: true
       summary: showRetailSalesOffice
       operationId: showRetailSalesOfficeById
-      description: 廃止予定。`/master/retails/{retail_id}/retail_branches/{sales_office_id}` を利用してください。
+      description: v3.2.0で廃止予定`/master/retails/{retail_id}/retail_branches/{sales_office_id}` を利用してください。
       tags:
         - Retail
       responses:
@@ -2583,6 +2583,52 @@ components:
         id:
           type: integer
           format: int64
+          example: 1
+          description: '商品ID'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2022-06-06T18:32:35.956+09:00'
+        estimated_delivery_duration:
+          type: integer
+          nullable: true
+          description: '目安納期日数'
+          example: 3
+        use_gas_type_master:
+          type: boolean
+          nullable: true
+          description: 'ガス種の選択を必要とするか'
+          example: true
+        maker_id:
+          type: integer
+          description: 'メーカーID'
+          example: 1
+        status:
+          type: string
+          description: '商品ステータス'
+          example: 'available'
+          enum:
+            - available
+            - pending
+            - sold
+        internal_code:
+          type: string
+          nullable: true
+          description: 'メーカー内部コード'
+          example: '000-111'
+        name:
+          type: string
+          description: '商品名'
+          example: 商品A
+        category_id:
+          type: integer
+          description: カテゴリID
+          example: 1
+        maker_code:
+          type: string
+          description: メーカーコード
+          example: '0001'
         created_at:
           type: string
           format: date-time
@@ -2593,36 +2639,6 @@ components:
           format: date-time
           description: 'レコード更新日時'
           example: '2022-06-06T18:32:35.956+09:00'
-        disabled_at:
-          type: string
-          format: date-time
-          nullable: true
-        estimated_delivery_duration:
-          type: integer
-          nullable: true
-        use_gas_type_master:
-          type: boolean
-          nullable: true
-        maker_id:
-          type: integer
-        status:
-          type: string
-          description: product status in the store
-          enum:
-            - available
-            - pending
-            - sold
-        internal_code:
-          type: string
-          nullable: true
-          description: メーカー内部コード
-        name:
-          type: string
-          example: 商品A
-        category_id:
-          type: integer
-        maker_code:
-          type: string
       required:
         - id
         - name
@@ -2639,26 +2655,26 @@ components:
         maker_code:
           type: string
           description: 雲の宇宙船内で利用されているメーカーコード
-          example: RN
+          example: 'RN'
         product_code:
           type: string
           example: '111-222-333-444'
-          description: 型式（品番）
+          description: '型式（品番）'
         internal_code:
           type: string
-          description: メーカー内部コード
+          description: 'メーカー内部コード'
           example: '12-10002'
         name:
           type: string
-          description: 商品名
+          description: '商品名'
           example: '商品A'
         price_amount:
           type: integer
-          description: メーカー希望小売価格(税抜)
+          description: 'メーカー希望小売価格(税抜)'
           example: 10000
         maker_price_for_retail_amount:
           type: integer
-          description: 仕入れ値
+          description: '仕入れ値'
           example: 8000
         tax_division:
           type: integer
@@ -2698,11 +2714,11 @@ components:
         id:
           type: integer
           example: 1
-          description: 配送会社ID
+          description: '配送会社ID'
         name:
           type: string
-          description: 配送会社名
-          example: ヤマト急便
+          description: '配送会社名'
+          example: 'ヤマト急便'
         created_at:
           type: string
           format: date-time
@@ -2939,8 +2955,12 @@ components:
       properties:
         code:
           type: string
+          description: エラーコード
+          example: '500'
         message:
           type: string
+          description: 'エラーメッセージ'
+          example: 'システム内部でエラーが発生しました'
       required:
         - code
         - message
@@ -3213,7 +3233,7 @@ components:
         code:
           type: string
           description: コード
-          example: 'retail'
+          example: '001'
         created_at:
           type: string
           format: date-time
@@ -3240,7 +3260,7 @@ components:
         code:
           type: string
           description: '小売り支店コード'
-          example: 'retail_branch'
+          example: '001'
         name:
           type: string
           description: '小売り支店名'
@@ -3373,27 +3393,27 @@ components:
           example: 'Z2lkOi8vdGFub21pbWFzdGVyLXd3dy9PcmRlcnNNYWtlci8xOQ'
         maker_id:
           type: integer
-          description: Makerの外部キー
+          description: 'Makerの外部キー'
           example: 1
         maker_user_id:
           type: integer
-          description: MakerUserの外部キー
+          description: 'MakerUserの外部キー'
           example: 1
         maker_sales_office_id:
           type: integer
-          description: MakerSalesOfficeの外部キー
+          description: 'MakerSalesOfficeの外部キー'
           example: 1
         retail_user_id:
           type: integer
-          description: RetailUserの外部キー
+          description: 'RetailUserの外部キー'
           example: 1
         retail_sales_office_id:
           type: integer
-          description: RetailSalesOfficeの外部キー
+          description: 'RetailSalesOfficeの外部キー'
           example: 1
         code:
           type: string
-          description: 注文コード（重複可能性あり）
+          description: '注文コード（重複可能性あり）'
           example: '73445180582331397080'
         status:
           type: string
@@ -3403,7 +3423,7 @@ components:
             - shipped
             - delivered
             - cancelled
-          description: ステータス
+          description: 'ステータス'
           example: 'ordered'
         created_at:
           type: string
@@ -3441,7 +3461,7 @@ components:
       required:
         - code
         - messages
-      description: バリデーションエラーなど複数エラーメッセージがある場合
+      description: 'バリデーションエラーなど複数エラーメッセージがある場合'
       x-tags:
         - common
     OrderForCreate:
