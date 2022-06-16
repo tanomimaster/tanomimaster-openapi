@@ -30,7 +30,12 @@ We need to re-define branch release model associating server-side and client-sid
 
 ## Tools
 
+- Editor
+  - There is no recommended editors yet.
 - Viewer
+  - OpenAPI (Swagger) Editor
+    - Visual Studio Code extension
+    - https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi
   - SwaggerEditor
     - https://editor.swagger.io/
   - Stoplight's studio
