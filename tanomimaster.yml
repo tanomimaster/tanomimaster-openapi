@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.0.2
+  version: v3.1.1-preview
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
