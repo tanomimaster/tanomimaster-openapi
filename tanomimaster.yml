@@ -1033,6 +1033,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      parameters:
+        - schema:
+            type: string
+          name: retail_user_code
+          in: query
+          required: false
+          description: 小売りユーザコード(完全一致)
+          example: '0001'
       security:
         - ApiKeyAuth: []
     post:
@@ -3061,12 +3069,12 @@ components:
       properties:
         code:
           type: string
-          description: エラーコード
+          description: 'エラーコード'
           example: '500'
         message:
           type: string
           description: 'エラーメッセージ'
-          example: 'システム内部でエラーが発生しました'
+          example: 'サーバ内でエラーが発生しました'
       required:
         - code
         - message
@@ -3436,8 +3444,12 @@ components:
       properties:
         id:
           type: integer
+          example: 1
+          description: 小売りユーザID
         code:
           type: string
+          example: '0001'
+          description: 小売りユーザコード
         email:
           type: string
           format: email
