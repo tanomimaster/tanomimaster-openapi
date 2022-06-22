@@ -3108,7 +3108,7 @@ components:
         orders_maker_id:
           type: string
           description: 'OrdersMakerの外部キー'
-          example: 1
+          example: 'Z2lkOi8vdGFub21pbWFzdGVyLXd3dy9PcmRlclByb2R1Y3QvMQ'
         product_id:
           type: integer
           description: 'ProductのID'
