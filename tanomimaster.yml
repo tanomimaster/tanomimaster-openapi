@@ -1105,11 +1105,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/retail/retail_users/{retail_user_id}':
+  '/retail/retail_users/{retail_user_code}':
     parameters:
       - schema:
-          type: integer
-        name: retail_user_id
+          type: string
+        name: retail_user_code
         in: path
         required: true
     get:
@@ -3299,7 +3299,7 @@ components:
           deprecated: true
         retail_code:
           type: string
-          description: Retailのキー
+          description: Retailのcode
           example: 'retail_code'
         code:
           type: string
@@ -3489,7 +3489,6 @@ components:
           description: 'レコード更新日時'
           example: '2022-06-06T18:32:35.956+09:00'
       required:
-        - id
         - code
       x-tags:
         - retail
@@ -3512,11 +3511,16 @@ components:
           deprecated: true
         maker_code:
           type: string
-          description: 'メーカーコード'
+          description: 'Makerのcode'
           example: '0001'
         maker_user_id:
           type: integer
           description: 'MakerUserの外部キー'
+          example: 1
+          deprecated: true
+        maker_user_code:
+          type: integer
+          description: 'MakerUserのcode'
           example: 1
         maker_sales_office_id:
           type: integer
@@ -3525,7 +3529,7 @@ components:
           deprecated: true
         maker_sales_office_code:
           type: string
-          description: 'MakerSalesOfficeの外部キー'
+          description: 'MakerSalesOfficeのcode'
           example: 'code'
         retail_user_id:
           type: integer
@@ -3534,7 +3538,7 @@ components:
           deprecated: true
         retail_user_code:
           type: string
-          description: 'RetailUserの外部キー'
+          description: 'RetailUserのcode'
           example: 'code'
         retail_sales_office_id:
           type: integer
@@ -3543,7 +3547,7 @@ components:
           deprecated: true
         retail_sales_office_code:
           type: string
-          description: 'RetailSalesOfficeの外部キー'
+          description: 'RetailSalesOfficeのcode'
           example: 'retail_sales_office_code'
         code:
           type: string
