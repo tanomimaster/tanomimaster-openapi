@@ -2920,6 +2920,9 @@ components:
         postcode:
           type: string
           description: 'メーカー営業所郵便番号'
+        prefecture_code:
+          type: integer
+          description: 'メーカー営業所都道府県コード'
         prefecture:
           type: string
           description: 'メーカー営業所都道府県'
@@ -3393,19 +3396,29 @@ components:
           example: 'XXX営業所'
         postcode:
           type: string
+          description: '小売り営業所郵便番号'
+        prefecture_code:
+          type: integer
+          description: '小売り営業所都道府県コード'
         prefecture:
           type: string
+          description: '小売り営業所都道府県'
         city:
           type: string
+          description: '小売り営業所市区町村'
         street_address:
           type: string
+          description: '小売り営業所番地以降の住所'
         tel:
           type: string
           nullable: true
+          description: '小売り営業所番電話番号'
         fax:
           type: string
           nullable: true
+          description: '営業所番FAX番号'
         created_at:
+          nullable: true
           type: string
           format: date-time
           description: 'レコード作成日時'
