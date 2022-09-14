@@ -13,4 +13,6 @@ end
 
 # Check by OpenAPIParser
 # Just ensure the file is parsable by OpenAPIParser
-open_api = OpenAPIParser.parse(YAML.load_file(open_api_file))
+open_api = OpenAPIParser.parse(YAML.load_file(open_api_file,
+                                              permitted_classes: [Date] # for Ruby 3.1 compatibility.
+                                             ))
