@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.2.0
+  version: v3.2.1-preview
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -2417,6 +2417,64 @@ paths:
     post:
       summary: メーカー用 受注確定
       operationId: confirm-order
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderProduct'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: confirm order
+      tags:
+        - Maker
+      security:
+        - ApiKeyAuth: []
+  /maker/orders_makers/{orders_maker_id}/order_products/{branch_number}/cancel:
+    parameters:
+      - schema:
+          type: string
+        name: orders_maker_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: branch_number
+        in: path
+        required: true
+        description: 注文明細No
+    post:
+      summary: メーカー用 枝番キャンセル
+      operationId: makerCancelOrderProduct
       responses:
         '201':
           description: Updated
