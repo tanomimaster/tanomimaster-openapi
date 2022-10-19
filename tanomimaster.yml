@@ -2987,7 +2987,6 @@ components:
           enum:
             - admin
             - clerk
-            - sales
           description: '権限'
           example: 'admin'
         last_name:
@@ -3460,7 +3459,6 @@ components:
           enum:
             - admin
             - clerk
-            - sales
           description: '権限'
           example: 'admin'
         last_name:
