@@ -1,5 +1,7 @@
 # Tanomimaster REST API specification
 
+[![Ruby](https://github.com/tanomimaster/tanomimaster-openapi/actions/workflows/ci.yml/badge.svg)](https://github.com/tanomimaster/tanomimaster-openapi/actions/workflows/ci.yml)
+
 - Built with OAS (Open API Specification) 3.0 
 
 ## Workflow
