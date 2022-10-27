@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.2.0
+  version: v3.5.0
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -848,12 +848,12 @@ paths:
       tags:
         - Retail
     parameters: []
-  '/retail/retail_branches/{retail_branch_id}':
+  '/retail/retail_branches/{retail_branch_code}':
     get:
       deprecated: true
       summary: showRetailBranch
-      operationId: showRetailsRetailBranchById
-      description: 2022年9月1日以降のリリースで廃止予定`/master/retails/{retail_id}/retail_branches/{retail_branch_id}` を利用してください。
+      operationId: showRetailsRetailBranchByCode
+      description: 2022年9月1日以降のリリースで廃止予定`/master/retails/{retail_code}/retail_branches/{retail_branch_code}` を利用してください。
       tags:
         - Retail
       responses:
@@ -874,8 +874,8 @@ paths:
         - ApiKeyAuth: []
     parameters:
       - schema:
-          type: integer
-        name: retail_branch_id
+          type: string
+        name: retail_branch_code
         in: path
         required: true
   /retail/retail_branches:
@@ -883,7 +883,7 @@ paths:
       deprecated: true
       summary: listRetailBranches
       operationId: listRetailBranches
-      description: 2022年8月で廃止予定`/master/retails/{retail_id}/retail_branches` を利用してください。
+      description: 2022年8月で廃止予定`/master/retails/{retail_code}/retail_branches` を利用してください。
       responses:
         '200':
           description: OK
@@ -933,7 +933,7 @@ paths:
       deprecated: true
       summary: listRetailSalesOffices
       operationId: listRetailSalesOffices
-      description: 2022年9月1日以降のリリースで廃止予定`/master/retails/{retail_id}/retail_branches` を利用してください。
+      description: 2022年9月1日以降のリリースで廃止予定`/master/retails/{retail_code}/retail_branches` を利用してください。
       responses:
         '200':
           description: OK
@@ -978,12 +978,12 @@ paths:
       tags:
         - Retail
     parameters: []
-  '/retail/retail_sales_offices/{retail_sales_office_id}':
+  '/retail/retail_sales_offices/{retail_sales_office_code}':
     get:
       deprecated: true
       summary: showRetailSalesOffice
-      operationId: showRetailSalesOfficeById
-      description: 2022年9月1日以降のリリースで廃止予定`/master/retails/{retail_id}/retail_branches/{sales_office_id}` を利用してください。
+      operationId: showRetailSalesOfficeByCode
+      description: 2022年9月1日以降のリリースで廃止予定`/master/retails/{retail_code}/retail_branches/{sales_office_id}` を利用してください。
       tags:
         - Retail
       responses:
@@ -1004,8 +1004,8 @@ paths:
         - ApiKeyAuth: []
     parameters:
       - schema:
-          type: integer
-        name: retail_sales_office_id
+          type: string
+        name: retail_sales_office_code
         in: path
         required: true
   '/retail/retail_users':
@@ -1105,11 +1105,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/retail/retail_users/{retail_user_id}':
+  '/retail/retail_users/{retail_user_code}':
     parameters:
       - schema:
-          type: integer
-        name: retail_user_id
+          type: string
+        name: retail_user_code
         in: path
         required: true
     get:
@@ -1704,11 +1704,11 @@ paths:
       tags:
         - Common
     parameters: []
-  '/master/makers/{maker_id}':
+  '/master/makers/{maker_code}':
     parameters:
       - schema:
-          type: integer
-        name: maker_id
+          type: string
+        name: maker_code
         in: path
         required: true
     get:
@@ -1733,11 +1733,11 @@ paths:
       parameters: []
       security:
         - ApiKeyAuth: []
-  '/master/makers/{maker_id}/maker_branches':
+  '/master/makers/{maker_code}/maker_branches':
     parameters:
       - schema:
-          type: integer
-        name: maker_id
+          type: string
+        name: maker_code
         in: path
         required: true
     get:
@@ -1767,16 +1767,16 @@ paths:
       parameters: []
       security:
         - ApiKeyAuth: []
-  '/master/makers/{maker_id}/maker_branches/{maker_branch_id}':
+  '/master/makers/{maker_code}/maker_branches/{maker_branch_code}':
     parameters:
       - schema:
-          type: integer
-        name: maker_id
+          type: string
+        name: maker_code
         in: path
         required: true
       - schema:
-          type: integer
-        name: maker_branch_id
+          type: string
+        name: maker_branch_code
         in: path
         required: true
     get:
@@ -1801,7 +1801,7 @@ paths:
       parameters: []
       security:
         - ApiKeyAuth: []
-  /master/makers/{maker_id}/maker_branches/{maker_branch_id}/maker_sales_offices:
+  /master/makers/{maker_code}/maker_branches/{maker_branch_code}/maker_sales_offices:
     get:
       summary: メーカーの営業所一覧の取得
       operationId: listMasterMakerSalesOffices
@@ -1851,19 +1851,19 @@ paths:
         - Common
     parameters:
       - schema:
-          type: integer
-        name: maker_id
+          type: string
+        name: maker_code
         in: path
         required: true
       - schema:
-          type: integer
-        name: maker_branch_id
+          type: string
+        name: maker_branch_code
         in: path
         required: true
-  '/master/makers/{maker_id}/maker_branches/{maker_branch_id}/maker_sales_offices/{maker_sales_office_id}':
+  '/master/makers/{maker_code}/maker_branches/{maker_branch_code}/maker_sales_offices/{maker_sales_office_code}':
     get:
       summary: メーカーの営業所の取得
-      operationId: showMasterMakerMakerSalesOfficeById
+      operationId: showMasterMakerMakerSalesOfficeByCode
       description: MakerSalesOfficeの取得
       tags:
         - Common
@@ -1885,18 +1885,18 @@ paths:
         - ApiKeyAuth: []
     parameters:
       - schema:
-          type: integer
-        name: maker_id
+          type: string
+        name: maker_code
         in: path
         required: true
       - schema:
-          type: integer
-        name: maker_branch_id
+          type: string
+        name: maker_branch_code
         in: path
         required: true
       - schema:
-          type: integer
-        name: maker_sales_office_id
+          type: string
+        name: maker_sales_office_code
         in: path
         required: true
   /master/retails:
@@ -1948,11 +1948,11 @@ paths:
       tags:
         - Common
     parameters: []
-  '/master/retails/{retail_id}':
+  '/master/retails/{retail_code}':
     parameters:
       - schema:
-          type: integer
-        name: retail_id
+          type: string
+        name: retail_code
         in: path
         required: true
     get:
@@ -1977,11 +1977,11 @@ paths:
       parameters: []
       security:
         - ApiKeyAuth: []
-  '/master/retails/{retail_id}/retail_branches':
+  '/master/retails/{retail_code}/retail_branches':
     parameters:
       - schema:
-          type: integer
-        name: retail_id
+          type: string
+        name: retail_code
         in: path
         required: true
     get:
@@ -2011,16 +2011,16 @@ paths:
       parameters: []
       security:
         - ApiKeyAuth: []
-  '/master/retails/{retail_id}/retail_branches/{retail_branch_id}':
+  '/master/retails/{retail_code}/retail_branches/{retail_branch_code}':
     parameters:
       - schema:
-          type: integer
-        name: retail_id
+          type: string
+        name: retail_code
         in: path
         required: true
       - schema:
-          type: integer
-        name: retail_branch_id
+          type: string
+        name: retail_branch_code
         in: path
         required: true
     get:
@@ -2045,7 +2045,7 @@ paths:
       parameters: []
       security:
         - ApiKeyAuth: []
-  /master/retails/{retail_id}/retail_branches/{retail_branch_id}/retail_sales_offices:
+  /master/retails/{retail_code}/retail_branches/{retail_branch_code}/retail_sales_offices:
     get:
       summary: 小売りの営業所一覧の取得
       operationId: listMasterRetailSalesOffices
@@ -2095,19 +2095,19 @@ paths:
         - Common
     parameters:
       - schema:
-          type: integer
-        name: retail_id
+          type: string
+        name: retail_code
         in: path
         required: true
       - schema:
-          type: integer
-        name: retail_branch_id
+          type: string
+        name: retail_branch_code
         in: path
         required: true
-  '/master/retails/{retail_id}/retail_branches/{retail_branch_id}/retail_sales_offices/{retail_sales_office_id}':
+  '/master/retails/{retail_code}/retail_branches/{retail_branch_code}/retail_sales_offices/{retail_sales_office_code}':
     get:
       summary: 小売りの営業所の取得
-      operationId: showMasterRetailRetailSalesOfficeById
+      operationId: showMasterRetailRetailSalesOfficeByCode
       description: RetailSalesOfficeの取得
       tags:
         - Common
@@ -2129,18 +2129,18 @@ paths:
         - ApiKeyAuth: []
     parameters:
       - schema:
-          type: integer
-        name: retail_id
+          type: string
+        name: retail_code
         in: path
         required: true
       - schema:
-          type: integer
-        name: retail_branch_id
+          type: string
+        name: retail_branch_code
         in: path
         required: true
       - schema:
-          type: integer
-        name: retail_sales_office_id
+          type: string
+        name: retail_sales_office_code
         in: path
         required: true
   /status:
@@ -2417,6 +2417,64 @@ paths:
     post:
       summary: メーカー用 受注確定
       operationId: confirm-order
+      responses:
+        '201':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderProduct'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: confirm order
+      tags:
+        - Maker
+      security:
+        - ApiKeyAuth: []
+  /maker/orders_makers/{orders_maker_id}/order_products/{branch_number}/cancel:
+    parameters:
+      - schema:
+          type: string
+        name: orders_maker_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: branch_number
+        in: path
+        required: true
+        description: 注文明細No
+    post:
+      summary: メーカー用 枝番キャンセル
+      operationId: makerCancelOrderProduct
       responses:
         '201':
           description: Updated
@@ -2853,10 +2911,6 @@ components:
       type: object
       description: メーカー
       properties:
-        id:
-          type: integer
-          description: 'メーカーID'
-          example: 1
         code:
           type: string
           description: 'メーカーコード'
@@ -2876,7 +2930,6 @@ components:
           description: 'レコード更新日時'
           example: '2022-06-06T18:32:35.956+09:00'
       required:
-        - id
         - code
         - name
       x-tags:
@@ -2886,10 +2939,6 @@ components:
       description: 'メーカーの支店'
       type: object
       properties:
-        id:
-          type: integer
-          description: 'メーカー支店ID'
-          example: 1
         code:
           type: string
           description: 'メーカー支店コード'
@@ -2909,7 +2958,6 @@ components:
           example: '2022-06-06T18:32:35.956+09:00'
           description: 'レコード更新日時'
       required:
-        - id
         - code
         - name
       x-tags:
@@ -2919,10 +2967,6 @@ components:
       description: メーカーの営業所
       type: object
       properties:
-        id:
-          type: string
-          description: 'メーカー営業所ID'
-          example: 1
         code:
           type: string
           description: 'メーカー営業所コード'
@@ -2934,6 +2978,9 @@ components:
         postcode:
           type: string
           description: 'メーカー営業所郵便番号'
+        prefecture_code:
+          type: integer
+          description: 'メーカー営業所都道府県コード'
         prefecture:
           type: string
           description: 'メーカー営業所都道府県'
@@ -2962,6 +3009,9 @@ components:
           format: date-time
           description: 'レコード更新日時'
           example: '2022-06-06T18:32:35.956+09:00'
+      required:
+        - code
+        - name
       x-tags:
         - Maker
     MakerUser:
@@ -3304,6 +3354,11 @@ components:
           type: integer
           description: Retailの外部キー
           example: 1
+          deprecated: true
+        retail_code:
+          type: string
+          description: Retailのcode
+          example: 'retail_code'
         code:
           type: string
           description: 注文ID
@@ -3329,17 +3384,13 @@ components:
           example: '2022-06-06T18:32:35.956+09:00'
       required:
         - id
-        - retail_id
+        - retail_code
         - code
     Retail:
       title: Retail
       description: 小売り
       type: object
       properties:
-        id:
-          type: integer
-          description: ID
-          example: 1
         name:
           type: string
           description: 小売り名
@@ -3359,7 +3410,6 @@ components:
           description: 'レコード更新日時'
           example: '2022-06-06T18:32:35.956+09:00'
       required:
-        - id
         - name
         - code
     RetailBranch:
@@ -3367,10 +3417,6 @@ components:
       description: 小売りの支店
       type: object
       properties:
-        id:
-          type: integer
-          description: '小売り支店ID'
-          example: 1
         code:
           type: string
           description: '小売り支店コード'
@@ -3390,7 +3436,6 @@ components:
           description: 'レコード更新日時'
           example: '2022-06-06T18:32:35.956+09:00'
       required:
-        - id
         - code
         - name
       x-tags:
@@ -3400,10 +3445,6 @@ components:
       description: 小売りの営業所
       type: object
       properties:
-        id:
-          type: integer
-          description: '小売営業所ID'
-          example: 1
         code:
           type: string
           description: '小売り営業所コード'
@@ -3413,19 +3454,29 @@ components:
           example: 'XXX営業所'
         postcode:
           type: string
+          description: '小売り営業所郵便番号'
+        prefecture_code:
+          type: integer
+          description: '小売り営業所都道府県コード'
         prefecture:
           type: string
+          description: '小売り営業所都道府県'
         city:
           type: string
+          description: '小売り営業所市区町村'
         street_address:
           type: string
+          description: '小売り営業所番地以降の住所'
         tel:
           type: string
           nullable: true
+          description: '小売り営業所番電話番号'
         fax:
           type: string
           nullable: true
+          description: '営業所番FAX番号'
         created_at:
+          nullable: true
           type: string
           format: date-time
           description: 'レコード作成日時'
@@ -3435,6 +3486,9 @@ components:
           format: date-time
           description: 'レコード更新日時'
           example: '2022-06-06T18:32:35.956+09:00'
+      required:
+        - code
+        - name
       x-tags:
         - retail
     RetailUser:
@@ -3493,7 +3547,6 @@ components:
           description: 'レコード更新日時'
           example: '2022-06-06T18:32:35.956+09:00'
       required:
-        - id
         - code
       x-tags:
         - retail
@@ -3513,22 +3566,47 @@ components:
           type: integer
           description: 'Makerの外部キー'
           example: 1
+          deprecated: true
+        maker_code:
+          type: string
+          description: 'Makerのcode'
+          example: '0001'
         maker_user_id:
           type: integer
           description: 'MakerUserの外部キー'
+          example: 1
+          deprecated: true
+        maker_user_code:
+          type: integer
+          description: 'MakerUserのcode'
           example: 1
         maker_sales_office_id:
           type: integer
           description: 'MakerSalesOfficeの外部キー'
           example: 1
+          deprecated: true
+        maker_sales_office_code:
+          type: string
+          description: 'MakerSalesOfficeのcode'
+          example: 'code'
         retail_user_id:
           type: integer
           description: 'RetailUserの外部キー'
           example: 1
+          deprecated: true
+        retail_user_code:
+          type: string
+          description: 'RetailUserのcode'
+          example: 'code'
         retail_sales_office_id:
           type: integer
           description: 'RetailSalesOfficeの外部キー'
           example: 1
+          deprecated: true
+        retail_sales_office_code:
+          type: string
+          description: 'RetailSalesOfficeのcode'
+          example: 'retail_sales_office_code'
         code:
           type: string
           description: '注文コード（重複可能性あり）'
@@ -3558,13 +3636,9 @@ components:
           format: date
           description: "希望納期日。指定しない場合、タノミマスター算出する納期目安を設定。(フォーマット: `yyyy-mm-dd`)"
           example: '2022-06-09'
-        maker_code:
-          type: string
-          description: 'メーカーコード'
-          example: '0001'
       required:
         - id
-        - maker_id
+        - maker_code
     Errors:
       title: Errors
       type: object
