@@ -2190,16 +2190,23 @@ paths:
       parameters:
         - name: is_confirmed
           in: query
-          description: 受注確定しているかどうか
+          description: 受注確定している明細を含んでいる注文を取得するかどうか
           required: false
           schema:
             type: boolean
         - name: is_cancel_confirmed
           in: query
-          description: キャンセル確定しているかどうか
+          description: キャンセル確定している明細を含んでいる注文を取得するかどうか
           required: false
           schema:
             type: boolean
+          examples:
+            including-cancel-confirmed:
+              value: 'true'
+              summary: 'キャンセル確定している明細を含んでいる注文と全明細を返却'
+            excluding-cancel-confirmed:
+              value: 'false'
+              summary: 'キャンセル確定している明細を含んでいない注文と全明細を返却'
         - name: status
           in: query
           description: ステータス(0：納期未回答, 2：出荷待ち, 3：出荷済み, 4：納品完了, 99：キャンセル)
