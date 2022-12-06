@@ -6,13 +6,13 @@ info:
     タノミマスターのREST APIサービスの仕様書です。
     APIの仕様策定は以下のレポジトリで行っています。
     [https://github.com/tanomimaster/tanomimaster-openapi](https://github.com/tanomimaster/tanomimaster-openapi).
-    APIの実行にはAPIキーが必要です。小売、またはメーカーの管理画面から取得できます。
+    APIの実行にはAPIキーが必要です。小売、またはメーカの管理画面から取得できます。
 
     # 概要
     このAPI仕様書は **OpenAPI フォーマット** で記述されています。
     APIの種別は3つあります。
     - 小売り(発注者)向け
-    - メーカー(受注者)向け
+    - メーカ(受注者)向け
     - 共通
 
     サーバを通してこのドキュメントをプレビューしている場合は、このドキュメントにあるAPI仕様が実装されたバージョンのアプリケーションが稼働していることを担保されています。
@@ -693,7 +693,7 @@ paths:
                   value:
                     code: '400'
                     messages:
-                      - 'メーカーが存在しません(<MakerName>)'
+                      - 'メーカが存在しません(<MakerName>)'
         '401':
           description: Unauthorized
           content:
@@ -816,7 +816,7 @@ paths:
                   value:
                     code: '400'
                     messages:
-                      - 'メーカーが存在しません(<MakerName>)'
+                      - 'メーカが存在しません(<MakerName>)'
         '401':
           description: Unauthorized
           content:
@@ -1657,7 +1657,7 @@ paths:
 
   /master/makers:
     get:
-      summary: メーカーの一覧を取得
+      summary: メーカの一覧を取得
       operationId: getMakers
       description: Makerの配列を取得
       responses:
@@ -1712,7 +1712,7 @@ paths:
         in: path
         required: true
     get:
-      summary: メーカーを取得
+      summary: メーカを取得
       operationId: getMaker
       description: Makerの取得
       tags:
@@ -1741,7 +1741,7 @@ paths:
         in: path
         required: true
     get:
-      summary: メーカーの支店一覧を取得
+      summary: メーカの支店一覧を取得
       operationId: getMakerBranches
       description: MakerBranchの配列を取得
       tags:
@@ -1780,7 +1780,7 @@ paths:
         in: path
         required: true
     get:
-      summary: メーカーの支店を取得
+      summary: メーカの支店を取得
       operationId: getMakerBranch
       description: MakerBranchの取得
       tags:
@@ -1803,7 +1803,7 @@ paths:
         - ApiKeyAuth: []
   /master/makers/{maker_code}/maker_branches/{maker_branch_code}/maker_sales_offices:
     get:
-      summary: メーカーの営業所一覧の取得
+      summary: メーカの営業所一覧の取得
       operationId: listMasterMakerSalesOffices
       description: MakerSalesOfficeの配列
       responses:
@@ -1862,7 +1862,7 @@ paths:
         required: true
   '/master/makers/{maker_code}/maker_branches/{maker_branch_code}/maker_sales_offices/{maker_sales_office_code}':
     get:
-      summary: メーカーの営業所の取得
+      summary: メーカの営業所の取得
       operationId: showMasterMakerMakerSalesOfficeByCode
       description: MakerSalesOfficeの取得
       tags:
@@ -2184,7 +2184,7 @@ paths:
   /maker/orders_makers:
     parameters: []
     get:
-      summary: メーカー用 注文一覧取得
+      summary: メーカ用 注文一覧取得
       tags:
         - Maker
       parameters:
@@ -2276,7 +2276,7 @@ paths:
         in: path
         required: true
     get:
-      summary: メーカー用 注文取得
+      summary: メーカ用 注文取得
       tags:
         - Maker
       responses:
@@ -2422,7 +2422,7 @@ paths:
         required: true
         description: 注文明細No
     post:
-      summary: メーカー用 受注確定
+      summary: メーカ用 受注確定
       operationId: confirm-order
       responses:
         '201':
@@ -2480,7 +2480,7 @@ paths:
         required: true
         description: 注文明細No
     post:
-      summary: メーカー用 枝番キャンセル
+      summary: メーカ用 枝番キャンセル
       operationId: makerCancelOrderProduct
       responses:
         '201':
@@ -2546,7 +2546,7 @@ paths:
         required: true
         description: 納期日(YYYY-MM-DD)
     post:
-      summary: メーカー用 納期回答
+      summary: メーカ用 納期回答
       operationId: answer-delivery-date
       responses:
         '201':
@@ -2676,7 +2676,7 @@ paths:
         required: true
         description: 注文明細No
     post:
-      summary: メーカー用 キャンセル受注確定
+      summary: メーカ用 キャンセル受注確定
       operationId: confirm-cancel-order
       description: キャンセル処理を受け付けたことを通知
       responses:
@@ -2753,7 +2753,7 @@ components:
           example: true
         maker_id:
           type: integer
-          description: 'メーカーID'
+          description: 'メーカID'
           example: 1
         status:
           type: string
@@ -2766,7 +2766,7 @@ components:
         internal_code:
           type: string
           nullable: true
-          description: 'メーカー内部コード'
+          description: 'メーカ内部コード'
           example: '000-111'
         name:
           type: string
@@ -2778,7 +2778,7 @@ components:
           example: 1
         maker_code:
           type: string
-          description: メーカーコード
+          description: メーカコード
           example: '0001'
         created_at:
           type: string
@@ -2805,7 +2805,7 @@ components:
       properties:
         maker_code:
           type: string
-          description: 雲の宇宙船内で利用されているメーカーコード
+          description: 雲の宇宙船内で利用されているメーカコード
           example: 'RN'
         product_code:
           type: string
@@ -2813,7 +2813,7 @@ components:
           description: '型式（品番）'
         internal_code:
           type: string
-          description: 'メーカー内部コード'
+          description: 'メーカ内部コード'
           example: '12-10002'
         name:
           type: string
@@ -2821,7 +2821,7 @@ components:
           example: '商品A'
         price_amount:
           type: integer
-          description: 'メーカー希望小売価格(税抜)'
+          description: 'メーカ希望小売価格(税抜)'
           example: 10000
         maker_price_for_retail_amount:
           type: integer
@@ -2916,16 +2916,16 @@ components:
     Maker:
       title: Maker
       type: object
-      description: メーカー
+      description: メーカ
       properties:
         code:
           type: string
-          description: 'メーカーコード'
+          description: 'メーカコード'
           example: 'maker'
         name:
           type: string
-          description: 'メーカー名'
-          example: 'XXXXメーカー'
+          description: 'メーカ名'
+          example: 'XXXXメーカ'
         created_at:
           type: string
           format: date-time
@@ -2943,16 +2943,16 @@ components:
         - maker
     MakerBranch:
       title: MakerBranch
-      description: 'メーカーの支店'
+      description: 'メーカの支店'
       type: object
       properties:
         code:
           type: string
-          description: 'メーカー支店コード'
+          description: 'メーカ支店コード'
           example: 'maker_branch'
         name:
           type: string
-          description: 'メーカー支店名'
+          description: 'メーカ支店名'
           example: 'XXXX支店'
         created_at:
           type: string
@@ -2971,40 +2971,40 @@ components:
         - maker
     MakerSalesOffice:
       title: MakerSalesOffice
-      description: メーカーの営業所
+      description: メーカの営業所
       type: object
       properties:
         code:
           type: string
-          description: 'メーカー営業所コード'
+          description: 'メーカ営業所コード'
           example: 'maker_sales_office'
         name:
           type: string
-          description: 'メーカー営業所名'
+          description: 'メーカ営業所名'
           example: 'XXXX営業所'
         postcode:
           type: string
-          description: 'メーカー営業所郵便番号'
+          description: 'メーカ営業所郵便番号'
         prefecture_code:
           type: integer
-          description: 'メーカー営業所都道府県コード'
+          description: 'メーカ営業所都道府県コード'
         prefecture:
           type: string
-          description: 'メーカー営業所都道府県'
+          description: 'メーカ営業所都道府県'
         city:
           type: string
-          description: 'メーカー営業所市区町村'
+          description: 'メーカ営業所市区町村'
         street_address:
           type: string
-          description: 'メーカー営業所番地以降の住所'
+          description: 'メーカ営業所番地以降の住所'
         tel:
           type: string
           nullable: true
-          description: 'メーカー営業所番電話番号'
+          description: 'メーカ営業所番電話番号'
         fax:
           type: string
           nullable: true
-          description: 'メーカー営業所番FAX番号'
+          description: 'メーカ営業所番FAX番号'
         created_at:
           nullable: true
           type: string
@@ -3023,21 +3023,21 @@ components:
         - Maker
     MakerUser:
       title: MakerUser
-      description: 'メーカーのユーザ'
+      description: 'メーカのユーザ'
       type: object
       properties:
         id:
           type: integer
-          description: 'メーカーユーザーID'
+          description: 'メーカユーザーID'
           example: 1
         code:
           type: string
-          description: 'メーカーユーザーコード'
+          description: 'メーカユーザーコード'
           example: 'maker_user'
         email:
           type: string
           format: email
-          description: 'メーカーユーザーメールアドレス'
+          description: 'メーカユーザーメールアドレス'
           example: 'foo@example.com'
         role:
           type: string
@@ -3065,6 +3065,7 @@ components:
         tel:
           type: string
           description: '電話番号'
+          nullable: true
         created_at:
           type: string
           format: date-time
@@ -3087,7 +3088,7 @@ components:
         example-1: {}
       x-tags:
         - product
-      description: ''
+      description: 'カテゴリ'
       properties:
         id:
           type: integer
@@ -3189,7 +3190,7 @@ components:
         internal_code:
           type: string
           nullable: true
-          description: メーカー内部コード
+          description: メーカ内部コード
           example: '12-10002'
         price_amount:
           type: integer
@@ -3203,11 +3204,11 @@ components:
           example: 'JPY'
         maker_price_for_retail_amount:
           type: integer
-          description: メーカーの卸値
+          description: メーカの卸値
           example: 90000
         maker_price_for_retail_currency:
           type: string
-          description: メーカーの卸値（通貨）
+          description: メーカの卸値（通貨）
           example: 'JPY'
         subtotal_excluding_tax:
           type: integer
@@ -3504,12 +3505,12 @@ components:
       properties:
         id:
           type: integer
-          example: 1
           description: 小売りユーザID
+          example: 1
         code:
           type: string
-          example: '0001'
           description: 小売りユーザコード
+          example: '0001'
         email:
           type: string
           format: email
@@ -3540,6 +3541,7 @@ components:
           example: 'たろう'
         tel:
           type: string
+          description: '電話番号'
           nullable: true
         created_at:
           type: string
@@ -3552,12 +3554,13 @@ components:
           description: 'レコード更新日時'
           example: '2022-06-06T18:32:35.956+09:00'
       required:
+        - id
         - code
       x-tags:
         - retail
     OrdersMaker:
       title: OrdersMaker
-      description: メーカーごとの注文
+      description: メーカごとの注文
       x-tags:
         - retail
         - maker
@@ -3565,7 +3568,7 @@ components:
       properties:
         id:
           type: string
-          description: メーカーごとの注文ID。orders_maker_id
+          description: メーカごとの注文ID。orders_maker_id
           example: 'Z2lkOi8vdGFub21pbWFzdGVyLXd3dy9PcmRlcnNNYWtlci8xOQ'
         maker_id:
           type: integer
