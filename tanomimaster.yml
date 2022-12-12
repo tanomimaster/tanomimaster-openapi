@@ -3735,7 +3735,7 @@ components:
           example: '0001'
         name:
           type: string
-          description: '配送先名'
+          description: '納品先名'
           example: 'xxxx株式会社 xxx営業所'
         postcode:
           type: string
