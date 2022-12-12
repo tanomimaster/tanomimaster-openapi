@@ -1175,6 +1175,27 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Total:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Page:
+              schema:
+                type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
           content:
             application/json:
               schema:
@@ -1223,6 +1244,20 @@ paths:
           required: false
           description: 小売り営業所コード(完全一致)
           example: '0001'
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       security:
         - ApiKeyAuth: []
   '/retail/shipping_addresses/{shipping_address_code}':
@@ -3705,18 +3740,23 @@ components:
         postcode:
           type: string
           description: '小売り営業所郵便番号'
+          example: '111-1111'
         prefecture_code:
           type: integer
           description: '小売り営業所都道府県コード'
+          example: 1
         prefecture:
           type: string
           description: '小売り営業所都道府県'
+          example: '東京都'
         city:
           type: string
           description: '小売り営業所市区町村'
+          example: '渋谷区'
         street_address:
           type: string
           description: '小売り営業所番地以降の住所'
+          example: '代々木1-1-1'
         building:
           type: string
           nullable: true
