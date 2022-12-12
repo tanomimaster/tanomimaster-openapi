@@ -1225,7 +1225,7 @@ paths:
           example: '0001'
       security:
         - ApiKeyAuth: []
-  '/retail/shipping_address/{shipping_address_code}':
+  '/retail/shipping_addresses/{shipping_address_code}':
     parameters:
       - schema:
           type: string
