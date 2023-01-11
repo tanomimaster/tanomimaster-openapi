@@ -3043,8 +3043,10 @@ components:
           type: string
           enum:
             - admin
+            - general
             - clerk
-          description: '権限'
+            - sales
+          description: '権限(clerkとsalesは削除予定。clerkとsalesを指定した場合はgeneralとして登録されます。'
           example: 'admin'
         last_name:
           type: string
@@ -3520,8 +3522,10 @@ components:
           type: string
           enum:
             - admin
+            - general
             - clerk
-          description: '権限'
+            - sales
+          description: '権限(clerkとsalesは削除予定。clerkとsalesを指定した場合はgeneralとして登録されます。'
           example: 'admin'
         last_name:
           type: string
