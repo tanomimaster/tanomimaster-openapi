@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.9.0
+  version: v3.9.1
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -1165,7 +1165,161 @@ paths:
                 $ref: '#/components/schemas/Error'
       security:
         - ApiKeyAuth: []
-
+  '/retail/shipping_addresses':
+    get:
+      summary: 自社小売りの納品先一覧を取得
+      operationId: getShippingAddresses
+      description: ShippingAddressの配列を取得
+      tags:
+        - Retail
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Total:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Page:
+              schema:
+                type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShippingAddress'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters:
+        - schema:
+            type: string
+          name: retail_branch_code
+          in: query
+          required: false
+          description: 小売り支店コード(完全一致)
+          example: '0001'
+        - schema:
+            type: string
+          name: retail_sales_office_code
+          in: query
+          required: false
+          description: 小売り営業所コード(完全一致)
+          example: '0001'
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
+      security:
+        - ApiKeyAuth: []
+  '/retail/shipping_addresses/{shipping_address_code}':
+    parameters:
+      - schema:
+          type: string
+        name: shipping_address_code
+        in: path
+        required: true
+    get:
+      summary: 自社小売りの納品先を取得
+      operationId: getShippingAddress
+      description: ShippingAddressを取得
+      tags:
+        - Retail
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShippingAddress'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        error:
+                          $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
   /retail/retail_users/check_registrations:
     post:
       summary: 指定したユーザが存在するかをチェック
@@ -3043,9 +3197,10 @@ components:
           type: string
           enum:
             - admin
+            - general
             - clerk
             - sales
-          description: '権限'
+          description: '権限(clerkとsalesは削除予定。clerkとsalesを指定した場合はgeneralとして登録されます。'
           example: 'admin'
         last_name:
           type: string
@@ -3521,9 +3676,10 @@ components:
           type: string
           enum:
             - admin
+            - general
             - clerk
             - sales
-          description: '権限'
+          description: '権限(clerkとsalesは削除予定。clerkとsalesを指定した場合はgeneralとして登録されます。'
           example: 'admin'
         last_name:
           type: string
@@ -3558,6 +3714,71 @@ components:
       required:
         - id
         - code
+      x-tags:
+        - retail
+    ShippingAddress:
+      title: ShippingAddress
+      description: 納品先住所
+      type: object
+      properties:
+        retail_branch_code:
+          type: string
+          description: RetailBranchのcode
+          example: 'retail_branch_code'
+        retail_sales_office_code:
+          type: string
+          description: RetailSalesOfficeのcode
+          example: 'retail_sales_office_code'
+        code:
+          type: string
+          description: 納品先住所コード
+          example: '0001'
+        name:
+          type: string
+          description: '納品先名'
+          example: 'xxxx株式会社 xxx営業所'
+        postcode:
+          type: string
+          description: '小売り営業所郵便番号'
+          example: '111-1111'
+        prefecture_code:
+          type: integer
+          description: '小売り営業所都道府県コード'
+          example: 1
+        prefecture:
+          type: string
+          description: '小売り営業所都道府県'
+          example: '東京都'
+        city:
+          type: string
+          description: '小売り営業所市区町村'
+          example: '渋谷区'
+        street_address:
+          type: string
+          description: '小売り営業所番地以降の住所'
+          example: '代々木1-1-1'
+        building:
+          type: string
+          nullable: true
+          description: 建物名
+          example: 'テスト建物101'
+        tel:
+          type: string
+          description: '電話番号'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
+        updated_at:
+          type: string
+          format: date-time
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
+      required:
+        - code
+        - name
       x-tags:
         - retail
     OrdersMaker:
