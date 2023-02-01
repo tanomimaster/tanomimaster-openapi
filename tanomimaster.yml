@@ -1462,7 +1462,7 @@ paths:
                 value:
                   items:
                     - code: '2000000014'
-                      ordered_at: '2020/03/03 12:43:36'
+                      example: '2022-06-06T18:32:35.956+09:00'
                       makers:
                         - maker_code: matsukura
                           shipping_postcode: "338-0824"
@@ -2693,15 +2693,20 @@ paths:
         in: path
         required: true
         description: 注文明細No
-      - schema:
-          type: string
-        name: official_estimated_delivery_date
-        in: query
-        required: true
-        description: 納期日(YYYY-MM-DD)
     post:
       summary: メーカ用 納期回答
       operationId: answer-delivery-date
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                official_estimated_delivery_date:
+                  type: string
+                  format: date
+                  description: 納期日(YYYY-MM-DD)
+                  example: '2022-06-03'
       responses:
         '201':
           description: Updated
@@ -3535,6 +3540,7 @@ components:
           type: string
           format: date-time
           description: 注文日
+          example: '2022-06-06T18:32:35.956+09:00'
         created_at:
           type: string
           format: date-time
@@ -3896,7 +3902,7 @@ components:
       x-examples:
         example:
           code: '2000000014'
-          ordered_at: '2020/03/03 12:43:36'
+          example: '2022-06-06T18:32:35.956+09:00'
           makers:
             - maker_code: '1'
               shipping_postcode: null
@@ -3981,6 +3987,7 @@ components:
         ordered_at:
           type: string
           format: date-time
+          example: '2020/03/03 12:43:36'
           description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
       required:
         - code
