@@ -63,7 +63,7 @@ paths:
             type: integer
             format: int32
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
         - schema:
             type: integer
@@ -328,7 +328,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -613,7 +613,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -921,7 +921,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -969,7 +969,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -1039,7 +1039,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -1140,7 +1140,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -1388,7 +1388,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -1642,7 +1642,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -1746,7 +1746,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -1847,7 +1847,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -1945,7 +1945,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -2044,7 +2044,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -2150,7 +2150,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -2230,7 +2230,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -2348,7 +2348,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -2454,7 +2454,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -2534,7 +2534,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -2615,7 +2615,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -2748,7 +2748,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
@@ -2852,7 +2852,7 @@ paths:
         - schema:
             type: integer
             minimum: 1
-            default: 20
+            default: 25
             maximum: 100
           name: limit
           in: query
