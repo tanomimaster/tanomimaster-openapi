@@ -315,6 +315,26 @@ paths:
       summary: 注文明細の一覧を取得
       tags:
         - Retail
+      parameters:
+        - schema:
+            type: integer
+            minimum: 1
+            default: 1
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -580,6 +600,26 @@ paths:
     get:
       deprecated: true
       summary: listMakers
+      parameters:
+        - schema:
+            type: integer
+            minimum: 1
+            default: 1
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -868,6 +908,26 @@ paths:
       description: 2022年9月1日以降のリリースで廃止予定`/master/retails/{retail_code}/retail_branches/{retail_branch_code}` を利用してください。
       tags:
         - Retail
+      parameters:
+        - schema:
+            type: integer
+            minimum: 1
+            default: 1
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -896,6 +956,26 @@ paths:
       summary: listRetailBranches
       operationId: listRetailBranches
       description: 2022年8月で廃止予定`/master/retails/{retail_code}/retail_branches` を利用してください。
+      parameters:
+        - schema:
+            type: integer
+            minimum: 1
+            default: 1
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -946,6 +1026,26 @@ paths:
       summary: listRetailSalesOffices
       operationId: listRetailSalesOffices
       description: 2022年9月1日以降のリリースで廃止予定`/master/retails/{retail_code}/retail_branches` を利用してください。
+      parameters:
+        - schema:
+            type: integer
+            minimum: 1
+            default: 1
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -1027,6 +1127,26 @@ paths:
       description: RetailUserの配列を取得
       tags:
         - Retail
+      parameters:
+        - schema:
+            type: integer
+            minimum: 1
+            default: 1
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -1509,6 +1629,26 @@ paths:
       operationId: listCategoriesOld
       tags:
         - Common
+      parameters:
+        - schema:
+            type: integer
+            minimum: 1
+            default: 1
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
