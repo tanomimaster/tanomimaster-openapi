@@ -57,11 +57,23 @@ paths:
       parameters:
         - name: limit
           in: query
-          description: How many items to return at one time (max 100)
+          description: 項目数
           required: false
           schema:
             type: integer
             format: int32
+            minimum: 1
+            default: 20
+            maximum: 100
+        - schema:
+            type: integer
+            minimum: 1
+            default: 1
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
         - schema:
             type: string
           in: query
@@ -1246,6 +1258,8 @@ paths:
           example: '0001'
         - schema:
             type: integer
+            minimum: 1
+            default: 1
           name: page
           in: query
           required: false
@@ -1253,6 +1267,9 @@ paths:
           example: 2
         - schema:
             type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
           name: limit
           in: query
           required: false
@@ -1579,6 +1596,8 @@ paths:
       parameters:
         - schema:
             type: integer
+            minimum: 1
+            default: 1
           name: page
           in: query
           required: false
@@ -1586,6 +1605,9 @@ paths:
           example: 2
         - schema:
             type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
           name: limit
           in: query
           required: false
@@ -1675,6 +1697,8 @@ paths:
       parameters:
         - schema:
             type: integer
+            minimum: 1
+            default: 1
           name: page
           in: query
           required: false
@@ -1682,6 +1706,9 @@ paths:
           example: 2
         - schema:
             type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
           name: limit
           in: query
           required: false
@@ -1768,6 +1795,8 @@ paths:
       parameters:
         - schema:
             type: integer
+            minimum: 1
+            default: 1
           name: page
           in: query
           required: false
@@ -1775,6 +1804,9 @@ paths:
           example: 2
         - schema:
             type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
           name: limit
           in: query
           required: false
@@ -1862,6 +1894,8 @@ paths:
       parameters:
         - schema:
             type: integer
+            minimum: 1
+            default: 1
           name: page
           in: query
           required: false
@@ -1869,6 +1903,9 @@ paths:
           example: 2
         - schema:
             type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
           name: limit
           in: query
           required: false
@@ -1963,6 +2000,8 @@ paths:
       parameters:
         - schema:
             type: integer
+            minimum: 1
+            default: 1
           name: page
           in: query
           required: false
@@ -1970,6 +2009,9 @@ paths:
           example: 2
         - schema:
             type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
           name: limit
           in: query
           required: false
@@ -2038,6 +2080,8 @@ paths:
       parameters:
         - schema:
             type: integer
+            minimum: 1
+            default: 1
           name: page
           in: query
           required: false
@@ -2045,6 +2089,9 @@ paths:
           example: 2
         - schema:
             type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
           name: limit
           in: query
           required: false
@@ -2151,6 +2198,8 @@ paths:
       parameters:
         - schema:
             type: integer
+            minimum: 1
+            default: 1
           name: page
           in: query
           required: false
@@ -2158,6 +2207,9 @@ paths:
           example: 2
         - schema:
             type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
           name: limit
           in: query
           required: false
@@ -2252,6 +2304,8 @@ paths:
       parameters:
         - schema:
             type: integer
+            minimum: 1
+            default: 1
           name: page
           in: query
           required: false
@@ -2259,6 +2313,9 @@ paths:
           example: 2
         - schema:
             type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
           name: limit
           in: query
           required: false
@@ -2327,6 +2384,8 @@ paths:
       parameters:
         - schema:
             type: integer
+            minimum: 1
+            default: 1
           name: page
           in: query
           required: false
@@ -2334,6 +2393,9 @@ paths:
           example: 2
         - schema:
             type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
           name: limit
           in: query
           required: false
@@ -2403,6 +2465,8 @@ paths:
       parameters:
         - schema:
             type: integer
+            minimum: 1
+            default: 1
           name: page
           in: query
           required: false
@@ -2410,6 +2474,9 @@ paths:
           example: 2
         - schema:
             type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
           name: limit
           in: query
           required: false
@@ -2531,6 +2598,8 @@ paths:
             type: string
         - schema:
             type: integer
+            minimum: 1
+            default: 1
           name: page
           in: query
           required: false
@@ -2538,6 +2607,9 @@ paths:
           example: 2
         - schema:
             type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
           name: limit
           in: query
           required: false
@@ -2630,6 +2702,8 @@ paths:
       parameters:
         - schema:
             type: integer
+            minimum: 1
+            default: 1
           name: page
           in: query
           required: false
@@ -2637,6 +2711,9 @@ paths:
           example: 2
         - schema:
             type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
           name: limit
           in: query
           required: false
