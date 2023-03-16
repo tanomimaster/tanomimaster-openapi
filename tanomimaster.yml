@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.9.5
+  version: v3.9.6
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -1576,6 +1576,21 @@ paths:
       operationId: listCategories
       tags:
         - Common
+      parameters:
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -1657,6 +1672,21 @@ paths:
       summary: 配送会社の一覧を取得
       operationId: getDeliveryCompanys
       description: DeliveryCompanyの配列を取得
+      parameters:
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -1735,6 +1765,21 @@ paths:
       summary: ガス種の一覧を取得
       operationId: getGasTypes
       description: GasTypeの配列を取得
+      parameters:
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -1814,6 +1859,21 @@ paths:
       summary: メーカの一覧を取得
       operationId: getMakers
       description: Makerの配列を取得
+      parameters:
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -1900,6 +1960,21 @@ paths:
       description: MakerBranchの配列を取得
       tags:
         - Common
+      parameters:
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -1960,6 +2035,21 @@ paths:
       summary: メーカの営業所一覧の取得
       operationId: listMasterMakerSalesOffices
       description: MakerSalesOfficeの配列
+      parameters:
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -2058,6 +2148,21 @@ paths:
       summary: 小売りの一覧を取得
       operationId: getRetails
       description: Retailの配列を取得
+      parameters:
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -2144,6 +2249,21 @@ paths:
       description: RetailBranchの配列を取得
       tags:
         - Common
+      parameters:
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -2204,6 +2324,21 @@ paths:
       summary: 小売りの営業所一覧の取得
       operationId: listMasterRetailSalesOffices
       description: RetailSalesOfficeの配列
+      parameters:
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -2265,6 +2400,21 @@ paths:
       description: RetailSalesOfficeの取得
       tags:
         - Common
+      parameters:
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -2379,6 +2529,20 @@ paths:
           required: false
           schema:
             type: string
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
@@ -2463,6 +2627,21 @@ paths:
       description: 指定された注文における
       tags:
         - Maker
+      parameters:
+        - schema:
+            type: integer
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
       responses:
         '200':
           description: OK
