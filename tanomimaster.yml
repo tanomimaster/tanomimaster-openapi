@@ -2747,6 +2747,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: cancelled_at_from
+          in: query
+          description: キャンセル時刻FROM(YYYY-MM-DD hh:mm:ss)
+          required: false
+          schema:
+            type: string
+        - name: cancelled_at_to
+          in: query
+          description: キャンセル時刻TO(YYYY-MM-DD)
+          required: false
+          schema:
+            type: string
         - schema:
             type: integer
             minimum: 1
