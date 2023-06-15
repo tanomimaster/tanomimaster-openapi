@@ -3946,7 +3946,7 @@ components:
         ordered_at:
           type: string
           format: date-time
-          description: 注文日
+          description: '発注日時'
           example: '2022-06-06T18:32:35.956+09:00'
         created_at:
           type: string
@@ -4391,11 +4391,6 @@ components:
             required:
               - maker_code
               - retail_user_code
-        ordered_at:
-          type: string
-          format: date-time
-          example: '2020/03/03 12:43:36'
-          description: 注文日時。時刻文字列にTZ指定がない場合、JSTとして処理する
       required:
         - code
     ProductCheckCodeRequest:
