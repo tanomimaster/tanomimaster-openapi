@@ -20,6 +20,8 @@ We need to re-define branch release model associating server-side and client-sid
 
 ## Policy
 
+- [https://martinfowler.com/articles/richardsonMaturityModel.html](Richardson Maturity Model)
+  - Level 2 is required.
 - Following on gitlab's API design.
   - https://docs.gitlab.com/ee/api/README.html#gitlab-ci-job-token
 
