@@ -212,19 +212,22 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type:
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
             X-Total-Pages:
               schema:
-                type: integer
+                type:
+                  - integer
+                  - null
             X-Next-Page:
               schema:
                 type:
-                - integer
-                - null
+                  - integer
+                  - null
         default:
           description: unexpected error
           content:
@@ -1022,8 +1025,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type:
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -1032,8 +1036,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type:
+                  - integer
+                  - null
         default:
           description: unexpected error
           content:
@@ -1102,9 +1107,10 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
+                type:
                   - integer
                   - null
-      default:
+        default:
           description: unexpected error
           content:
             application/json:
@@ -1504,14 +1510,17 @@ paths:
                       type: object
                       properties:
                         retail_user_code:
-                          type: string
-                          nullable: true
+                          type:
+                            - string
+                            - null
                         retail_sales_office_code:
-                          type: string
-                          nullable: true
+                          type:
+                            - string
+                            - null
                         registed:
-                          type: boolean
-                          nullable: true
+                          type:
+                            - boolean
+                            - null
         default:
           description: unexpected error
           content:
@@ -3335,18 +3344,21 @@ components:
           example: 1
           description: '商品ID'
         disabled_at:
-          type: string
+          type:
+            - string
+            - null
           format: date-time
-          nullable: true
           example: '2022-06-06T18:32:35.956+09:00'
         estimated_delivery_duration:
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - null
           description: '目安納期日数'
           example: 3
         use_gas_type_master:
-          type: boolean
-          nullable: true
+          type:
+            - boolean
+            - null
           description: 'ガス種の選択を必要とするか'
           example: true
         maker_id:
@@ -3362,8 +3374,9 @@ components:
             - pending
             - sold
         internal_code:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           description: 'メーカ内部コード'
           example: '000-111'
         name:
@@ -3773,8 +3786,9 @@ components:
           example: 1
         gas_type_id:
           description: 'ガス種を選択する商品の場合、必須項目(1: LP, 2: 12・13A)'
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - null
           example: 1
         name:
           type: string
@@ -3789,18 +3803,21 @@ components:
           description: 注文明細No
           example: '5d25c1884ee2f597047be83d11'
         internal_code:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           description: メーカ内部コード
           example: '12-10002'
         price_amount:
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - null
           description: 定価
           example: 100000
         price_currency:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           description: 通貨
           example: 'JPY'
         maker_price_for_retail_amount:
@@ -3820,16 +3837,18 @@ components:
           description: 目安納期日数
           example: 3
         shipping_status:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           enum:
             - undelivered
             - delivered
           description: 配送ステータス
           example: undelivered
         delivery_date:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           format: date
           description: 納期目安
           example: '2022-06-03'
@@ -3838,61 +3857,72 @@ components:
           description: 個数
           example: 1
         cancelled_at:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           description: 仕入納品APIでキャンセルした場合、キャンセル日時を設定
           format: date-time
           example: '2022-06-03'
         shipping_postcode:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           description: 郵便番号
           example: '1060031'
         shipping_prefecture_code:
-          type: integer
-          nullable: true
+          type:
+            - integer
+            - null
           description: 都道府県
           example: '東京都'
         shipping_city:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           description: 市区町村
           example: '渋谷区'
         shipping_street_address:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           description: 番地・号
           example: '代々木1-1-1'
         shipping_building:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           description: 建物名
           example: 'テスト建物101'
         shipping_office_name:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           description: 営業所名
           example: 'テスト営業所'
         shipping_tel:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           description: 電話番号
           example: '03-0000-0000'
         estimated_delivery_date:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           format: date
           description: 納期目安
           example: '2022-06-03'
         official_estimated_delivery_date:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           format: date
           description: 納期回答
           example: '2022-06-03'
         answered_at:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           format: date-time
           description: 納期回答日時
         order_status:
@@ -3906,27 +3936,35 @@ components:
           description: 注文明細ステータス
           example: 'ordered'
         memo:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           description: 備考
           example: 'メモメモ'
         order_confirmed_at:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           format: date-time
           description: 注文受付日時
         cancel_confirmed_at:
           type: string
-          nullable: true
+          type:
+            - string
+            - null
           format: date-time
           description: キャンセル注文受付日時
         shipping_slip_number:
           description: 配送伝票番号
-          nullable: true
+          type:
+            - string
+            - null
           type: string
         delivery_company_id:
           description: 配送業者ID
-          nullable: true
+          type:
+            - integer
+            - null
           type: integer
         created_at:
           type: string
@@ -3972,9 +4010,10 @@ components:
           description: 注文ID
           example: '5d25c1884ee2f597047be83d11'
         memo:
-          type: string
+          type:
+            - string
+            - null
           description: 注文に対する備考
-          nullable: true
           example: 'メモメモ'
         ordered_at:
           type: string
@@ -4077,17 +4116,20 @@ components:
           type: string
           description: '小売り営業所番地以降の住所'
         tel:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           description: '小売り営業所番電話番号'
         fax:
-          type: string
-          nullable: true
+          type:
+            - string
+            - null
           description: '営業所番FAX番号'
         created_at:
-          nullable: true
-          type: string
-          format: date-time
+          type:
+            - string
+            s- null
+                                                                                                                                                                                                                                    format: date-time
           description: 'レコード作成日時'
           example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
