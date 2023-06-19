@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   version: v3.9.12
   title: Tanomimaster REST API Specification
@@ -95,8 +95,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type:
+                  - integer
+                  - null
             X-Per-Page:
               schema:
                 type: integer
@@ -105,8 +106,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type:
+                  - integer
+                  - null
           content:
             application/json:
               schema:
@@ -220,8 +222,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type:
+                - integer
+                - null
         default:
           description: unexpected error
           content:
@@ -374,8 +377,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type:
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -384,8 +388,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type:
+                  - integer
+                  - null
         '401':
           description: Unauthorized
           content:
@@ -496,11 +501,13 @@ paths:
                   type: string
                 gas_type_id:
                   description: ガス種を選択する商品の場合、必須項目
-                  type: integer
-                  nullable: true
+                  type:
+                    - integer
+                    - null
                 memo:
-                  type: string
-                  nullable: true
+                  type:
+                    - string
+                    - null
               required:
                 - maker_code
                 - code
@@ -659,8 +666,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type:
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -669,8 +677,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type:
+                  - integer
+                  - null
         default:
           description: unexpected error
           content:
@@ -1082,8 +1091,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type:
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -1092,9 +1102,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
-        default:
+                  - integer
+                  - null
+      default:
           description: unexpected error
           content:
             application/json:
@@ -1330,8 +1340,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
             X-Per-Page:
               schema:
                 type: integer
@@ -1340,8 +1351,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
           content:
             application/json:
               schema:
@@ -1688,8 +1700,9 @@ paths:
           headers:
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
             X-Page:
               schema:
                 type: integer
@@ -1698,8 +1711,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -1798,8 +1812,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -1808,8 +1823,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
         default:
           description: unexpected error
           content:
@@ -1889,8 +1905,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -1899,8 +1916,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
         default:
           description: unexpected error
           content:
@@ -1987,8 +2005,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -1997,8 +2016,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
         default:
           description: unexpected error
           content:
@@ -2086,8 +2106,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -2096,8 +2117,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
         default:
           description: unexpected error
           content:
@@ -2271,8 +2293,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -2281,8 +2304,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
         default:
           description: unexpected error
           content:
@@ -2389,8 +2413,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -2399,8 +2424,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
         default:
           description: unexpected error
           content:
@@ -2574,8 +2600,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -2584,8 +2611,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
         default:
           description: unexpected error
           content:
@@ -2787,8 +2815,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -2797,8 +2826,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
         default:
           description: unexpected error
           content:
@@ -2891,8 +2921,9 @@ paths:
                 type: integer
             X-Prev-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
             X-Total:
               schema:
                 type: integer
@@ -2901,8 +2932,9 @@ paths:
                 type: integer
             X-Next-Page:
               schema:
-                type: integer
-                nullable: true
+                type: 
+                  - integer
+                  - null
         '401':
           description: Unauthorized
           content:
@@ -3631,9 +3663,10 @@ components:
           description: '名(かな)'
           example: 'たろう'
         tel:
-          type: string
           description: '電話番号'
-          nullable: true
+          type:
+            - string
+            - null
         created_at:
           type: string
           format: date-time
