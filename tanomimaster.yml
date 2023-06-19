@@ -4128,8 +4128,7 @@ components:
         created_at:
           type:
             - string
-            s- null
-                                                                                                                                                                                                                                    format: date-time
+            - null
           description: 'レコード作成日時'
           example: '2022-06-06T18:32:35.956+09:00'
         updated_at:
