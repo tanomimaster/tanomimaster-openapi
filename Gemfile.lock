@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/kevindew/openapi3_parser.git
+  revision: fc98338bcc16fb724c3974eec8103ee76e61fb65
+  branch: openapi-3.1
+  specs:
+    openapi3_parser (0.9.2)
+      commonmarker (~> 0.17)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -7,10 +15,8 @@ GEM
       rack (>= 1.5)
     commonmarker (0.23.9)
     json_schema (0.21.0)
-    openapi3_parser (0.9.2)
-      commonmarker (~> 0.17)
     openapi_parser (1.0.0)
-    rack (3.0.7)
+    rack (3.0.8)
 
 PLATFORMS
   arm64-darwin-21
@@ -19,7 +25,7 @@ PLATFORMS
 
 DEPENDENCIES
   committee
-  openapi3_parser
+  openapi3_parser!
 
 BUNDLED WITH
    2.2.10
