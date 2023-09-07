@@ -4221,7 +4221,7 @@ components:
           example: 1
           deprecated: true
         maker_user_code:
-          type: integer
+          type: string
           description: 'MakerUserのcode'
           example: 1
         maker_sales_office_id:
