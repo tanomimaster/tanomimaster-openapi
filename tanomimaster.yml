@@ -2955,7 +2955,7 @@ paths:
         in: path
         required: true
       - schema:
-          type: string
+          type: integer
         name: branch_number
         in: path
         required: true
@@ -2989,7 +2989,7 @@ paths:
         in: path
         required: true
       - schema:
-          type: string
+          type: integer
         name: branch_number
         in: path
         required: true
@@ -3047,7 +3047,7 @@ paths:
         in: path
         required: true
       - schema:
-          type: string
+          type: integer
         name: branch_number
         in: path
         required: true
@@ -3107,7 +3107,7 @@ paths:
         required: true
         description: 注文番号
       - schema:
-          type: string
+          type: integer
         name: branch_number
         in: path
         required: true
@@ -3177,7 +3177,7 @@ paths:
         required: true
         description: 注文番号
       - schema:
-          type: string
+          type: integer
         name: branch_number
         in: path
         required: true
@@ -3248,7 +3248,7 @@ paths:
         required: true
         description: 注文番号
       - schema:
-          type: string
+          type: integer
         name: branch_number
         in: path
         required: true
@@ -3766,7 +3766,7 @@ components:
         branch_number:
           type: integer
           description: 注文明細No
-          example: '5d25c1884ee2f597047be83d11'
+          example: 1
         internal_code:
           type: string
           nullable: true
