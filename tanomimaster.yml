@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.9.21
+  version: v3.9.28
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -2710,6 +2710,12 @@ paths:
       tags:
         - Maker
       parameters:
+        - name: code
+          in: query
+          description: 注文コード(完全一致)
+          required: false
+          schema:
+            type: string
         - name: is_confirmed
           in: query
           description: 受注確定している明細を含んでいる注文を取得するかどうか
@@ -2744,6 +2750,18 @@ paths:
         - name: delivery_date_to
           in: query
           description: 納品日TO(YYYY-MM-DD)
+          required: false
+          schema:
+            type: string
+        - name: cancelled_at_from
+          in: query
+          description: キャンセル時刻FROM(YYYY-MM-DD hh:mm:ss)
+          required: false
+          schema:
+            type: string
+        - name: cancelled_at_to
+          in: query
+          description: キャンセル時刻TO(YYYY-MM-DD)
           required: false
           schema:
             type: string
@@ -2943,7 +2961,7 @@ paths:
         in: path
         required: true
       - schema:
-          type: string
+          type: integer
         name: branch_number
         in: path
         required: true
@@ -2977,7 +2995,7 @@ paths:
         in: path
         required: true
       - schema:
-          type: string
+          type: integer
         name: branch_number
         in: path
         required: true
@@ -3035,7 +3053,7 @@ paths:
         in: path
         required: true
       - schema:
-          type: string
+          type: integer
         name: branch_number
         in: path
         required: true
@@ -3095,7 +3113,7 @@ paths:
         required: true
         description: 注文番号
       - schema:
-          type: string
+          type: integer
         name: branch_number
         in: path
         required: true
@@ -3165,7 +3183,7 @@ paths:
         required: true
         description: 注文番号
       - schema:
-          type: string
+          type: integer
         name: branch_number
         in: path
         required: true
@@ -3236,7 +3254,7 @@ paths:
         required: true
         description: 注文番号
       - schema:
-          type: string
+          type: integer
         name: branch_number
         in: path
         required: true
@@ -3754,7 +3772,7 @@ components:
         branch_number:
           type: integer
           description: 注文明細No
-          example: '5d25c1884ee2f597047be83d11'
+          example: 1
         internal_code:
           type: string
           nullable: true
@@ -4221,7 +4239,7 @@ components:
           example: 1
           deprecated: true
         maker_user_code:
-          type: integer
+          type: string
           description: 'MakerUserのcode'
           example: 1
         maker_sales_office_id:
