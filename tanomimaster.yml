@@ -29,6 +29,10 @@ info:
 
     タノミマスターはAPIキーによる認証を提供しています。
 
+    # 型に関して
+    ## boolean
+    便宜上、リクエストパラメータなどでboolean型が指定されている場合は `false` または `true` の文字列を指定してください。
+
   license:
     name: All Rights Reserved
   contact:
@@ -2722,6 +2726,13 @@ paths:
           required: false
           schema:
             type: boolean
+          examples:
+            including-confirmed:
+              value: 'true'
+              summary: '注文確定している明細を含んでいる注文と全明細を返却'
+            excluding-confirmed:
+              value: 'false'
+              summary: '注文確定している明細を含んでいない注文と全明細を返却'
         - name: is_cancel_confirmed
           in: query
           description: キャンセル確定している明細を含んでいる注文を取得するかどうか
