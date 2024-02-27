@@ -2669,9 +2669,27 @@ paths:
         name: retail_sales_office_code
         in: path
         required: true
+  /holidays:
+    get:
+      summary: 休日一覧
+      operationId: getHolidays
+      description: タノミマスターで休日として定義してある日にちの一覧
+      tags:
+        - Common
+      responses:
+        '200':
+          description: |
+            - 2012年から翌年までの休日の一覧を返却する
+            - `2012-04-30T00:00:00+09:00`
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: date-time
   /status:
     get:
-      summary: ヘルスチェック用URL
+      summary: ヘルスチェック用
       operationId: getStatus
       description: 稼働中のAPI仕様のバージョンを表示することと、ヘルスチェック用のエンドポイントです。
       tags:
