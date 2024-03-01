@@ -10,7 +10,8 @@ GEM
     openapi3_parser (0.9.2)
       commonmarker (~> 0.17)
     openapi_parser (2.0.0)
-    rack (3.0.9)
+    rack (3.0.9.1)
+
 
 PLATFORMS
   arm64-darwin-21
