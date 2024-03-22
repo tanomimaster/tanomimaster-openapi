@@ -3432,6 +3432,32 @@ components:
           type: string
           description: '商品名'
           example: '商品A'
+        product_disabled_at:
+          type: string
+          format: date-time
+          description: '商品を無効化した日時'
+          example: '2024-01-06T18:32:35.956+09:00'
+          nullable: true
+        product_created_at:
+          type: string
+          format: date-time
+          description: '商品レコード作成日時'
+          example: '2024-01-06T18:32:35.956+09:00'
+        product_updated_at:
+          type: string
+          format: date-time
+          description: '商品レコード更新日時'
+          example: '2024-01-06T18:32:35.956+09:00'
+        product_price_created_at:
+          type: string
+          format: date-time
+          description: '価格レコード作成日時'
+          example: '2024-01-06T18:32:35.956+09:00'
+        product_price_updated_at:
+          type: string
+          format: date-time
+          description: '価格レコード更新日時'
+          example: '2024-01-06T18:32:35.956+09:00'
         price_amount:
           type: integer
           description: 'メーカ希望小売価格(税抜)'
