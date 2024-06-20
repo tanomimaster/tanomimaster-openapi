@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.10.5
+  version: v3.10.6
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -25,13 +25,17 @@ info:
     All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
     -->
 
-    # 認証
+    # 規格
+    ## 都道府県コード
+    [JIS X 0401](https://makitani.net/shimauma/knowledge/japan-prefecture-code) の都道府県コードを利用します。JIS X 0401はゼロ埋めされた2桁ですが、数値に変換した値を利用します。
 
-    タノミマスターはAPIキーによる認証を提供しています。
-
-    # 型に関して
+    ## 型
     ## boolean
     便宜上、リクエストパラメータなどでboolean型が指定されている場合は `false` または `true` の文字列を指定してください。
+
+    # 認証
+    タノミマスターはHTTPヘッダの　Bearerキーを利用した認証を提供しています。
+
 
   license:
     name: All Rights Reserved
@@ -3891,8 +3895,8 @@ components:
         shipping_prefecture_code:
           type: integer
           nullable: true
-          description: 都道府県
-          example: '東京都'
+          description: 都道府県コード
+          example: 1
         shipping_city:
           type: string
           nullable: true
