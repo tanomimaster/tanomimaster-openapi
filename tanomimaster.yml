@@ -3631,15 +3631,19 @@ components:
         prefecture_code:
           type: integer
           description: 'メーカ営業所都道府県コード'
+          example: 13
         prefecture:
           type: string
           description: 'メーカ営業所都道府県'
+          example: "東京都"
         city:
           type: string
           description: 'メーカ営業所市区町村'
+          example: "渋谷区"
         street_address:
           type: string
           description: 'メーカ営業所番地以降の住所'
+          example: '代々木1-1-1'
         tel:
           type: string
           nullable: true
