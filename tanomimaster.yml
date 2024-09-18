@@ -2798,6 +2798,77 @@ paths:
         - ApiKeyAuth: []
       operationId: listProduct
       description: list products
+    post:
+      summary: メーカ用 商品追加
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                disabled_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                estimated_delivery_duration:
+                  type: integer
+                use_gas_master:
+                  type: boolean
+                internal_code:
+                  type: string
+                category_id:
+                  type: integer
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: create product
+      tags:
+        - Maker
+      security:
+        - ApiKeyAuth: []
   /maker/products/{product_code}:
     parameters:
       - schema:
@@ -2840,6 +2911,7 @@ paths:
                 disabled_at:
                   type: string
                   format: date-time
+                  nullable: true
                 estimated_delivery_duration:
                   type: integer
                 use_gas_master:
@@ -2848,11 +2920,8 @@ paths:
                   type: string
                 category_id:
                   type: integer
-              required:
-                - name
-                - category_id
       responses:
-        '201':
+        '200':
           description: Updated
           content:
             application/json:
@@ -2882,13 +2951,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
           description: Internal Server Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      description: confirm order
+      description: update product
       tags:
         - Maker
       security:
