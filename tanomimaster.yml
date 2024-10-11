@@ -2819,6 +2819,7 @@ paths:
                   type: boolean
                 internal_code:
                   type: string
+                  nullable: true
                 category_id:
                   type: integer
       responses:
@@ -3664,6 +3665,7 @@ components:
         maker_id:
           type: integer
           description: 'メーカID'
+          deprecated: true
           example: 1
         status:
           type: string
