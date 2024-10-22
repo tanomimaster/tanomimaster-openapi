@@ -197,6 +197,21 @@ paths:
           required: false
           description: ページ数
           example: 2
+        - schema:
+            type: integer
+            minimum: 1
+          name: order_status
+          in: query
+          required: false
+          description: 注文ステータス(0：納期未回答, 2：出荷待ち, 3：出荷済み, 4：納品済み, 99：キャンセル)
+          example: 1
+        - schema:
+            type: string
+          name: code
+          in: query
+          required: false
+          description: 注文コード
+          example: '251902782345019285'
       responses:
         '200':
           description: OK
@@ -3010,7 +3025,7 @@ paths:
               summary: 'キャンセル確定している明細を含んでいない注文と全明細を返却'
         - name: status
           in: query
-          description: ステータス(0：納期未回答, 2：出荷待ち, 3：出荷済み, 4：納品完了, 99：キャンセル)
+          description: 注文ステータス(0：納期未回答, 2：出荷待ち, 3：出荷済み, 4：納品済み, 99：キャンセル)
           required: false
           schema:
             type: integer
