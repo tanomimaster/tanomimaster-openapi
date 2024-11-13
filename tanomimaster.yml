@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.10.11
+  version: v3.12.0
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -123,7 +123,7 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Product'
+                      $ref: '#/components/schemas/ProductForRetail'
         default:
           description: unexpected error
           content:
@@ -152,7 +152,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/ProductForRetail'
         default:
           description: unexpected error
           content:
@@ -197,6 +197,21 @@ paths:
           required: false
           description: ページ数
           example: 2
+        - schema:
+            type: integer
+            minimum: 1
+          name: order_status
+          in: query
+          required: false
+          description: 注文ステータス(0：納期未回答, 2：出荷待ち, 3：出荷済み, 4：納品済み, 99：キャンセル)
+          example: 1
+        - schema:
+            type: string
+          name: code
+          in: query
+          required: false
+          description: 注文コード
+          example: '251902782345019285'
       responses:
         '200':
           description: OK
@@ -2729,6 +2744,246 @@ paths:
                 Example:
                   value:
                     version: 1.0.0
+  /maker/products:
+    parameters: []
+    get:
+      summary: メーカ用 商品一覧取得
+      tags:
+        - Maker
+      parameters:
+        - schema:
+            type: integer
+            minimum: 1
+            default: 1
+          name: page
+          in: query
+          required: false
+          description: ページ数
+          example: 2
+        - schema:
+            type: integer
+            minimum: 1
+            default: 25
+            maximum: 100
+          name: limit
+          in: query
+          required: false
+          description: 項目数
+          example: 10
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+          headers:
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+            X-Prev-Page:
+              schema:
+                type: integer
+                nullable: true
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Next-Page:
+              schema:
+                type: integer
+                nullable: true
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+      operationId: listProduct
+      description: list products
+    post:
+      summary: メーカ用 商品追加
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                disabled_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                estimated_delivery_duration:
+                  type: integer
+                use_gas_master:
+                  type: boolean
+                internal_code:
+                  type: string
+                  nullable: true
+                category_id:
+                  type: integer
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: create product
+      tags:
+        - Maker
+      security:
+        - ApiKeyAuth: []
+  /maker/products/{product_code}:
+    parameters:
+      - schema:
+          type: string
+        name: product_code
+        in: path
+        required: true
+    get:
+      summary: メーカ用 商品取得
+      tags:
+        - Maker
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+      operationId: showAProduct
+      description: show a product
+    post:
+      summary: メーカ用 商品更新
+      operationId: updateProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                disabled_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                estimated_delivery_duration:
+                  type: integer
+                use_gas_master:
+                  type: boolean
+                internal_code:
+                  type: string
+                category_id:
+                  type: integer
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: update product
+      tags:
+        - Maker
+      security:
+        - ApiKeyAuth: []
   /maker/orders_makers:
     parameters: []
     get:
@@ -2770,7 +3025,7 @@ paths:
               summary: 'キャンセル確定している明細を含んでいない注文と全明細を返却'
         - name: status
           in: query
-          description: ステータス(0：納期未回答, 2：出荷待ち, 3：出荷済み, 4：納品完了, 99：キャンセル)
+          description: 注文ステータス(0：納期未回答, 2：出荷待ち, 3：出荷済み, 4：納品済み, 99：キャンセル)
           required: false
           schema:
             type: integer
@@ -3348,6 +3603,60 @@ components:
         - product
       description: A single product.
       properties:
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2022-06-06T18:32:35.956+09:00'
+        estimated_delivery_duration:
+          type: integer
+          nullable: true
+          description: '目安納期日数'
+          example: 3
+        use_gas_type_master:
+          type: boolean
+          nullable: true
+          description: 'ガス種の選択を必要とするか'
+          example: true
+        internal_code:
+          type: string
+          nullable: true
+          description: 'メーカ内部コード'
+          example: '000-111'
+        name:
+          type: string
+          description: '商品名'
+          example: 商品A
+        category_id:
+          type: integer
+          description: カテゴリID
+          example: 1
+        maker_code:
+          type: string
+          description: メーカコード
+          example: '0001'
+        created_at:
+          type: string
+          format: date-time
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
+        updated_at:
+          type: string
+          format: date-time
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
+      required:
+        - name
+        - category_id
+    ProductForRetail:
+      title: ProductForRetail
+      type: object
+      xml:
+        name: ProductForRetail
+      x-tags:
+        - product
+      description: A single product.
+      properties:
         id:
           type: integer
           format: int64
@@ -3371,6 +3680,7 @@ components:
         maker_id:
           type: integer
           description: 'メーカID'
+          deprecated: true
           example: 1
         status:
           type: string
@@ -3631,15 +3941,19 @@ components:
         prefecture_code:
           type: integer
           description: 'メーカ営業所都道府県コード'
+          example: 13
         prefecture:
           type: string
           description: 'メーカ営業所都道府県'
+          example: "東京都"
         city:
           type: string
           description: 'メーカ営業所市区町村'
+          example: "渋谷区"
         street_address:
           type: string
           description: 'メーカ営業所番地以降の住所'
+          example: '代々木1-1-1'
         tel:
           type: string
           nullable: true
