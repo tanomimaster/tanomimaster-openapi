@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.12.0
+  version: v3.12.2
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -57,7 +57,7 @@ servers:
 paths:
   /retail/products:
     get:
-      summary: 商品の一覧を取得
+      summary: 販売中商品の一覧を取得
       operationId: getProducts
       description: Productの配列を取得
       tags:
@@ -134,7 +134,7 @@ paths:
         - ApiKeyAuth: []
   '/retail/products/{product_id}':
     get:
-      summary: 商品を取得
+      summary: 販売中商品を取得
       operationId: showProductById
       description: Productを取得
       tags:
@@ -3682,14 +3682,6 @@ components:
           description: 'メーカID'
           deprecated: true
           example: 1
-        status:
-          type: string
-          description: '商品ステータス'
-          example: 'available'
-          enum:
-            - available
-            - pending
-            - sold
         internal_code:
           type: string
           nullable: true
