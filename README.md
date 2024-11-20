@@ -1,6 +1,6 @@
 # Tanomimaster REST API specification
 
-[![Ruby](https://github.com/tanomimaster/tanomimaster-openapi/actions/workflows/ci.yml/badge.svg)](https://github.com/tanomimaster/tanomimaster-openapi/actions/workflows/ci.yml)
+[![Ruby](https://github.com/tanomimaster/tanomimaster-openapi/actions/workflows/test.yml/badge.svg)](https://github.com/tanomimaster/tanomimaster-openapi/actions/workflows/test.yml)
 
 - Built with OAS (Open API Specification) 3.0 
 
@@ -20,6 +20,8 @@ We need to re-define branch release model associating server-side and client-sid
 
 ## Policy
 
+- [Richardson Maturity Model](https://martinfowler.com/articles/richardsonMaturityModel.html])
+  - Level 2 is required.
 - Following on gitlab's API design.
   - https://docs.gitlab.com/ee/api/README.html#gitlab-ci-job-token
 
