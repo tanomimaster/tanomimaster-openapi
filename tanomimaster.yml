@@ -2755,7 +2755,7 @@ paths:
             type: string
         - name: cancelled_at_to
           in: query
-          description: キャンセル時刻TO(YYYY-MM-DD)
+          description: キャンセル時刻TO(YYYY-MM-DD hh:mm:ss)
           required: false
           schema:
             type: string
