@@ -95,23 +95,23 @@ paths:
         '200':
           description: A paged array of products
           headers:
-            X-Total-Pages:
+            x-total-pages:
               schema:
                 type: integer
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-page:
               schema:
                 type: integer
                 nullable: true
-            X-Per-Page:
+            x-per-page:
               schema:
                 type: integer
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-page:
               schema:
                 type: integer
                 nullable: true
@@ -1345,23 +1345,23 @@ paths:
         '200':
           description: OK
           headers:
-            X-Total-Pages:
+            x-total-pages:
               schema:
                 type: integer
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-page:
               schema:
                 type: integer
                 nullable: true
-            X-Per-Page:
+            x-per-page:
               schema:
                 type: integer
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-page:
               schema:
                 type: integer
                 nullable: true
