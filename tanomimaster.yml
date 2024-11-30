@@ -2785,6 +2785,20 @@ paths:
           required: false
           description: 項目数
           example: 10
+        - name: updated_at_from
+          in: query
+          description: 更新日FROM
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_at_to
+          in: query
+          description: 更新日TO
+          required: false
+          schema:
+            type: string
+            format: date-time
       responses:
         '200':
           description: OK
