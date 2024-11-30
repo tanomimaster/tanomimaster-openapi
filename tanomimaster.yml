@@ -3032,16 +3032,18 @@ paths:
             type: integer
         - name: delivery_date_from
           in: query
-          description: 納品日FROM(YYYY-MM-DD)
+          description: 納品日FROM
           required: false
           schema:
             type: string
+            format: date
         - name: delivery_date_to
           in: query
-          description: 納品日TO(YYYY-MM-DD)
+          description: 納品日TO
           required: false
           schema:
             type: string
+            format: date
         - name: cancelled_at_from
           in: query
           description: キャンセル時刻FROM(YYYY-MM-DD hh:mm:ss)
