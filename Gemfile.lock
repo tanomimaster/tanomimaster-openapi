@@ -1,10 +1,10 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    committee (5.4.0)
+    committee (5.5.0)
       json_schema (~> 0.14, >= 0.14.3)
       openapi_parser (~> 2.0)
-      rack (>= 1.5, < 3.1)
+      rack (>= 1.5, < 3.2)
     commonmarker (1.1.5-aarch64-linux)
     commonmarker (1.1.5-arm64-darwin)
     commonmarker (1.1.5-x86_64-darwin)
@@ -12,8 +12,8 @@ GEM
     json_schema (0.21.0)
     openapi3_parser (0.10.0)
       commonmarker (>= 1.0)
-    openapi_parser (2.2.1)
-    rack (3.0.11)
+    openapi_parser (2.2.2)
+    rack (3.1.8)
 
 PLATFORMS
   aarch64-linux
