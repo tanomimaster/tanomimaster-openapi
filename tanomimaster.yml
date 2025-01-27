@@ -2706,8 +2706,9 @@ paths:
             application/json:
               schema:
                 type: array
-                items: 
-                  type: date-time
+                items:
+                  type: string
+                  format: date-time
   /status:
     get:
       summary: ヘルスチェック用
