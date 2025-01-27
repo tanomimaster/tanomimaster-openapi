@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.12.2
+  version: v3.12.7-rc
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -4776,6 +4776,9 @@ components:
             required:
               - maker_code
               - retail_user_code
+        memo:
+          type: string
+          description: 注文単位の備考
       required:
         - code
     ProductCheckCodeRequest:
