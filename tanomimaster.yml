@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.12.2
+  version: v3.12.7
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -524,6 +524,7 @@ paths:
                 memo:
                   type: string
                   nullable: true
+                  description: 明細単位の備考
               required:
                 - maker_code
                 - code
@@ -1637,6 +1638,7 @@ paths:
                   items:
                     - code: '2000000014'
                       example: '2022-06-06T18:32:35.956+09:00'
+                      memo: '注文単位の備考'
                       makers:
                         - maker_code: matsukura
                           shipping_postcode: "338-0824"
@@ -1654,7 +1656,7 @@ paths:
                               branch_number: 2
                               number_of_items: 3
                               gas_type_id: null
-                              memo: 備考欄
+                              memo: 明細単位の備考
       tags:
         - Retail
     parameters: []
@@ -2704,8 +2706,9 @@ paths:
             application/json:
               schema:
                 type: array
-                items: 
-                  type: date-time
+                items:
+                  type: string
+                  format: date-time
   /status:
     get:
       summary: ヘルスチェック用
@@ -3049,7 +3052,7 @@ paths:
             type: string
         - name: cancelled_at_to
           in: query
-          description: キャンセル時刻TO(YYYY-MM-DD)
+          description: キャンセル時刻TO(YYYY-MM-DD hh:mm:ss)
           required: false
           schema:
             type: string
@@ -4258,7 +4261,7 @@ components:
         memo:
           type: string
           nullable: true
-          description: 備考
+          description: 明細単位の備考
           example: 'メモメモ'
         order_confirmed_at:
           type: string
@@ -4323,7 +4326,7 @@ components:
           example: '5d25c1884ee2f597047be83d11'
         memo:
           type: string
-          description: 注文に対する備考
+          description: 注文単位の備考
           nullable: true
           example: 'メモメモ'
         ordered_at:
@@ -4710,7 +4713,7 @@ components:
                   branch_number: 1
                   number_of_items: 3
                   gas_type_id: null
-                  memo: 備考欄
+                  memo: 明細単位の備考
       properties:
         code:
           type: string
@@ -4774,6 +4777,9 @@ components:
             required:
               - maker_code
               - retail_user_code
+        memo:
+          type: string
+          description: 注文単位の備考
       required:
         - code
     ProductCheckCodeRequest:
