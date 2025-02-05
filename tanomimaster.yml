@@ -525,6 +525,7 @@ paths:
                   type: string
                   nullable: true
                   description: 明細単位の備考
+                  maxLength: 65535
               required:
                 - maker_code
                 - code
@@ -4263,6 +4264,7 @@ components:
           nullable: true
           description: 明細単位の備考
           example: 'メモメモ'
+          maxLength: 65535
         order_confirmed_at:
           type: string
           nullable: true
@@ -4329,6 +4331,7 @@ components:
           description: 注文単位の備考
           nullable: true
           example: 'メモメモ'
+          maxLength: 65535
         ordered_at:
           type: string
           format: date-time
@@ -4746,6 +4749,7 @@ components:
                       nullable: true
                     memo:
                       type: string
+                      maxLength: 65535
                   required:
                     - code
                     - number_of_items
@@ -4780,6 +4784,7 @@ components:
         memo:
           type: string
           description: 注文単位の備考
+          maxLength: 65535
       required:
         - code
     ProductCheckCodeRequest:
