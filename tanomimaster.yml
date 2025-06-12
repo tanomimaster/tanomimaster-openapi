@@ -101,7 +101,7 @@ paths:
     get:
       summary: 販売中商品の一覧を取得
       operationId: getProducts
-      description: Productの配列を取得
+      description: 販売中の商品一覧を返却
       tags:
         - Retail
       parameters:
@@ -133,6 +133,20 @@ paths:
             type: string
           in: query
           name: product_code
+        - name: updated_at_from
+          in: query
+          description: 更新日FROM
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_at_to
+          in: query
+          description: 更新日TO
+          required: false
+          schema:
+            type: string
+            format: date-time
       responses:
         '200':
           description: A paged array of products
@@ -2816,6 +2830,20 @@ paths:
           required: false
           description: 項目数
           example: 10
+        - name: updated_at_from
+          in: query
+          description: 更新日FROM
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_at_to
+          in: query
+          description: 更新日TO
+          required: false
+          schema:
+            type: string
+            format: date-time
       responses:
         '200':
           description: OK
@@ -3077,16 +3105,18 @@ paths:
             type: integer
         - name: delivery_date_from
           in: query
-          description: 納品日FROM(YYYY-MM-DD)
+          description: 納品日FROM
           required: false
           schema:
             type: string
+            format: date
         - name: delivery_date_to
           in: query
-          description: 納品日TO(YYYY-MM-DD)
+          description: 納品日TO
           required: false
           schema:
             type: string
+            format: date
         - name: cancelled_at_from
           in: query
           description: キャンセル時刻FROM(YYYY-MM-DD hh:mm:ss)
