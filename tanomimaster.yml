@@ -151,23 +151,23 @@ paths:
         '200':
           description: A paged array of products
           headers:
-            X-Total-Pages:
+            x-total-pages:
               schema:
                 type: integer
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-page:
               schema:
                 type: integer
                 nullable: true
-            X-Per-Page:
+            x-per-page:
               schema:
                 type: integer
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-page:
               schema:
                 type: integer
                 nullable: true
@@ -281,23 +281,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrderWithDescendant'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -445,23 +445,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrderProduct'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -732,23 +732,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/Maker'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -1086,23 +1086,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/RetailBranch'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -1155,23 +1155,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/RetailSalesOffice'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -1403,23 +1403,23 @@ paths:
         '200':
           description: OK
           headers:
-            X-Total-Pages:
+            x-total-pages:
               schema:
                 type: integer
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-page:
               schema:
                 type: integer
                 nullable: true
-            X-Per-Page:
+            x-per-page:
               schema:
                 type: integer
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-page:
               schema:
                 type: integer
                 nullable: true
@@ -1768,24 +1768,24 @@ paths:
                 items:
                   $ref: '#/components/schemas/Category'
           headers:
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
         default:
@@ -1872,23 +1872,23 @@ paths:
                 items:
                   $ref: '#/components/schemas/Category'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -1963,23 +1963,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/DeliveryCompany'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -2061,23 +2061,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/GasType'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -2160,23 +2160,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/Maker'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -2345,23 +2345,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/MakerSalesOffice'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -2463,23 +2463,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/Retail'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -2648,23 +2648,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/RetailSalesOffice'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -2857,23 +2857,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/Product'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -3161,23 +3161,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrdersMakerWithDescendant'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -3265,23 +3265,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrderProduct'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
