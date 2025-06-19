@@ -794,7 +794,6 @@ paths:
       description: Show Maker entity
       security:
         - ApiKeyAuth: []
->>>>>>> origin/develop
   /retail/products/check_code:
     post:
       summary: checkProductExistence
