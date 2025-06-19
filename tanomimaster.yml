@@ -4061,11 +4061,6 @@ components:
           type: string
           description: ID
           example: '5d25c1884ee2f597047be83d11'
-        retail_id:
-          type: integer
-          description: Retailの外部キー
-          example: 1
-          deprecated: true
         retail_code:
           type: string
           description: Retailのcode
@@ -4343,47 +4338,22 @@ components:
           type: string
           description: メーカごとの注文ID。orders_maker_id
           example: 'Z2lkOi8vdGFub21pbWFzdGVyLXd3dy9PcmRlcnNNYWtlci8xOQ'
-        maker_id:
-          type: integer
-          description: 'Makerの外部キー'
-          example: 1
-          deprecated: true
         maker_code:
           type: string
           description: 'Makerのcode'
           example: '0001'
-        maker_user_id:
-          type: integer
-          description: 'MakerUserの外部キー'
-          example: 1
-          deprecated: true
         maker_user_code:
           type: string
           description: 'MakerUserのcode'
           example: 1
-        maker_sales_office_id:
-          type: integer
-          description: 'MakerSalesOfficeの外部キー'
-          example: 1
-          deprecated: true
         maker_sales_office_code:
           type: string
           description: 'MakerSalesOfficeのcode'
           example: 'code'
-        retail_user_id:
-          type: integer
-          description: 'RetailUserの外部キー'
-          example: 1
-          deprecated: true
         retail_user_code:
           type: string
           description: 'RetailUserのcode'
           example: 'code'
-        retail_sales_office_id:
-          type: integer
-          description: 'RetailSalesOfficeの外部キー'
-          example: 1
-          deprecated: true
         retail_sales_office_code:
           type: string
           description: 'RetailSalesOfficeのcode'
