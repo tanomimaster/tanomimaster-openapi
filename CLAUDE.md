@@ -5,8 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## コマンド
 
 ### テストと検証
-- `bundle exec ruby test.rb` - openapi3_parserとOpenAPIParserを使用してOpenAPI仕様を検証
+
 - `bundle install` - Ruby gemの依存関係をインストール
+- `bundle exec ruby test.rb` - openapi3_parserとOpenAPIParserを使用してOpenAPI仕様を検証
 
 ### 開発ワークフロー
 - GitHub ActionsでRuby 3.2, 3.3, 3.4バージョンでのテストがpush/PR時に自動実行
