@@ -1,48 +1,54 @@
-# Tanomimaster REST API specification
+# Tanomimaster REST API 仕様書
 
-[![Ruby](https://github.com/tanomimaster/tanomimaster-openapi/actions/workflows/ci.yml/badge.svg)](https://github.com/tanomimaster/tanomimaster-openapi/actions/workflows/ci.yml)
+[![Ruby](https://github.com/tanomimaster/tanomimaster-openapi/actions/workflows/test.yml/badge.svg)](https://github.com/tanomimaster/tanomimaster-openapi/actions/workflows/test.yml)
 
-- Built with OAS (Open API Specification) 3.0 
+- OAS（OpenAPI Specification）3.0で構築
 
-## Workflow
+## ワークフロー
 
-- Design OpenAPI and write program on server side.
-- A head of development is `develop` branch.
-- @matsubo reviews the `develop`  when deploying `tanomimaster-www` and merge `develop` into `master`. Increment API version number.
+- OpenAPIを設計し、サーバーサイドでプログラムを作成する
+- 開発の中心は`develop`ブランチ
+- @matsuboが`tanomimaster-www`をデプロイする際に`develop`ブランチをレビューし、`develop`を`master`にマージする。APIバージョン番号をインクリメントする
 
-- master
-  - Publish to clients and vendors
-  - Current production release.
-- develop
-  - The newest development version.
+- **master**
+  - クライアントとベンダーに公開
+  - 現在の本番リリース
+- **develop**
+  - 最新の開発バージョン
 
-We need to re-define branch release model associating server-side and client-side application deployment.
+サーバーサイドとクライアントサイドのアプリケーションデプロイメントを関連付けるブランチリリースモデルを再定義する必要があります。
 
-## Policy
+## ポリシー
 
-- Following on gitlab's API design.
+- [Richardson成熟度モデル](https://martinfowler.com/articles/richardsonMaturityModel.html)
+  - レベル2が必要
+- GitLabのAPI設計に従う
   - https://docs.gitlab.com/ee/api/README.html#gitlab-ci-job-token
 
+## GitHub Actionsをローカルで実行
 
-## Run Github Actions on local
-
-```
+```bash
 % act pull_request
 ```
 
-## Tools
+## ローカルでOASのvalidation
 
-- Editor
-  - There is no recommended editors yet.
-- Viewer
-  - OpenAPI (Swagger) Editor
-    - Visual Studio Code extension
+何も出力されなければOKです。
+``
+% bundle exec ruby test.rb
+```
+
+## ツール
+
+- **エディター**
+  - まだ推奨エディターはありません
+- **ビューアー**
+  - OpenAPI（Swagger）エディター
+    - Visual Studio Code拡張機能
     - https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi
-  - SwaggerEditor
+  - Swagger Editor
     - https://editor.swagger.io/
-  - Stoplight's studio
+  - Stoplight Studio
     - https://stoplight.io/p/studio/
-    - Download app is better than web version.
-    - There are many unexpected behavior and changes YAML file with unexpected value.
-
-
+    - ダウンロード版アプリの方がWeb版より優れています
+    - 予期しない動作が多く、予期しない値でYAMLファイルを変更します
