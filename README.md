@@ -34,7 +34,8 @@
 ## ローカルでOASのvalidation
 
 何も出力されなければOKです。
-``
+
+```
 % bundle exec ruby test.rb
 ```
 
