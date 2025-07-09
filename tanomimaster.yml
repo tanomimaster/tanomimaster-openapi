@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: v3.12.8
+  version: v3.13.0-rc
   title: Tanomimaster REST API Specification
   description: |
     タノミマスターのREST APIサービスの仕様書です。
@@ -18,12 +18,57 @@ info:
     サーバを通してこのドキュメントをプレビューしている場合は、このドキュメントにあるAPI仕様が実装されたバージョンのアプリケーションが稼働していることを担保されています。
     動作している環境によってバージョン番号が異なることがあると思いますのでご注意ください。
 
-    <!--
-    # Cross-Origin Resource Sharing
-    This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
-    And that allows cross-domain communication from the browser.
-    All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
-    -->
+    # 認証
+    タノミマスターはHTTPヘッダのBearerキーを利用した認証を提供しています。
+    認証には以下の手順で取得したAPIキーを使用します：
+
+    1. 管理画面にログインします
+    2. 左側のメニューから「APIキーの確認」を選択します
+    3. 表示されたAPIキーをコピーします
+    4. リクエスト時に`Authorization: Bearer {APIキー}`の形式でヘッダーに設定します
+
+    認証に失敗した場合は401 Unauthorizedが返却されます。
+
+    # エラーレスポンス
+    APIは2種類のエラーレスポンス形式を使用します：
+
+    1. Error: 単一のエラーメッセージを返す場合
+    ```json
+    {
+      "code": "500",
+      "message": "サーバ内でエラーが発生しました"
+    }
+    ```
+    使用例：
+    - 認証エラー (401)
+    - サーバーエラー (500)
+    - リソースが見つからない場合 (404)
+
+    2. Errors: バリデーションなど複数のエラーメッセージがある場合
+    ```json
+    {
+      "code": "400",
+      "messages": [
+        "注文ステータスの値が不正です"
+      ]
+    }
+    ```
+    使用例：
+    - フォームバリデーション (400)
+    - 一括処理での複数エラー (400)
+
+    # ページネーション
+    リスト取得APIでは以下のヘッダーでページネーション情報が提供されます：
+
+    - X-Total-Pages: 総ページ数
+    - X-Total: 総件数
+    - X-Prev-Page: 前ページ番号（1ページ目の場合はnull）
+    - X-Per-Page: 1ページあたりの件数
+    - X-Page: 現在のページ番号
+    - X-Next-Page: 次ページ番号（最終ページの場合はnull）
+
+    # レート制限
+    現在は指定ありません。
 
     # 規格
     ## 都道府県コード
@@ -32,9 +77,6 @@ info:
     ## 型
     ## boolean
     便宜上、リクエストパラメータなどでboolean型が指定されている場合は `false` または `true` の文字列を指定してください。
-
-    # 認証
-    タノミマスターはHTTPヘッダの　Bearerキーを利用した認証を提供しています。
 
 
   license:
@@ -59,7 +101,7 @@ paths:
     get:
       summary: 販売中商品の一覧を取得
       operationId: getProducts
-      description: Productの配列を取得
+      description: 販売中の商品一覧を返却
       tags:
         - Retail
       parameters:
@@ -91,27 +133,41 @@ paths:
             type: string
           in: query
           name: product_code
+        - name: updated_at_from
+          in: query
+          description: 更新日FROM
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_at_to
+          in: query
+          description: 更新日TO
+          required: false
+          schema:
+            type: string
+            format: date-time
       responses:
         '200':
           description: A paged array of products
           headers:
-            X-Total-Pages:
+            x-total-pages:
               schema:
                 type: integer
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-page:
               schema:
                 type: integer
                 nullable: true
-            X-Per-Page:
+            x-per-page:
               schema:
                 type: integer
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-page:
               schema:
                 type: integer
                 nullable: true
@@ -225,23 +281,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrderWithDescendant'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -389,23 +445,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrderProduct'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -676,23 +732,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/Maker'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -1030,23 +1086,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/RetailBranch'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -1099,23 +1155,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/RetailSalesOffice'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -1347,23 +1403,23 @@ paths:
         '200':
           description: OK
           headers:
-            X-Total-Pages:
+            x-total-pages:
               schema:
                 type: integer
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-page:
               schema:
                 type: integer
                 nullable: true
-            X-Per-Page:
+            x-per-page:
               schema:
                 type: integer
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-page:
               schema:
                 type: integer
                 nullable: true
@@ -1564,7 +1620,7 @@ paths:
   /retail/orders/batch:
     post:
       summary: 一括で発注する
-      operationId: post-retai-orders-batch
+      operationId: post-retail-orders-batch
       description: OrderForCreateの配列を指定することにより一括で注文を作成する。
       responses:
         '201':
@@ -1643,7 +1699,7 @@ paths:
                       makers:
                         - maker_code: matsukura
                           shipping_postcode: "338-0824"
-                          shipping_preferecture_code: "11"
+                          shipping_prefecture_code: "11"
                           shipping_city: "さいたま市桜区"
                           shipping_street_address: "上大久保８８８－５"
                           shipping_building: null
@@ -1712,24 +1768,24 @@ paths:
                 items:
                   $ref: '#/components/schemas/Category'
           headers:
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
         default:
@@ -1816,23 +1872,23 @@ paths:
                 items:
                   $ref: '#/components/schemas/Category'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -1872,7 +1928,7 @@ paths:
   /master/delivery_companies:
     get:
       summary: 配送会社の一覧を取得
-      operationId: getDeliveryCompanys
+      operationId: getDeliveryCompanies
       description: DeliveryCompanyの配列を取得
       parameters:
         - schema:
@@ -1907,23 +1963,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/DeliveryCompany'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -2005,23 +2061,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/GasType'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -2104,23 +2160,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/Maker'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -2289,23 +2345,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/MakerSalesOffice'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -2407,23 +2463,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/Retail'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -2592,23 +2648,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/RetailSalesOffice'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -2774,6 +2830,20 @@ paths:
           required: false
           description: 項目数
           example: 10
+        - name: updated_at_from
+          in: query
+          description: 更新日FROM
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_at_to
+          in: query
+          description: 更新日TO
+          required: false
+          schema:
+            type: string
+            format: date-time
       responses:
         '200':
           description: OK
@@ -2787,23 +2857,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/Product'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -3035,16 +3105,18 @@ paths:
             type: integer
         - name: delivery_date_from
           in: query
-          description: 納品日FROM(YYYY-MM-DD)
+          description: 納品日FROM
           required: false
           schema:
             type: string
+            format: date
         - name: delivery_date_to
           in: query
-          description: 納品日TO(YYYY-MM-DD)
+          description: 納品日TO
           required: false
           schema:
             type: string
+            format: date
         - name: cancelled_at_from
           in: query
           description: キャンセル時刻FROM(YYYY-MM-DD hh:mm:ss)
@@ -3089,23 +3161,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrdersMakerWithDescendant'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
@@ -3193,23 +3265,23 @@ paths:
                     items:
                       $ref: '#/components/schemas/OrderProduct'
           headers:
-            X-Page:
+            x-page:
               schema:
                 type: integer
-            X-Per-Page:
+            x-per-Page:
               schema:
                 type: integer
-            X-Prev-Page:
+            x-prev-Page:
               schema:
                 type: integer
                 nullable: true
-            X-Total:
+            x-total:
               schema:
                 type: integer
-            X-Total-Pages:
+            x-total-Pages:
               schema:
                 type: integer
-            X-Next-Page:
+            x-next-Page:
               schema:
                 type: integer
                 nullable: true
