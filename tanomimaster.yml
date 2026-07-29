@@ -3888,15 +3888,68 @@ components:
       x-tags:
         - product
       description: A single product with price_amount for wholesale automation.
-      allOf:
-        - $ref: '#/components/schemas/ProductForRetail'
-        - type: object
-          properties:
-            price_amount:
-              type: integer
-              nullable: true
-              description: メーカ希望小売価格(税抜)
-              example: 10000
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+          description: '商品ID'
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2022-06-06T18:32:35.956+09:00'
+        estimated_delivery_duration:
+          type: integer
+          nullable: true
+          description: '目安納期日数'
+          example: 3
+        use_gas_type_master:
+          type: boolean
+          nullable: true
+          description: 'ガス種の選択を必要とするか'
+          example: true
+        maker_id:
+          type: integer
+          description: 'メーカID'
+          deprecated: true
+          example: 1
+        internal_code:
+          type: string
+          nullable: true
+          description: 'メーカ内部コード'
+          example: '000-111'
+        name:
+          type: string
+          description: '商品名'
+          example: 商品A
+        category_id:
+          type: integer
+          description: カテゴリID
+          example: 1
+        maker_code:
+          type: string
+          description: メーカコード
+          example: '0001'
+        price_amount:
+          type: integer
+          nullable: true
+          description: メーカ希望小売価格(税抜)
+          example: 10000
+        created_at:
+          type: string
+          format: date-time
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
+        updated_at:
+          type: string
+          format: date-time
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
+      required:
+        - id
+        - name
+        - category_id
     ProductForKumo:
       title: Product for kumo
       type: object
