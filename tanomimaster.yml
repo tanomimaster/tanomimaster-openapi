@@ -3897,8 +3897,6 @@ components:
               nullable: true
               description: メーカ希望小売価格(税抜)
               example: 10000
-          required:
-            - price_amount
     ProductForKumo:
       title: Product for kumo
       type: object
