@@ -3052,84 +3052,77 @@ paths:
         - ApiKeyAuth: []
   /maker/products/automation:
     post:
-      summary: 自社商品一覧を取得（Automation用、メーカ希望小売価格付き）
-      operationId: getMakerProductsForAutomation
-      description: 自社の商品一覧を、メーカ希望小売価格(price_amount)付きで返却
-      tags:
-        - Maker
-      parameters:
-        - name: limit
-          in: query
-          description: 項目数
-          required: false
-          schema:
-            type: integer
-            format: int32
-            minimum: 1
-            default: 25
-            maximum: 100
-        - schema:
-            type: integer
-            minimum: 1
-            default: 1
-          name: page
-          in: query
-          required: false
-          description: ページ数
-          example: 2
-        - name: updated_at_from
-          in: query
-          description: 更新日FROM
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: updated_at_to
-          in: query
-          description: 更新日TO
-          required: false
-          schema:
-            type: string
-            format: date-time
+      summary: メーカ用 商品追加（Automation用、メーカ希望小売価格付き）
+      operationId: createProductForAutomation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                disabled_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                estimated_delivery_duration:
+                  type: integer
+                use_gas_master:
+                  type: boolean
+                internal_code:
+                  type: string
+                  nullable: true
+                category_id:
+                  type: integer
+                price_amount:
+                  type: integer
       responses:
-        '200':
-          description: A paged array of products
-          headers:
-            x-total-pages:
-              schema:
-                type: integer
-            x-total:
-              schema:
-                type: integer
-            x-prev-page:
-              schema:
-                type: integer
-                nullable: true
-            x-per-page:
-              schema:
-                type: integer
-            x-page:
-              schema:
-                type: integer
-            x-next-page:
-              schema:
-                type: integer
-                nullable: true
+        '201':
+          description: Created
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ProductForMakerAutomation'
-        default:
-          description: unexpected error
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: create product for automation with price_amount
+      tags:
+        - Maker
       security:
         - ApiKeyAuth: []
   /maker/products/{product_code}:
@@ -4030,74 +4023,6 @@ components:
           example: '2022-06-06T18:32:35.956+09:00'
       required:
         - id
-        - name
-        - category_id
-    ProductForMakerAutomation:
-      title: ProductForMakerAutomation
-      type: object
-      xml:
-        name: ProductForMakerAutomation
-      x-tags:
-        - product
-      description: A single product with price_amount for maker automation.
-      properties:
-        code:
-          type: string
-          description: '商品コード'
-          example: '000-111'
-        category_id:
-          type: integer
-          description: カテゴリID
-          example: 1
-        internal_code:
-          type: string
-          nullable: true
-          description: 'メーカ内部コード'
-          example: '000-111'
-        name:
-          type: string
-          description: '商品名'
-          example: 商品A
-        use_gas_type_master:
-          type: boolean
-          nullable: true
-          description: 'ガス種の選択を必要とするか'
-          example: true
-        estimated_delivery_duration:
-          type: integer
-          nullable: true
-          description: '目安納期日数'
-          example: 3
-        catalog_url:
-          type: string
-          nullable: true
-          description: 'カタログURL'
-        approved_drawing_url:
-          type: string
-          nullable: true
-          description: '承認図URL'
-        disabled_at:
-          type: string
-          format: date-time
-          nullable: true
-          example: '2022-06-06T18:32:35.956+09:00'
-        price_amount:
-          type: integer
-          nullable: true
-          description: メーカ希望小売価格(税抜)
-          example: 10000
-        created_at:
-          type: string
-          format: date-time
-          description: 'レコード作成日時'
-          example: '2022-06-06T18:32:35.956+09:00'
-        updated_at:
-          type: string
-          format: date-time
-          description: 'レコード更新日時'
-          example: '2022-06-06T18:32:35.956+09:00'
-      required:
-        - code
         - name
         - category_id
     ProductForKumo:
