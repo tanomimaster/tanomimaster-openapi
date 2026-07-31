@@ -3931,6 +3931,11 @@ components:
           type: string
           description: メーカコード
           example: '0001'
+        price_amount:
+          type: integer
+          nullable: true
+          description: メーカ希望小売価格(税抜)
+          example: 10000
         created_at:
           type: string
           format: date-time
@@ -3941,11 +3946,6 @@ components:
           format: date-time
           description: 'レコード更新日時'
           example: '2022-06-06T18:32:35.956+09:00'
-        price_amount:
-          type: integer
-          nullable: true
-          description: メーカ希望小売価格(税抜)
-          example: 10000
       required:
         - name
         - category_id
