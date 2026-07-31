@@ -3224,6 +3224,86 @@ paths:
         - Maker
       security:
         - ApiKeyAuth: []
+  /maker/products/{product_code}/automation:
+    parameters:
+      - schema:
+          type: string
+        name: product_code
+        in: path
+        required: true
+    post:
+      summary: メーカ用 商品更新（Automation用、メーカ希望小売価格付き）
+      operationId: updateProductForAutomation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                disabled_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                estimated_delivery_duration:
+                  type: integer
+                use_gas_master:
+                  type: boolean
+                internal_code:
+                  type: string
+                category_id:
+                  type: integer
+                price_amount:
+                  type: integer
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductForMakerAutomation'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: update product for automation with price_amount
+      tags:
+        - Maker
+      security:
+        - ApiKeyAuth: []
   /maker/orders_makers:
     parameters: []
     get:
