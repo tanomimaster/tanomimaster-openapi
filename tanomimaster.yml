@@ -3083,7 +3083,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/ProductForMakerAutomation'
         '400':
           description: Bad Request
           content:
@@ -3887,6 +3887,65 @@ components:
           format: date-time
           description: 'レコード更新日時'
           example: '2022-06-06T18:32:35.956+09:00'
+      required:
+        - name
+        - category_id
+    ProductForMakerAutomation:
+      title: ProductForMakerAutomation
+      type: object
+      xml:
+        name: ProductForMakerAutomation
+      x-tags:
+        - product
+      description: A single product with price_amount for maker automation.
+      properties:
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2022-06-06T18:32:35.956+09:00'
+        estimated_delivery_duration:
+          type: integer
+          nullable: true
+          description: '目安納期日数'
+          example: 3
+        use_gas_type_master:
+          type: boolean
+          nullable: true
+          description: 'ガス種の選択を必要とするか'
+          example: true
+        internal_code:
+          type: string
+          nullable: true
+          description: 'メーカ内部コード'
+          example: '000-111'
+        name:
+          type: string
+          description: '商品名'
+          example: 商品A
+        category_id:
+          type: integer
+          description: カテゴリID
+          example: 1
+        maker_code:
+          type: string
+          description: メーカコード
+          example: '0001'
+        created_at:
+          type: string
+          format: date-time
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
+        updated_at:
+          type: string
+          format: date-time
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
+        price_amount:
+          type: integer
+          nullable: true
+          description: メーカ希望小売価格(税抜)
+          example: 10000
       required:
         - name
         - category_id
