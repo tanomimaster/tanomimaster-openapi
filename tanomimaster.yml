@@ -3068,7 +3068,7 @@ paths:
                   nullable: true
                 estimated_delivery_duration:
                   type: integer
-                use_gas_master:
+                use_gas_type_master:
                   type: boolean
                 internal_code:
                   type: string
@@ -3248,7 +3248,7 @@ paths:
                   nullable: true
                 estimated_delivery_duration:
                   type: integer
-                use_gas_master:
+                use_gas_type_master:
                   type: boolean
                 internal_code:
                   type: string
