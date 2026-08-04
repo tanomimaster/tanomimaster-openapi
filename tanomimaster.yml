@@ -190,7 +190,7 @@ paths:
         - ApiKeyAuth: []
   /retail/products/automation:
     get:
-      summary: 販売中商品の一覧を取得（卸用、価格情報付き）
+      summary: 販売中商品の一覧を取得（Automation用、メーカ希望小売価格付き）
       operationId: getProductsForAutomation
       description: 販売中の商品一覧を、メーカ希望小売価格(price_amount)付きで返却
       tags:
@@ -3050,6 +3050,81 @@ paths:
         - Maker
       security:
         - ApiKeyAuth: []
+  /maker/products/automation:
+    post:
+      summary: メーカ用 商品追加（Automation用、メーカ希望小売価格付き）
+      operationId: createProductForAutomation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                disabled_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                estimated_delivery_duration:
+                  type: integer
+                use_gas_master:
+                  type: boolean
+                internal_code:
+                  type: string
+                  nullable: true
+                category_id:
+                  type: integer
+                price_amount:
+                  type: integer
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductForMakerAutomation'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: create product for automation with price_amount
+      tags:
+        - Maker
+      security:
+        - ApiKeyAuth: []
   /maker/products/{product_code}:
     parameters:
       - schema:
@@ -3145,6 +3220,86 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       description: update product
+      tags:
+        - Maker
+      security:
+        - ApiKeyAuth: []
+  /maker/products/{product_code}/automation:
+    parameters:
+      - schema:
+          type: string
+        name: product_code
+        in: path
+        required: true
+    post:
+      summary: メーカ用 商品更新（Automation用、メーカ希望小売価格付き）
+      operationId: updateProductForAutomation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                disabled_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                estimated_delivery_duration:
+                  type: integer
+                use_gas_master:
+                  type: boolean
+                internal_code:
+                  type: string
+                category_id:
+                  type: integer
+                price_amount:
+                  type: integer
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductForMakerAutomation'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      description: update product for automation with price_amount
       tags:
         - Maker
       security:
@@ -3802,6 +3957,65 @@ components:
           type: string
           description: メーカコード
           example: '0001'
+        created_at:
+          type: string
+          format: date-time
+          description: 'レコード作成日時'
+          example: '2022-06-06T18:32:35.956+09:00'
+        updated_at:
+          type: string
+          format: date-time
+          description: 'レコード更新日時'
+          example: '2022-06-06T18:32:35.956+09:00'
+      required:
+        - name
+        - category_id
+    ProductForMakerAutomation:
+      title: ProductForMakerAutomation
+      type: object
+      xml:
+        name: ProductForMakerAutomation
+      x-tags:
+        - product
+      description: A single product with price_amount for maker automation.
+      properties:
+        disabled_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2022-06-06T18:32:35.956+09:00'
+        estimated_delivery_duration:
+          type: integer
+          nullable: true
+          description: '目安納期日数'
+          example: 3
+        use_gas_type_master:
+          type: boolean
+          nullable: true
+          description: 'ガス種の選択を必要とするか'
+          example: true
+        internal_code:
+          type: string
+          nullable: true
+          description: 'メーカ内部コード'
+          example: '000-111'
+        name:
+          type: string
+          description: '商品名'
+          example: 商品A
+        category_id:
+          type: integer
+          description: カテゴリID
+          example: 1
+        maker_code:
+          type: string
+          description: メーカコード
+          example: '0001'
+        price_amount:
+          type: integer
+          nullable: true
+          description: メーカ希望小売価格(税抜)
+          example: 10000
         created_at:
           type: string
           format: date-time
