@@ -82,7 +82,7 @@ info:
   license:
     name: All Rights Reserved
   contact:
-    name: Yuki Matsukura
+    name: Noriaki Seya
     url: 'https://tanomimaster.freshdesk.com/support/tickets/new'
     email: support@tanomimaster.freshdesk.com
   x-logo:
@@ -1788,7 +1788,7 @@ paths:
                       example: '2022-06-06T18:32:35.956+09:00'
                       memo: '注文単位の備考'
                       makers:
-                        - maker_code: matsukura
+                        - maker_code: seya
                           shipping_postcode: "338-0824"
                           shipping_prefecture_code: "11"
                           shipping_city: "さいたま市桜区"
@@ -1796,7 +1796,7 @@ paths:
                           shipping_building: null
                           shipping_office_name: "日本瓦斯株式会社　浦和営業所"
                           shipping_tel: 048-854-1910
-                          retail_user_code: matsukura-sales
+                          retail_user_code: seya-sales
                           retail_sales_office_code: '000'
                           desired_delivery_date: 2020-03-20
                           products:
