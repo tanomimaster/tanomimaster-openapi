@@ -8,7 +8,7 @@
 
 - OpenAPIを設計し、サーバーサイドでプログラムを作成する
 - 開発の中心は`develop`ブランチ
-- @seya`tanomimaster-www`をデプロイする際に`develop`ブランチをレビューし、`develop`を`master`にマージする。APIバージョン番号をインクリメントする
+- @seya`がtanomimaster-www`をデプロイする際に`develop`ブランチをレビューし、`develop`を`master`にマージする。APIバージョン番号をインクリメントする
 
 - **master**
   - クライアントとベンダーに公開
